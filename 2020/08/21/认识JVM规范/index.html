@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://www.villagehead.cn">
   <title>认识JVM规范 | 村长的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字节码成为指令并执行，提供">
+  <meta name="description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="认识JVM规范">
 <meta property="og:url" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/index.html">
 <meta property="og:site_name" content="村长的博客">
-<meta property="og:description" content="JVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字节码成为指令并执行，提供">
+<meta property="og:description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/1.png">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/2.png">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/3.png">
-<meta property="og:updated_time" content="2020-08-21T02:37:33.542Z">
+<meta property="og:updated_time" content="2020-08-21T02:40:33.313Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="认识JVM规范">
-<meta name="twitter:description" content="JVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字节码成为指令并执行，提供">
+<meta name="twitter:description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta name="twitter:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/1.png">
   
     <link rel="alternative" href="/atom.xml" title="村长的博客" type="application/atom+xml">
@@ -190,7 +190,7 @@ ga('send', 'pageview');
   <div id="toc-article" class="toc-article">
       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
     <strong class="toc-title">文章目录</strong>
-           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM概述"><span class="toc-number">1.</span> <span class="toc-text">JVM概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM主要功能"><span class="toc-number">2.</span> <span class="toc-text">JVM主要功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#虚拟机是Java平台无关的保障"><span class="toc-number">3.</span> <span class="toc-text">虚拟机是Java平台无关的保障</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM规范作用及其核心"><span class="toc-number"></span> <span class="toc-text">JVM规范作用及其核心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#理解JVM规范的作用"><span class="toc-number">1.</span> <span class="toc-text">理解JVM规范的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#了解JVM规范里面规定的主要内容"><span class="toc-number">2.</span> <span class="toc-text">了解JVM规范里面规定的主要内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-1"><span class="toc-number">2.1.</span> <span class="toc-text">JVM规范里面规定的主要内容-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-2"><span class="toc-number">2.2.</span> <span class="toc-text">JVM规范里面规定的主要内容-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-3"><span class="toc-number">2.3.</span> <span class="toc-text">JVM规范里面规定的主要内容-3</span></a></li></ol></li></ol>
+           <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从三种认知角度重识JVM"><span class="toc-number">1.</span> <span class="toc-text">从三种认知角度重识JVM</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM概述"><span class="toc-number">1.1.</span> <span class="toc-text">JVM概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM主要功能"><span class="toc-number">1.2.</span> <span class="toc-text">JVM主要功能</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#虚拟机是Java平台无关的保障"><span class="toc-number">1.3.</span> <span class="toc-text">虚拟机是Java平台无关的保障</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#JVM规范作用及其核心"><span class="toc-number">2.</span> <span class="toc-text">JVM规范作用及其核心</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#理解JVM规范的作用"><span class="toc-number">2.1.</span> <span class="toc-text">理解JVM规范的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#了解JVM规范里面规定的主要内容"><span class="toc-number">2.2.</span> <span class="toc-text">了解JVM规范里面规定的主要内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">JVM规范里面规定的主要内容-1</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-2"><span class="toc-number">2.2.2.</span> <span class="toc-text">JVM规范里面规定的主要内容-2</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JVM规范里面规定的主要内容-3"><span class="toc-number">2.2.3.</span> <span class="toc-text">JVM规范里面规定的主要内容-3</span></a></li></ol></li></ol></li></ol>
          </div>
    <script type="text/javascript">
   function showToc(){
@@ -210,7 +210,7 @@ ga('send', 'pageview');
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="JVM概述"><a href="#JVM概述" class="headerlink" title="JVM概述"></a>JVM概述</h2><ul>
+        <h1 id="从三种认知角度重识JVM"><a href="#从三种认知角度重识JVM" class="headerlink" title="从三种认知角度重识JVM"></a>从三种认知角度重识JVM</h1><h2 id="JVM概述"><a href="#JVM概述" class="headerlink" title="JVM概述"></a>JVM概述</h2><ul>
 <li>JVM：Java Virtual Machine,也就是Java虚拟机</li>
 <li>所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统</li>
 <li>JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境<br><img src="//www.villagehead.cn/2020/08/21/认识JVM规范/1.png" alt="1"><br><strong>上图是Java编译过程到JVM虚拟机的执行过程</strong><h2 id="JVM主要功能"><a href="#JVM主要功能" class="headerlink" title="JVM主要功能"></a>JVM主要功能</h2></li>
@@ -513,11 +513,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
