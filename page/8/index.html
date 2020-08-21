@@ -159,6 +159,85 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux根目录解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/21/Linux根目录解析/">Linux根目录解析</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/21/Linux根目录解析/" class="archive-article-date">
+  	<time datetime="2018-05-21T02:08:17.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-21</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Linux根目录结构如下<br><img src="https://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2018/994198-20160908160724832-375737054.png" alt="image"></p>
+<h2 id="文件结构"><a href="#文件结构" class="headerlink" title="文件结构"></a>文件结构</h2><h3 id="根目录"><a href="#根目录" class="headerlink" title="/ - 根目录"></a>/ - 根目录</h3><p>根目录是整个系统最重要的目录，所有的目录、文件、设备都在/之下。只有root用户具有该目录下的写权限。此目录和/root目录不同，/root目录是root用户的主目录。根目录也与系统的开机/还原/修复等执行动作有关。由于系统开机时需要开机软件，核心文件，开机所需要的程序，函式库等等文件数据，如果系统出现了错误，根目录必须有能修复文件系统的程序才行。正因为如此FHS要求根目录不要放非常大的分区，因为分区越大放入的数据越多，会大大增大根目录发生错误的机会。</p>
+<h3 id="bin-用户二进制文件"><a href="#bin-用户二进制文件" class="headerlink" title="/bin - 用户二进制文件"></a>/bin - 用户二进制文件</h3><p>系统有很多放置执行命令的目录，但/bin比较特殊。因为/bin放置的是在单人模式下还能够被操作的指令。在/bin底下的指令可以被root与一般帐号所使用，主要有：cat,chmod(修改权限), chown, date, mv, mkdir, cp, bash等等常用的指令。</p>
+<h3 id="sbin-系统二进制文件"><a href="#sbin-系统二进制文件" class="headerlink" title="/sbin - 系统二进制文件"></a>/sbin - 系统二进制文件</h3><p>就像/bin，/sbin同样也包含二进制可执行文件。但是，在这个目录下的linux命令通常由系统管理员使用，对系统进行维护。例如：iptables、reboot、fdisk、ifconfig、swapon命令。</p>
+<h3 id="etc-配置文件"><a href="#etc-配置文件" class="headerlink" title="/etc - 配置文件"></a>/etc - 配置文件</h3><p>etc这个目录是linux系统中最重要的目录之一。在这个目录下存放了系统管理时要用到的各种配置文件和子目录。要用到的网络配置文件，文件系统，x系统配置文件，设备配置信息，设置用户信息等都在这个目录下</p>
+<h3 id="dev-设备文件"><a href="#dev-设备文件" class="headerlink" title="/dev - 设备文件"></a>/dev - 设备文件</h3><p>dev 是设备（device)的英文缩写。这个目录对所有的用户都十分重要。因为在这个目录中包含了所有linux系统中使用的外部设备。但是这里并不是放的外部设备的驱动程序。这一点和常用的windows，dos操作系统不一样。它实际上是一个访问这些外部设备的端口。可以非常方便地去访问这些外部设备，和访问一个文件，一个目录没有任何区别。</p>
+<h3 id="proc-进程信息"><a href="#proc-进程信息" class="headerlink" title="/proc - 进程信息"></a>/proc - 进程信息</h3><p>可以在这个目录下获取系统信息。这些信息是在内存中，由系统自己产生的，本身不占任何的硬盘空间。</p>
+<h3 id="var-变量文件"><a href="#var-变量文件" class="headerlink" title="/var - 变量文件"></a>/var - 变量文件</h3><p>var代表变量文件。这个目录下可以找到内容可能增长的文件。这包括 - 系统日志文件（/var/log）;包和数据库文件（/var/lib）;电子邮件（/var/mail）;打印队列（/var/spool）;锁文件（/var/lock）;多次重新启动需要的临时文件（/var/tmp）;</p>
+<h3 id="tmp-临时文件"><a href="#tmp-临时文件" class="headerlink" title="/tmp - 临时文件"></a>/tmp - 临时文件</h3><p>包含用户和系统创建的临时文件，所以需要定时清理一下。重要的文件不允许放置在此目录，FHS建议在开机时，应该要将/tmp下的资料都删除。</p>
+<h3 id="usr-用户程序"><a href="#usr-用户程序" class="headerlink" title="/usr - 用户程序"></a>/usr - 用户程序</h3><p>包含二进制文件、库文件、文档和二级程序的源代码。<br>/usr/bin中包含用户程序的二进制文件。如果你在/bin中找不到用户二进制文件，到/usr/bin目录看看。例如：at、awk、cc、less、scp。<br>/usr/sbin中包含系统管理员的二进制文件。如果你在/sbin中找不到系统二进制文件，到/usr/sbin目录看看。例如：atd、cron、sshd、useradd、userdel。<br>/usr/lib中包含了/usr/bin和/usr/sbin用到的库。<br>/usr/local中包含了从源安装的用户程序。例如，当你从源安装Apache，它会在/usr/local/apache2中。</p>
+<h3 id="home-HOME目录"><a href="#home-HOME目录" class="headerlink" title="/home - HOME目录"></a>/home - HOME目录</h3><p>如果建立一个用户，用户名是”xx”,那么在/home目录下就有一个对应的/home/xx路径，用来存放用户的主目录。</p>
+<h3 id="boot-引导加载程序文件"><a href="#boot-引导加载程序文件" class="headerlink" title="/boot - 引导加载程序文件"></a>/boot - 引导加载程序文件</h3><p>包含引导加载程序相关的文件。内核的initrd、vmlinux、grub文件位于/boot下。例如：initrd.img-2.6.32-24-generic、vmlinuz-2.6.32-24-generic</p>
+<h3 id="lib-系统库"><a href="#lib-系统库" class="headerlink" title="/lib - 系统库"></a>/lib - 系统库</h3><p>lib是库（library）英文缩写。这个目录是用来存放系统动态连接共享库的。几乎所有的应用程序都会用到这个目录下的共享库。因此，千万不要轻易对这个目录进行什么操作，一旦发生问题，系统就不能工作了。</p>
+<h3 id="opt-可选的附加应用程序"><a href="#opt-可选的附加应用程序" class="headerlink" title="/opt - 可选的附加应用程序"></a>/opt - 可选的附加应用程序</h3><p>opt代表opitional；包含从个别厂商的附加应用程序。附加应用程序应该安装在/opt/或者/opt/的子目录下。</p>
+<h3 id="mnt-挂载目录"><a href="#mnt-挂载目录" class="headerlink" title="/mnt - 挂载目录"></a>/mnt - 挂载目录</h3><p>这个目录一般是用于存放挂载储存设备的挂载目录的，系统管理员可以挂载文件系统。</p>
+<h3 id="media-可移动媒体设备"><a href="#media-可移动媒体设备" class="headerlink" title="/media - 可移动媒体设备"></a>/media - 可移动媒体设备</h3><p>media是媒体的英文，顾名思义，这个/media底下放置的就是可移除的装置。 包括软碟、光碟、DVD等等装置都暂时挂载于此。 常见的档名有：/media/floppy, /media/cdrom等等。</p>
+<h3 id="srv-服务数据"><a href="#srv-服务数据" class="headerlink" title="/srv - 服务数据"></a>/srv - 服务数据</h3><p>服务启动后，所需访问的数据目录，举个例子来说，www服务启动读取的网页数据就可以放在/srv/www中</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1.<a href="https://www.cnblogs.com/puloieswind/p/5856658.htmlhengen" target="_blank" rel="external">https://www.cnblogs.com/puloieswind/p/5856658.htmlhengen</a><br>2.<a href="http://www.jb51.net/LINUXjishu/151820.html" target="_blank" rel="external">http://www.jb51.net/LINUXjishu/151820.html</a><br>3.<a href="https://baike.baidu.com/item/linux/27050" target="_blank" rel="external">https://baike.baidu.com/item/linux/27050</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/21/Linux根目录解析/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-Why-mobile-web-apps-are-slow" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -778,68 +857,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-201708071330" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/07/201708071330/">深度学习领域圣经“花书”Deep Learning的中文版</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/07/201708071330/" class="archive-article-date">
-  	<time datetime="2017-08-07T05:30:23.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-07</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天我怀着激动的心情拿到新买的书深度学习领域圣经“花书”Deep Learning的中文版，之前一直在<a href="https://github.com/exacity/deeplearningbook-chinese" target="_blank" rel="external">github上一直关注着这个翻译项目</a>。非常感谢这些无私奉献的译者，给英文基础不太好的同学得以降低语言门槛<a href="https://exacity.github.io/deeplearningbook-chinese/" target="_blank" rel="external">阅读这本书的机会</a>。不过我们还是要努力的去学好英文啊!能够轻松阅读原著才是王道<a href="http://www.deeplearningbook.org/" target="_blank" rel="external">原著地址</a>。<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2017/201708071353.png" alt="image"><br>这本书的三位作者<a href="http://www.path.cam.ac.uk/directory/ian-goodfellow" target="_blank" rel="external">Ian Goodfellow</a>、<a href="http://www.iro.umontreal.ca/~bengioy/yoshua_en/" target="_blank" rel="external">Yoshua Bengio</a>和<a href="http://www.engr.uconn.edu/~mok11002/public_html/" target="_blank" rel="external">Aaron Courville</a>是深度学习领域的顶级专家，他们恰好是老、中、青三代专家的结合。Yoshua Bengio是深度学习领域的奠基人；Ian Goodfellow以提出GAN（生成式对抗网络）而闻名，是深度学习领域近年涌现的新星；而Aaron Courville则是处于研究生涯中期的领域中坚。所以，本书的行文和结构很好地考虑到了处于研究生涯各个不同阶段的学生和研究人员的需求，是一本非常好的关于深度学习的教科书。<br><strong>感觉全身充满了力量，开始读完这本书 nice！</strong></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">机器学习</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/07/201708071330/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
@@ -933,19 +950,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -957,7 +962,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -965,7 +974,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -981,11 +998,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -997,11 +1014,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">https</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color1">https</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1009,11 +1026,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1033,19 +1050,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1062,6 +1075,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>

@@ -159,6 +159,112 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-认识JVM规范" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/21/认识JVM规范/">认识JVM规范</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/21/认识JVM规范/" class="archive-article-date">
+  	<time datetime="2020-08-21T02:20:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-21</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h1 id="从三种认知角度重识JVM"><a href="#从三种认知角度重识JVM" class="headerlink" title="从三种认知角度重识JVM"></a>从三种认知角度重识JVM</h1><h2 id="JVM概述"><a href="#JVM概述" class="headerlink" title="JVM概述"></a>JVM概述</h2><ul>
+<li>JVM：Java Virtual Machine,也就是Java虚拟机</li>
+<li>所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统</li>
+<li>JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境<br><img src="//www.villagehead.cn/2020/08/21/认识JVM规范/1.png" alt="1"><br><strong>上图是Java编译过程到JVM虚拟机的执行过程</strong><h2 id="JVM主要功能"><a href="#JVM主要功能" class="headerlink" title="JVM主要功能"></a>JVM主要功能</h2></li>
+<li>1.通过ClassLoader寻找和装载class文件</li>
+<li>2.解释字节码成为指令并执行，提供class文件的运行环境</li>
+<li>3.进行运行期间的内存分配和垃圾回收</li>
+<li>4.提供与硬件交互的平台<h2 id="虚拟机是Java平台无关的保障"><a href="#虚拟机是Java平台无关的保障" class="headerlink" title="虚拟机是Java平台无关的保障"></a>虚拟机是Java平台无关的保障</h2><img src="//www.villagehead.cn/2020/08/21/认识JVM规范/2.png" alt="2"><br>上图可以看出：java的开发过程是平台无关的，但是Java虚拟机是平台相关的。我们开发的程序编译后，由Java虚拟机去解释执行字节码文件，由虚拟机帮组我们在各个平台去执行，也就是我们编写了一套代码可以在多个平台执行。<h1 id="JVM规范作用及其核心"><a href="#JVM规范作用及其核心" class="headerlink" title="JVM规范作用及其核心"></a>JVM规范作用及其核心</h1><h2 id="理解JVM规范的作用"><a href="#理解JVM规范的作用" class="headerlink" title="理解JVM规范的作用"></a>理解JVM规范的作用</h2></li>
+<li>Java虚拟机规范为不同的硬件平台提供了一种编译Java技术代码的规范</li>
+<li>该规范使Java软件独立于平台，因为编译是针对作为虚拟机的”一般机器”而做。虚拟机规范不仅可以做到平台无关，更上一步也可以做到语言无关。只要该语言编译出的字节码符合虚拟机规范，虚拟机不管你是什么语言，都可以执行。<img src="//www.villagehead.cn/2020/08/21/认识JVM规范/3.png" alt="3"></li>
+<li>这个”一般机器”可用软件模拟并运行于各种现存的计算机系统，也可用硬件来实现。<h2 id="了解JVM规范里面规定的主要内容"><a href="#了解JVM规范里面规定的主要内容" class="headerlink" title="了解JVM规范里面规定的主要内容"></a>了解JVM规范里面规定的主要内容</h2><h3 id="JVM规范里面规定的主要内容-1"><a href="#JVM规范里面规定的主要内容-1" class="headerlink" title="JVM规范里面规定的主要内容-1"></a>JVM规范里面规定的主要内容-1</h3></li>
+<li>字节码指令集（相当于中央处理器CPU）</li>
+<li>Class文件的格式</li>
+<li>数据类型和值<h3 id="JVM规范里面规定的主要内容-2"><a href="#JVM规范里面规定的主要内容-2" class="headerlink" title="JVM规范里面规定的主要内容-2"></a>JVM规范里面规定的主要内容-2</h3></li>
+<li>运行时数据区</li>
+<li>栈帧</li>
+<li>特殊方法<ul>
+<li><init>:实例初始化方法，通过JVM的invokespecial指令来调用</init></li>
+<li><clinit>:类或接口的初始化方法，不包含参数，返回void<h3 id="JVM规范里面规定的主要内容-3"><a href="#JVM规范里面规定的主要内容-3" class="headerlink" title="JVM规范里面规定的主要内容-3"></a>JVM规范里面规定的主要内容-3</h3></clinit></li>
+</ul>
+</li>
+<li>类库（Java虚拟机必须要对一些Java类库提供支持，否则这些类库根本无法实现，比如下面一些）<ul>
+<li>反射</li>
+<li>加载或者创建类或接口，比如ClassLoader</li>
+<li>连接和初始化类和接口的类</li>
+<li>安全，如security</li>
+<li>多线程</li>
+<li>弱引用</li>
+</ul>
+</li>
+<li>异常</li>
+<li>虚拟机的启动，加载，链接和初始化</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/21/认识JVM规范/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-css-抖动效果" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -830,116 +936,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-RocketMQ介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/12/RocketMQ介绍/">RocketMQ介绍</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/12/RocketMQ介绍/" class="archive-article-date">
-  	<time datetime="2020-06-12T08:34:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-12</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>RocketMQ是一款分布式，队列模型的消息中间件，具有以下特点：</p>
-<ul>
-<li>能够保证严格的消息顺序</li>
-<li>提供丰富的消息拉取模式</li>
-<li>高效的订阅者水平扩展能力</li>
-<li>实时的消息订阅机制</li>
-<li>亿级消息堆积能力</li>
-</ul>
-<p><strong>选用理由：</strong></p>
-<ul>
-<li>强调集群无单点，可扩展，任意一点高可用，水平可扩展</li>
-<li>海量消息堆积能力，消息堆积后，写入低延迟。</li>
-<li>支持上万个队列</li>
-<li>消息失败重试机制</li>
-<li>消息可查询</li>
-<li>开源社区活跃</li>
-<li>成熟度（经过双十一考验）</li>
-</ul>
-<h1 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h1><h2 id="主题与标签"><a href="#主题与标签" class="headerlink" title="主题与标签"></a>主题与标签</h2><p>主题Topic：第一级消息类型</p>
-<p>标签Tags：第二级消息类型，可以基于Tag做消息过滤</p>
-<p><strong>例如</strong></p>
-<p>主题：</p>
-<ul>
-<li>订单交易</li>
-</ul>
-<p>标签：</p>
-<ul>
-<li>订单交易-创建</li>
-<li>订单交易-付款</li>
-<li>订单交易-完成</li>
-</ul>
-<h2 id="发送与订阅群组"><a href="#发送与订阅群组" class="headerlink" title="发送与订阅群组"></a>发送与订阅群组</h2><p><img src="//www.villagehead.cn/2020/06/12/RocketMQ介绍/1.png" alt="1"><br><strong>生产组</strong>：用于消息的发送</p>
-<p><strong>消费组</strong>：用于消息的订阅处理</p>
-<p>生产组和消费组，方便扩缩机器，增减处理能力，集群组的名字，用于标记用途中的一员。每次只会随机的发给每个集群中的一员</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">消息队列</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RocketMQ/" class="article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/12/RocketMQ介绍/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1033,19 +1029,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1057,7 +1041,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1065,7 +1053,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1081,11 +1077,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1097,11 +1093,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">https</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color1">https</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1109,11 +1105,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1133,19 +1129,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1162,6 +1154,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>
