@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://www.villagehead.cn">
   <title>类加载，连接和初始化 | 村长的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC] 类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，">
+  <meta name="description" content="类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，从jar等归">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="类加载，连接和初始化">
 <meta property="og:url" content="http://www.villagehead.cn/2020/08/21/类加载，连接和初始化/index.html">
 <meta property="og:site_name" content="村长的博客">
-<meta property="og:description" content="[TOC] 类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，">
+<meta property="og:description" content="类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，从jar等归">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/类加载，连接和初始化/1.png">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/类加载，连接和初始化/2.png">
-<meta property="og:updated_time" content="2020-08-21T02:29:11.926Z">
+<meta property="og:updated_time" content="2020-08-21T02:34:45.283Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="类加载，连接和初始化">
-<meta name="twitter:description" content="[TOC] 类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，">
+<meta name="twitter:description" content="类加载，连接和初始化概述类从被加载到JVM开始，到卸载出内存，整个生命周期如下 加载查找并加载类文件的二进制数据 类加载要完成的功能 通过类的全限定名来获取该类的二进制字节流 把二进制字节流转化为方法区的运行时数据结构 在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口  加载类的方式 最常见的方式：本地文件系统中加载，从jar等归">
 <meta name="twitter:image" content="http://www.villagehead.cn/2020/08/21/类加载，连接和初始化/1.png">
   
     <link rel="alternative" href="/atom.xml" title="村长的博客" type="application/atom+xml">
@@ -189,7 +189,7 @@ ga('send', 'pageview');
   <div id="toc-article" class="toc-article">
       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
     <strong class="toc-title">文章目录</strong>
-           <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类加载，连接和初始化"><span class="toc-number">1.</span> <span class="toc-text">类加载，连接和初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载"><span class="toc-number">1.2.</span> <span class="toc-text">加载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载要完成的功能"><span class="toc-number">1.2.1.</span> <span class="toc-text">类加载要完成的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加载类的方式"><span class="toc-number">1.2.2.</span> <span class="toc-text">加载类的方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器"><span class="toc-number">1.2.3.</span> <span class="toc-text">类加载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器的关系"><span class="toc-number">1.2.4.</span> <span class="toc-text">类加载器的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器说明"><span class="toc-number">1.2.5.</span> <span class="toc-text">类加载器说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双亲委派模型"><span class="toc-number">1.2.6.</span> <span class="toc-text">双亲委派模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双亲委派模型说明"><span class="toc-number">1.2.7.</span> <span class="toc-text">双亲委派模型说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#破坏双亲委派模型（扩展阅读：https-blog-csdn-net-luoyang-java-article-details-92598142）"><span class="toc-number">1.2.8.</span> <span class="toc-text">破坏双亲委派模型（扩展阅读：https://blog.csdn.net/luoyang_java/article/details/92598142）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连接"><span class="toc-number">1.3.</span> <span class="toc-text">连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类连接主要验证的内容"><span class="toc-number">1.3.1.</span> <span class="toc-text">类连接主要验证的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类连接中的解析"><span class="toc-number">1.3.2.</span> <span class="toc-text">类连接中的解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化"><span class="toc-number">1.4.</span> <span class="toc-text">初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类的初始化"><span class="toc-number">1.4.1.</span> <span class="toc-text">类的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类的初始化时机"><span class="toc-number">1.4.2.</span> <span class="toc-text">类的初始化时机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类的卸载"><span class="toc-number">1.5.</span> <span class="toc-text">类的卸载</span></a></li></ol></li></ol>
+           <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#类加载，连接和初始化"><span class="toc-number">1.</span> <span class="toc-text">类加载，连接和初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#加载"><span class="toc-number">1.2.</span> <span class="toc-text">加载</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载要完成的功能"><span class="toc-number">1.2.1.</span> <span class="toc-text">类加载要完成的功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#加载类的方式"><span class="toc-number">1.2.2.</span> <span class="toc-text">加载类的方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器"><span class="toc-number">1.2.3.</span> <span class="toc-text">类加载器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器的关系"><span class="toc-number">1.2.4.</span> <span class="toc-text">类加载器的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类加载器说明"><span class="toc-number">1.2.5.</span> <span class="toc-text">类加载器说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双亲委派模型"><span class="toc-number">1.2.6.</span> <span class="toc-text">双亲委派模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#双亲委派模型说明"><span class="toc-number">1.2.7.</span> <span class="toc-text">双亲委派模型说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#破坏双亲委派模型"><span class="toc-number">1.2.8.</span> <span class="toc-text">破坏双亲委派模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连接"><span class="toc-number">1.3.</span> <span class="toc-text">连接</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类连接主要验证的内容"><span class="toc-number">1.3.1.</span> <span class="toc-text">类连接主要验证的内容</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类连接中的解析"><span class="toc-number">1.3.2.</span> <span class="toc-text">类连接中的解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初始化"><span class="toc-number">1.4.</span> <span class="toc-text">初始化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#类的初始化"><span class="toc-number">1.4.1.</span> <span class="toc-text">类的初始化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类的初始化时机"><span class="toc-number">1.4.2.</span> <span class="toc-text">类的初始化时机</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类的卸载"><span class="toc-number">1.5.</span> <span class="toc-text">类的卸载</span></a></li></ol></li></ol>
          </div>
    <script type="text/javascript">
   function showToc(){
@@ -209,8 +209,7 @@ ga('send', 'pageview');
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h1 id="类加载，连接和初始化"><a href="#类加载，连接和初始化" class="headerlink" title="类加载，连接和初始化"></a>类加载，连接和初始化</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>类从被加载到JVM开始，到卸载出内存，整个生命周期如下<br><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/1.png" alt="1"></p>
+        <h1 id="类加载，连接和初始化"><a href="#类加载，连接和初始化" class="headerlink" title="类加载，连接和初始化"></a>类加载，连接和初始化</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>类从被加载到JVM开始，到卸载出内存，整个生命周期如下<br><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/1.png" alt="1"></p>
 <h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>查找并加载类文件的二进制数据</p>
 <h3 id="类加载要完成的功能"><a href="#类加载要完成的功能" class="headerlink" title="类加载要完成的功能"></a>类加载要完成的功能</h3><ol>
 <li>通过类的全限定名来获取该类的二进制字节流</li>
@@ -233,7 +232,7 @@ ga('send', 'pageview');
 <ol>
 <li>用户自定义的加载器，是java.lang.ClassLoader的子类，用户可以定制类的加载方式；只不过自定义类加载器其加载的顺序是在所有系统类加载器的最后</li>
 </ol>
-<h3 id="类加载器的关系"><a href="#类加载器的关系" class="headerlink" title="类加载器的关系"></a>类加载器的关系</h3><p><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/2.png" alt="2"></p>
+<h3 id="类加载器的关系"><a href="#类加载器的关系" class="headerlink" title="类加载器的关系"></a>类加载器的关系</h3><p><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/2.png" alt="2"><br><a id="more"></a></p>
 <h3 id="类加载器说明"><a href="#类加载器说明" class="headerlink" title="类加载器说明"></a>类加载器说明</h3><ol>
 <li>启动类加载器：用于加载启动的基础模块类，比如：java.base,java.management,java.xml等等</li>
 <li>平台类加载器：用于加载一些平台相关的模块，比如:java.scripting, java.compiler<em>, java.corba</em>等等</li>
@@ -263,7 +262,7 @@ ga('send', 'pageview');
 <li>每个类加载器都有自己的命名空间，命名空间由该加载器及其所有父加载器所加载的类构成，不同的命名空间，可以出现类的全路径名相同的情况</li>
 <li>运行时包由同一个类加载器的类构成，决定两个类是否属于同一个运行时包，不仅要看全路径名是否一样，还要看定义类加载器是否相同。只有属于同一个运行时包的类才能实现相互包内可见。</li>
 </ol>
-<h3 id="破坏双亲委派模型（扩展阅读：https-blog-csdn-net-luoyang-java-article-details-92598142）"><a href="#破坏双亲委派模型（扩展阅读：https-blog-csdn-net-luoyang-java-article-details-92598142）" class="headerlink" title="破坏双亲委派模型（扩展阅读：https://blog.csdn.net/luoyang_java/article/details/92598142）"></a>破坏双亲委派模型（扩展阅读：<a href="https://blog.csdn.net/luoyang_java/article/details/92598142）" target="_blank" rel="external">https://blog.csdn.net/luoyang_java/article/details/92598142）</a></h3><ol>
+<h3 id="破坏双亲委派模型"><a href="#破坏双亲委派模型" class="headerlink" title="破坏双亲委派模型"></a>破坏双亲委派模型</h3><ol>
 <li>双亲模型有个问题：父加载器无法向下识别子加载器加载的资源。为了解决这个问题，引入了线程上下文类加载器，可以通过Thread的setContextClassLoader()进行设置</li>
 <li>另外一种典型情况就是实现热替换，比如OSGI的模块化热部署，它的类加载器就不再是严格按照双亲委派模型，很多可能就在平级的类加载器中执行了</li>
 </ol>
@@ -544,6 +543,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -557,14 +564,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -8,20 +8,20 @@
   <link rel="dns-prefetch" href="http://www.villagehead.cn">
   <title>认识JVM规范 | 村长的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC] 从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件">
+  <meta name="description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="认识JVM规范">
 <meta property="og:url" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/index.html">
 <meta property="og:site_name" content="村长的博客">
-<meta property="og:description" content="[TOC] 从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件">
+<meta property="og:description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/1.png">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/2.png">
 <meta property="og:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/3.png">
-<meta property="og:updated_time" content="2020-08-21T02:24:40.334Z">
+<meta property="og:updated_time" content="2020-08-21T02:31:15.820Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="认识JVM规范">
-<meta name="twitter:description" content="[TOC] 从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件">
+<meta name="twitter:description" content="从三种认知角度重识JVMJVM概述 JVM：Java Virtual Machine,也就是Java虚拟机 所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统 JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境上图是Java编译过程到JVM虚拟机的执行过程JVM主要功能 1.通过ClassLoader寻找和装载class文件 2.解释字">
 <meta name="twitter:image" content="http://www.villagehead.cn/2020/08/21/认识JVM规范/1.png">
   
     <link rel="alternative" href="/atom.xml" title="村长的博客" type="application/atom+xml">
@@ -210,8 +210,7 @@ ga('send', 'pageview');
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h1 id="从三种认知角度重识JVM"><a href="#从三种认知角度重识JVM" class="headerlink" title="从三种认知角度重识JVM"></a>从三种认知角度重识JVM</h1><h2 id="JVM概述"><a href="#JVM概述" class="headerlink" title="JVM概述"></a>JVM概述</h2><ul>
+        <h1 id="从三种认知角度重识JVM"><a href="#从三种认知角度重识JVM" class="headerlink" title="从三种认知角度重识JVM"></a>从三种认知角度重识JVM</h1><h2 id="JVM概述"><a href="#JVM概述" class="headerlink" title="JVM概述"></a>JVM概述</h2><ul>
 <li>JVM：Java Virtual Machine,也就是Java虚拟机</li>
 <li>所谓虚拟机是指：通过软件模拟的具有完整硬件系统功能的，运行在一个完全隔离环境中的计算机系统</li>
 <li>JVM是指通过软件来模拟Java字节码的指令集，是Java程序的运行环境<br><img src="//www.villagehead.cn/2020/08/21/认识JVM规范/1.png" alt="1"><br><strong>上图是Java编译过程到JVM虚拟机的执行过程</strong><h2 id="JVM主要功能"><a href="#JVM主要功能" class="headerlink" title="JVM主要功能"></a>JVM主要功能</h2></li>
@@ -229,9 +228,11 @@ ga('send', 'pageview');
 <li>栈帧</li>
 <li>特殊方法<ul>
 <li><init>:实例初始化方法，通过JVM的invokespecial指令来调用</init></li>
-<li><clinit>:类或接口的初始化方法，不包含参数，返回void<h3 id="JVM规范里面规定的主要内容-3"><a href="#JVM规范里面规定的主要内容-3" class="headerlink" title="JVM规范里面规定的主要内容-3"></a>JVM规范里面规定的主要内容-3</h3></clinit></li>
+<li><clinit>:类或接口的初始化方法，不包含参数，返回void</clinit></li>
 </ul>
 </li>
+</ul>
+<h3 id="JVM规范里面规定的主要内容-3"><a href="#JVM规范里面规定的主要内容-3" class="headerlink" title="JVM规范里面规定的主要内容-3"></a>JVM规范里面规定的主要内容-3</h3><ul>
 <li>类库（Java虚拟机必须要对一些Java类库提供支持，否则这些类库根本无法实现，比如下面一些）<ul>
 <li>反射</li>
 <li>加载或者创建类或接口，比如ClassLoader</li>
@@ -484,6 +485,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -497,14 +506,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
