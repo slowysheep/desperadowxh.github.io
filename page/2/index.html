@@ -159,6 +159,70 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux按照rz-sz命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/15/Linux按照rz-sz命令/">Linux按照rz sz命令</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/15/Linux按照rz-sz命令/" class="archive-article-date">
+  	<time datetime="2020-06-15T02:57:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-15</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="安装与使用"><a href="#安装与使用" class="headerlink" title="安装与使用"></a>安装与使用</h1><h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p><code>yum -y install lrzsz</code></p>
+<h2 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h2><p>使用上传文件，执行命令<code>rz</code>，会跳出文件选择窗口，选择好文件，点击确认即可。</p>
+<h2 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h2><p>下载文件，执行命令<code>sz</code></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/15/Linux按照rz-sz命令/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-RocketMQ介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -869,196 +933,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-druid连接池的配置参数" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/06/druid连接池的配置参数/">druid连接池的配置参数</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/06/druid连接池的配置参数/" class="archive-article-date">
-  	<time datetime="2020-03-06T05:45:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-06</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="配置参数"><a href="#配置参数" class="headerlink" title="配置参数"></a>配置参数</h2><table>
-<thead>
-<tr>
-<th style="text-align:left">配置</th>
-<th style="text-align:left">缺省值</th>
-<th style="text-align:left">说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left">name</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">配置这个属性的意义在于，如果存在多个数据源，监控的时候可以通过名字来区分开来。 如果没有配置，将会生成一个名字，格式是：”DataSource-“ + System.identityHashCode(this)</td>
-</tr>
-<tr>
-<td style="text-align:left">jdbcUrl</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">连接数据库的url，不同数据库不一样。例如：<br> mysql : jdbc:mysql://10.20.153.104:3306/druid2<br>oracle : jdbc:oracle:thin:@10.20.149.85:1521:ocnauto</td>
-</tr>
-<tr>
-<td style="text-align:left">username</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">连接数据库的用户名</td>
-</tr>
-<tr>
-<td style="text-align:left">password</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">连接数据库的密码。如果你不希望密码直接写在配置文件中，可以使用ConfigFilter。详细看这里：<a href="https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter" target="_blank" rel="external">https://github.com/alibaba/druid/wiki/%E4%BD%BF%E7%94%A8ConfigFilter</a></td>
-</tr>
-<tr>
-<td style="text-align:left">driverClassName</td>
-<td style="text-align:left">根据url自动识别</td>
-<td style="text-align:left">这一项可配可不配，如果不配置druid会根据url自动识别dbType，然后选择相应的driverClassName(建议配置下)</td>
-</tr>
-<tr>
-<td style="text-align:left">initialSize</td>
-<td style="text-align:left">0</td>
-<td style="text-align:left">初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时</td>
-</tr>
-<tr>
-<td style="text-align:left">maxActive</td>
-<td style="text-align:left">8</td>
-<td style="text-align:left">最大连接池数量</td>
-</tr>
-<tr>
-<td style="text-align:left">maxIdle</td>
-<td style="text-align:left">8</td>
-<td style="text-align:left">已经不再使用，配置了也没效果</td>
-</tr>
-<tr>
-<td style="text-align:left">minIdle</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">最小连接池数量</td>
-</tr>
-<tr>
-<td style="text-align:left">maxWait</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">获取连接时最大等待时间，单位毫秒。配置了maxWait之后，缺省启用公平锁，并发效率会有所下降，如果需要可以通过配置useUnfairLock属性为true使用非公平锁。</td>
-</tr>
-<tr>
-<td style="text-align:left">poolPreparedStatements</td>
-<td style="text-align:left">false</td>
-<td style="text-align:left">是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。</td>
-</tr>
-<tr>
-<td style="text-align:left">maxOpenPreparedStatements</td>
-<td style="text-align:left">-1</td>
-<td style="text-align:left">要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100</td>
-</tr>
-<tr>
-<td style="text-align:left">validationQuery</td>
-<td style="text-align:left">-1</td>
-<td style="text-align:left">用来检测连接是否有效的sql，要求是一个查询语句。如果validationQuery为null，testOnBorrow、testOnReturn、testWhileIdle都不会其作用。</td>
-</tr>
-<tr>
-<td style="text-align:left">testOnBorrow</td>
-<td style="text-align:left">true</td>
-<td style="text-align:left">申请连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能。</td>
-</tr>
-<tr>
-<td style="text-align:left">testOnReturn</td>
-<td style="text-align:left">false</td>
-<td style="text-align:left">归还连接时执行validationQuery检测连接是否有效，做了这个配置会降低性能</td>
-</tr>
-<tr>
-<td style="text-align:left">testWhileIdle</td>
-<td style="text-align:left">false</td>
-<td style="text-align:left">建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。</td>
-</tr>
-<tr>
-<td style="text-align:left">timeBetweenEvictionRunsMillis</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">有两个含义： 1) Destroy线程会检测连接的间隔时间2) testWhileIdle的判断依据，详细看testWhileIdle属性的说明</td>
-</tr>
-<tr>
-<td style="text-align:left">numTestsPerEvictionRun</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">不再使用，一个DruidDataSource只支持一个EvictionRun</td>
-</tr>
-<tr>
-<td style="text-align:left">minEvictableIdleTimeMillis</td>
-<td style="text-align:left"></td>
-<td style="text-align:left"></td>
-</tr>
-<tr>
-<td style="text-align:left">connectionInitSqls</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">物理连接初始化的时候执行的sql</td>
-</tr>
-<tr>
-<td style="text-align:left">exceptionSorter</td>
-<td style="text-align:left">根据dbType自动识别</td>
-<td style="text-align:left">当数据库抛出一些不可恢复的异常时，抛弃连接</td>
-</tr>
-<tr>
-<td style="text-align:left">filters</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有： 监控统计用的filter:stat日志用的filter:log4j防御sql注入的filter:wall</td>
-</tr>
-<tr>
-<td style="text-align:left">proxyFilters</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">类型是List<com.alibaba.druid.filter.filter>，如果同时配置了filters和proxyFilters，是组合关系，并非替换关系</com.alibaba.druid.filter.filter></td>
-</tr>
-</tbody>
-</table>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">mysql</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/06/druid连接池的配置参数/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1161,7 +1038,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1169,7 +1046,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1177,11 +1054,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1197,11 +1074,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1225,11 +1102,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1249,15 +1126,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1278,10 +1159,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>

@@ -159,6 +159,92 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-在centos上安装docker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/14/在centos上安装docker/">在centos上安装docker</a>
+    </h1>
+  
+
+        
+        <a href="/2018/12/14/在centos上安装docker/" class="archive-article-date">
+  	<time datetime="2018-12-14T08:55:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-14</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前置条件"><a href="#前置条件" class="headerlink" title="前置条件"></a>前置条件</h2><ul>
+<li>64-bit 系统</li>
+<li>kernel 3.10+<h2 id="检查内核版本，返回的值大于3-10即可"><a href="#检查内核版本，返回的值大于3-10即可" class="headerlink" title="检查内核版本，返回的值大于3.10即可"></a>检查内核版本，返回的值大于3.10即可</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">uname -r</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="移除旧的版本"><a href="#移除旧的版本" class="headerlink" title="移除旧的版本"></a>移除旧的版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">sudo yum remove docker \</div><div class="line">                  docker-client \</div><div class="line">                  docker-client-latest \</div><div class="line">                  docker-common \</div><div class="line">                  docker-latest \</div><div class="line">                  docker-latest-logrotate \</div><div class="line">                  docker-logrotate \</div><div class="line">                  docker-selinux \</div><div class="line">                  docker-engine-selinux \</div><div class="line">                  docker-engine</div></pre></td></tr></table></figure>
+<h2 id="安装需要的软件包"><a href="#安装需要的软件包" class="headerlink" title="安装需要的软件包"></a>安装需要的软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">/**</div><div class="line">* yum-util提供yum-config-manager功能</div><div class="line">* 另外两个是devicemapper驱动依赖的</div><div class="line">*/</div><div class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</div></pre></td></tr></table></figure>
+<h2 id="设置yum的下载源"><a href="#设置yum的下载源" class="headerlink" title="设置yum的下载源"></a>设置yum的下载源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</div></pre></td></tr></table></figure>
+<h2 id="更新yum缓存"><a href="#更新yum缓存" class="headerlink" title="更新yum缓存"></a>更新yum缓存</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum makecache fast</div></pre></td></tr></table></figure>
+<h2 id="安装Docke—ce"><a href="#安装Docke—ce" class="headerlink" title="安装Docke—ce"></a>安装Docke—ce</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo yum -y install docker-ce</div></pre></td></tr></table></figure>
+<h2 id="启动Docker后台服务"><a href="#启动Docker后台服务" class="headerlink" title="启动Docker后台服务"></a>启动Docker后台服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo systemctl start docker</div></pre></td></tr></table></figure>
+<h2 id="测试运行hello-word"><a href="#测试运行hello-word" class="headerlink" title="测试运行hello-word"></a>测试运行hello-word</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run hello-world</div></pre></td></tr></table></figure>
+<h2 id="镜像加速"><a href="#镜像加速" class="headerlink" title="镜像加速"></a>镜像加速</h2><p>鉴于国内网络问题，后续拉取 Docker 镜像十分缓慢，我们可以需要配置加速器来解决，我使用的是网易的镜像地址：<code>http://hub-mirror.c.163.com</code><br>在/etc/docker下新建daemon.js文件，加入下面的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  &quot;registry-mirrors&quot;: [&quot;http://hub-mirror.c.163.com&quot;]</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="卸载Docker-CE"><a href="#卸载Docker-CE" class="headerlink" title="卸载Docker CE"></a>卸载Docker CE</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo yum remove docker-ce</div><div class="line">$ sudo rm -rf /var/lib/docker</div></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Docker/" class="article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/14/在centos上安装docker/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-Java注解是如何工作的？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1019,112 +1105,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="w-java类型擦除与桥方法" class="article article-type-w  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/08/java类型擦除与桥方法/">java类型擦除与桥方法</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/08/java类型擦除与桥方法/" class="archive-article-date">
-  	<time datetime="2018-10-08T01:45:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-08</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h2><p>Java在语法中虽然存在泛型的概念，但在虚拟机中却没有泛型的概念，虚拟机中所有的类型都是普通类。无论何时定义一个泛型类，编译后类型会被自动转换成一个相应的原始类型。<br>比如这个类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent&lt;T&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(T value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在编译后变成了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent</div><div class="line">&#123;</div><div class="line">    public void sayHello(Object value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>对类型变量进行替换的规则有两条：</p>
-<ul>
-<li>若为无限定的类型，如<code>&lt;T&gt;</code>,被替换为<code>Object</code></li>
-<li>若为限定类型，如<code>&lt;T extends Comparable &amp; Serializable&gt;</code>，则用第一个限定的类型变量来替换，在这里被替换为<code>Comparable</code></li>
-</ul>
-<h2 id="桥方法"><a href="#桥方法" class="headerlink" title="桥方法"></a>桥方法</h2><p>类型擦除后，就产生了一个奇怪的现象。</p>
-<p>假设有一个超类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent&lt;T&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(T value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>以及一个子类</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Child extends Parent&lt;String&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(String value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Child class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后有以下测试代码，企图实现多态：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class MainApp</div><div class="line">&#123;</div><div class="line">    public static void main(String[] args)</div><div class="line">    &#123;</div><div class="line">        Child child = new Child();</div><div class="line">        Parent&lt;String&gt; parent = child;</div><div class="line"></div><div class="line">        parent.sayHello(&quot;This is a string&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>运行的时候，会对<code>Child</code>类的方法进行搜索，先分析一下<code>Child</code>类的方法表里有哪些东西：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. sayHello(Object value) : 从类型被擦除后的超类中继承过来</div><div class="line">2. sayHello(String value) : 自己新增的方法，和超类毫无联系</div><div class="line">3. 一些从Object类继承来的方法，这里忽略</div></pre></td></tr></table></figure>
-<p>按理来说，这段测试代码应该不能通过编译器，因为要实现多态，所调用的方法必须在子类中重写，但是在这里<code>Child</code>类中并没有重写<code>Parent</code>类中的<code>sayHello(Object value)</code>方法，只是单纯的继承而已，并且新加了一个参数不同的同名方法。</p>
-<p>但是结果是可以运行。</p>
-<p>原因是编译器在<code>Child</code>类中自动生成了一个桥方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public void sayHello(Object value)</div><div class="line">&#123;</div><div class="line">    sayHello((String) value);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以看出，这个桥方法实际上就是对超类中<code>sayHello(Obejct)</code>的重写。这样做的原因是，当程序员在子类中写下以下这段代码的时候，本意是对超类中的同名方法进行重写，但因为超类发生了类型擦除，所以实际上并没有重写成功，因此加入桥方法的机制来避免类型擦除与多态发生冲突。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Child extends Parent&lt;String&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(String value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Child class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>桥方法并不需要自己手动生成，一切都是编译器自动完成的。</p>
-<h2 id="桥方法与Getter"><a href="#桥方法与Getter" class="headerlink" title="桥方法与Getter"></a>桥方法与Getter</h2><p>同样的，如果超类中有<code>getter</code>的话，在使用多态的时候也可能发生冲突。假设有超类被类型擦除后存在这样一个方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Obejct getValue()</div></pre></td></tr></table></figure>
-<p>然后在子类中，程序员想要重写这个方法，因此新增了一个这样的方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String getValue()</div></pre></td></tr></table></figure>
-<p>但是正如前面所述，重写并没有起作用，甚至还应该报错，因为在子类中，根据 函数签名=方法名+参数 的原则，从超类继承的方法与新增的方法冲突了。</p>
-<p>但实际上这样的代码是可以工作的，原因在于，JVM是用返回值+方法名+参数的方式来计算函数签名的，所以编译器就可以借助这一原则来生成一个桥方法。不过这种计算函数签名的方法仅仅存在于虚拟机中。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/08/java类型擦除与桥方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
     </nav>
   
 
@@ -1227,7 +1210,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1235,7 +1218,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1243,11 +1226,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1263,11 +1246,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1291,11 +1274,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1315,15 +1298,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1344,10 +1331,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>

@@ -159,6 +159,56 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Nginx负载均衡配置，常用策略，场景及特点" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/">Nginx负载均衡配置，常用策略，场景及特点</a>
+    </h1>
+  
+
+        
+        <a href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/" class="archive-article-date">
+  	<time datetime="2018-05-26T02:05:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-Linux根目录解析" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -781,85 +831,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="w-201711291531" class="article article-type-w  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/29/201711291531/">App端json解析错误</a>
-    </h1>
-  
-
-        
-        <a href="/2017/11/29/201711291531/" class="archive-article-date">
-  	<time datetime="2017-11-29T07:32:14.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-29</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>在最近的短视频项目开发中，经常发现个别的短视频播放出现错误,排查发现是因为我们爬虫系统爬取的弹幕数据出现特殊字符导致的json解析错误而引起的app崩溃</p>
-<h2 id="JSON介绍"><a href="#JSON介绍" class="headerlink" title="JSON介绍"></a>JSON介绍</h2><p>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。 易于人阅读和编写。同时也易于机器解析和生成。 它基于JavaScript Programming Language, Standard ECMA-262 3rd Edition - December 1999的一个子集。 JSON采用完全独立于语言的文本格式，但是也使用了类似于C语言家族的习惯（包括C, C++, C#, Java, JavaScript, Perl, Python等）。 这些特性使JSON成为理想的数据交换语言。<a href="http://www.json.org/json-zh.html" target="_blank" rel="external">介绍 JSON</a></p>
-<h2 id="json不能出现的特殊字符"><a href="#json不能出现的特殊字符" class="headerlink" title="json不能出现的特殊字符"></a>json不能出现的特殊字符</h2><p>1.json结构中使用的标示符：都为英文格式 冒号 :双引号  “” 大括号 {} 方括号 [] 逗号  ,<br>2.使用注意要确保在json的结构中，使用以上标准的标示符来构建结构。其中的键值串都由双引号引起来，键值串中不能包含双引号和转义字符。在键值串中可以出现除了双引号之外的以上其它四种标示符，不会出错。<br>3.需要处理的转义字符 \a 响铃(BEL)  \b 退格(BS) \e 科学计数法 \f 换页(FF)      \n 换行(LF)   \r 回车(CR)   \t 水平制表(HT)   \v 垂直制表(VT)   \ 反斜杠      \” 双引号字符   \0 空字符(NULL)<br>4.解决方案   服务器端，将字符串中的回车换行用类似<br>的字符串代替，双引号也一样，比如<dqmv>客户端，解析前，将转义字符全部删掉。解析之后，将内容显示之前，将回车换行和双引号再还原回来</dqmv></p>
-<h2 id="写一个数据库函数将弹幕数据中的特殊字符给干掉"><a href="#写一个数据库函数将弹幕数据中的特殊字符给干掉" class="headerlink" title="写一个数据库函数将弹幕数据中的特殊字符给干掉"></a>写一个数据库函数将弹幕数据中的特殊字符给干掉</h2><p>由于是爬取的弹幕数据并不需要对这些弹幕数据的特殊字符进行转义，然后在视频播放屏幕上显示。所以我直接在数据中写函数将弹幕数据中的特殊字符给处理，已解决app会奔溃的问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">-----------------------------------------------------</div><div class="line">--函数功能：过滤字符里面的特殊字符</div><div class="line">-----------------------------------------------------</div><div class="line">--参数说明：</div><div class="line">-----------------------------------------------------</div><div class="line">/*</div><div class="line">	@SourceSql 源字符</div><div class="line">*/</div><div class="line">-----------------------------------------------------</div><div class="line">--符号编码：</div><div class="line">-----------------------------------------------------</div><div class="line">/*</div><div class="line">	8 BS (backspace) 退格</div><div class="line">	9 HT (horizontal tab) 水平制表符</div><div class="line">	10 LF (NL line feed, new line) 换行键</div><div class="line">	11 VT (vertical tab) 垂直制表符</div><div class="line">	12 FF (NP form feed, new page) 换页键</div><div class="line">	13 CR (carriage return) 回车键</div><div class="line">	32 space 空格</div><div class="line">	34 &quot;</div><div class="line">	39 &apos;</div><div class="line">	92 \  转义字符</div><div class="line">*/</div><div class="line">-----------------------------------------------------</div><div class="line">create function [dbo].[GetFilterString]</div><div class="line">(</div><div class="line">	@SourceSql varchar(500)</div><div class="line">)</div><div class="line">returns varchar(500)</div><div class="line">as</div><div class="line">begin</div><div class="line">	declare @temp varchar(500)=&apos;&apos;</div><div class="line">	set @temp = @SourceSql </div><div class="line">	if (@SourceSql is null) </div><div class="line">	begin</div><div class="line">		set @temp = replace(@temp,char(8),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(9),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(10),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(11),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(12),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(13),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(32),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(34),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(39),&apos;&apos;)</div><div class="line">		set @temp = replace(@temp,char(92),&apos;&apos;)</div><div class="line">	end</div><div class="line">	return @temp</div><div class="line">end</div></pre></td></tr></table></figure></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">json</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/json/" class="article-tag-list-link color5">json</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/11/29/201711291531/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
     </nav>
   
 
@@ -962,7 +936,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -970,7 +944,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -978,11 +952,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -998,11 +972,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1026,11 +1000,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1050,15 +1024,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1079,10 +1057,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>

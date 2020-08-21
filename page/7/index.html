@@ -159,6 +159,109 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="w-java类型擦除与桥方法" class="article article-type-w  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/08/java类型擦除与桥方法/">java类型擦除与桥方法</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/08/java类型擦除与桥方法/" class="archive-article-date">
+  	<time datetime="2018-10-08T01:45:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-08</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="类型擦除"><a href="#类型擦除" class="headerlink" title="类型擦除"></a>类型擦除</h2><p>Java在语法中虽然存在泛型的概念，但在虚拟机中却没有泛型的概念，虚拟机中所有的类型都是普通类。无论何时定义一个泛型类，编译后类型会被自动转换成一个相应的原始类型。<br>比如这个类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent&lt;T&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(T value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在编译后变成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent</div><div class="line">&#123;</div><div class="line">    public void sayHello(Object value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对类型变量进行替换的规则有两条：</p>
+<ul>
+<li>若为无限定的类型，如<code>&lt;T&gt;</code>,被替换为<code>Object</code></li>
+<li>若为限定类型，如<code>&lt;T extends Comparable &amp; Serializable&gt;</code>，则用第一个限定的类型变量来替换，在这里被替换为<code>Comparable</code></li>
+</ul>
+<h2 id="桥方法"><a href="#桥方法" class="headerlink" title="桥方法"></a>桥方法</h2><p>类型擦除后，就产生了一个奇怪的现象。</p>
+<p>假设有一个超类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Parent&lt;T&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(T value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Parent Class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以及一个子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Child extends Parent&lt;String&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(String value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Child class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后有以下测试代码，企图实现多态：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class MainApp</div><div class="line">&#123;</div><div class="line">    public static void main(String[] args)</div><div class="line">    &#123;</div><div class="line">        Child child = new Child();</div><div class="line">        Parent&lt;String&gt; parent = child;</div><div class="line"></div><div class="line">        parent.sayHello(&quot;This is a string&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行的时候，会对<code>Child</code>类的方法进行搜索，先分析一下<code>Child</code>类的方法表里有哪些东西：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1. sayHello(Object value) : 从类型被擦除后的超类中继承过来</div><div class="line">2. sayHello(String value) : 自己新增的方法，和超类毫无联系</div><div class="line">3. 一些从Object类继承来的方法，这里忽略</div></pre></td></tr></table></figure>
+<p>按理来说，这段测试代码应该不能通过编译器，因为要实现多态，所调用的方法必须在子类中重写，但是在这里<code>Child</code>类中并没有重写<code>Parent</code>类中的<code>sayHello(Object value)</code>方法，只是单纯的继承而已，并且新加了一个参数不同的同名方法。</p>
+<p>但是结果是可以运行。</p>
+<p>原因是编译器在<code>Child</code>类中自动生成了一个桥方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public void sayHello(Object value)</div><div class="line">&#123;</div><div class="line">    sayHello((String) value);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看出，这个桥方法实际上就是对超类中<code>sayHello(Obejct)</code>的重写。这样做的原因是，当程序员在子类中写下以下这段代码的时候，本意是对超类中的同名方法进行重写，但因为超类发生了类型擦除，所以实际上并没有重写成功，因此加入桥方法的机制来避免类型擦除与多态发生冲突。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class Child extends Parent&lt;String&gt;</div><div class="line">&#123;</div><div class="line">    public void sayHello(String value)</div><div class="line">    &#123;</div><div class="line">        System.out.println(&quot;This is Child class, value is &quot; + value);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>桥方法并不需要自己手动生成，一切都是编译器自动完成的。</p>
+<h2 id="桥方法与Getter"><a href="#桥方法与Getter" class="headerlink" title="桥方法与Getter"></a>桥方法与Getter</h2><p>同样的，如果超类中有<code>getter</code>的话，在使用多态的时候也可能发生冲突。假设有超类被类型擦除后存在这样一个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Obejct getValue()</div></pre></td></tr></table></figure>
+<p>然后在子类中，程序员想要重写这个方法，因此新增了一个这样的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">String getValue()</div></pre></td></tr></table></figure>
+<p>但是正如前面所述，重写并没有起作用，甚至还应该报错，因为在子类中，根据 函数签名=方法名+参数 的原则，从超类继承的方法与新增的方法冲突了。</p>
+<p>但实际上这样的代码是可以工作的，原因在于，JVM是用返回值+方法名+参数的方式来计算函数签名的，所以编译器就可以借助这一原则来生成一个桥方法。不过这种计算函数签名的方法仅仅存在于虚拟机中。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/08/java类型擦除与桥方法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-navicat-快捷键" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1054,59 +1157,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Nginx负载均衡配置，常用策略，场景及特点" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/">Nginx负载均衡配置，常用策略，场景及特点</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/" class="archive-article-date">
-  	<time datetime="2018-05-26T02:05:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-26</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/26/Nginx负载均衡配置，常用策略，场景及特点/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
     </nav>
   
 
@@ -1209,7 +1262,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1217,7 +1270,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1225,11 +1278,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1245,11 +1298,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1273,11 +1326,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1297,15 +1350,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1326,10 +1383,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>

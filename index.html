@@ -159,6 +159,182 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-类加载，连接和初始化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/21/类加载，连接和初始化/">类加载，连接和初始化</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/21/类加载，连接和初始化/" class="archive-article-date">
+  	<time datetime="2020-08-21T02:27:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-21</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<h1 id="类加载，连接和初始化"><a href="#类加载，连接和初始化" class="headerlink" title="类加载，连接和初始化"></a>类加载，连接和初始化</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>类从被加载到JVM开始，到卸载出内存，整个生命周期如下<br><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/1.png" alt="1"></p>
+<h2 id="加载"><a href="#加载" class="headerlink" title="加载"></a>加载</h2><p>查找并加载类文件的二进制数据</p>
+<h3 id="类加载要完成的功能"><a href="#类加载要完成的功能" class="headerlink" title="类加载要完成的功能"></a>类加载要完成的功能</h3><ol>
+<li>通过类的全限定名来获取该类的二进制字节流</li>
+<li>把二进制字节流转化为方法区的运行时数据结构</li>
+<li>在堆上创建一个java.lang.Class对象，用来封装在方法区内的数据结构，并向外提供了访问方法区数据结构的接口</li>
+</ol>
+<h3 id="加载类的方式"><a href="#加载类的方式" class="headerlink" title="加载类的方式"></a>加载类的方式</h3><ol>
+<li>最常见的方式：本地文件系统中加载，从jar等归档文件中加载</li>
+<li>动态的方式：将java源文件动态编译成class</li>
+<li>其他方式:网络下载，从专有数据库中加载等等</li>
+</ol>
+<h3 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h3><ol>
+<li>java虚拟机自带的加载器包括如下几种：</li>
+</ol>
+<ul>
+<li>启动类加载器（BootstrapClassLoader）</li>
+<li>平台类加载器（PlatformClassLoader）<strong>注意：JDK8之前是扩展类加载器（ExtensionClassLoader）并没有平台类加载器，这是JDK9开始才有的。因为扩展类加载的加载方式并不是很安全，并且JDK9开始有了模块化的扩展方式，所以从JDK9开始被放弃了。</strong></li>
+<li>应用程序类加载器（AppClassLoader）</li>
+</ul>
+<ol>
+<li>用户自定义的加载器，是java.lang.ClassLoader的子类，用户可以定制类的加载方式；只不过自定义类加载器其加载的顺序是在所有系统类加载器的最后</li>
+</ol>
+<h3 id="类加载器的关系"><a href="#类加载器的关系" class="headerlink" title="类加载器的关系"></a>类加载器的关系</h3><p><img src="//www.villagehead.cn/2020/08/21/类加载，连接和初始化/2.png" alt="2"></p>
+<h3 id="类加载器说明"><a href="#类加载器说明" class="headerlink" title="类加载器说明"></a>类加载器说明</h3><ol>
+<li>启动类加载器：用于加载启动的基础模块类，比如：java.base,java.management,java.xml等等</li>
+<li>平台类加载器：用于加载一些平台相关的模块，比如:java.scripting, java.compiler<em>, java.corba</em>等等</li>
+<li>应用程序类加载器：用于加载应用级别的模块，比如：jdk.compiler,jdk.jartool,jdk.jshell等等；还加载classpath路径中的所有类库</li>
+<li>JDK8:启动类加载器：负责将<java_home>/lib,或者-Xbootclasspath参数指定的路径中的，且是虚拟机识别的类库加载到内存中（按照名字识别，比如rt.jar,对于不能识别的文件不予装载）</java_home></li>
+<li>JDK8:扩展类加载器：负责加载<jre_home>/lib/ext,或者java.ext.dirs系统变量所指定路径中的所有类库</jre_home></li>
+<li>JDK8:应用程序类加载器：负责加载classpath路径中的所有类库</li>
+<li>Java程序不能直接引用启动类加载器，直接设置classLoader为null，默认就使用启动类加载器</li>
+<li>类加载器并不需要等到某个类，”首次主动使用”的时候才加载它，Jvm规范允许类加载器在预料到某个类将要被使用的时候就预先加载它</li>
+<li>如果在加载的时候.class文件缺失，会在该类首次主动使用时报告LinkageError错误，如果一直没有被使用，就不会报错。</li>
+</ol>
+<h3 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h3><ol>
+<li>JVM中的ClassLoader通常采用双亲委派模型，要求除了启动类加载器外，其余的类加载器都应该有自己的父级加载器。这里的父子关系是组合而不是继承，工作过程如下：</li>
+</ol>
+<ul>
+<li>一个类加载器接收到类加载器请求后，首先搜索它的内建加载器定义的所有“具名模块”</li>
+<li>如果找到了合适的模块定义，将会使用该加载器来加载</li>
+<li>如果class没有在这些加载器定义的具名模块中找到，那么将会委托给父级加载器，直到启动类加载器</li>
+<li>如果父级加载器反馈它不能完成加载请求，比如在它的搜索路径下找不到这个类，那子的类加载器才自己来加载</li>
+<li>在类路径下找到的类将成为这些加载器的无名模块</li>
+</ul>
+<h3 id="双亲委派模型说明"><a href="#双亲委派模型说明" class="headerlink" title="双亲委派模型说明"></a>双亲委派模型说明</h3><ol>
+<li>双亲委派模型对于保证Java程序的稳定运作很重要</li>
+<li>实现双亲委派的代码在java.lang.ClassLoader的loadClass()方法中，如果自定义类加载器的话，推荐覆盖实现findClass()方法。</li>
+<li>如果有一个类加载器能加载某个类，称为定义类加载器，所有能成功返回该类的Class的类加载器都被称为初始类加载器</li>
+<li>如果没有指定父加载器，默认就是启动加载器</li>
+<li>每个类加载器都有自己的命名空间，命名空间由该加载器及其所有父加载器所加载的类构成，不同的命名空间，可以出现类的全路径名相同的情况</li>
+<li>运行时包由同一个类加载器的类构成，决定两个类是否属于同一个运行时包，不仅要看全路径名是否一样，还要看定义类加载器是否相同。只有属于同一个运行时包的类才能实现相互包内可见。</li>
+</ol>
+<h3 id="破坏双亲委派模型（扩展阅读：https-blog-csdn-net-luoyang-java-article-details-92598142）"><a href="#破坏双亲委派模型（扩展阅读：https-blog-csdn-net-luoyang-java-article-details-92598142）" class="headerlink" title="破坏双亲委派模型（扩展阅读：https://blog.csdn.net/luoyang_java/article/details/92598142）"></a>破坏双亲委派模型（扩展阅读：<a href="https://blog.csdn.net/luoyang_java/article/details/92598142）" target="_blank" rel="external">https://blog.csdn.net/luoyang_java/article/details/92598142）</a></h3><ol>
+<li>双亲模型有个问题：父加载器无法向下识别子加载器加载的资源。为了解决这个问题，引入了线程上下文类加载器，可以通过Thread的setContextClassLoader()进行设置</li>
+<li>另外一种典型情况就是实现热替换，比如OSGI的模块化热部署，它的类加载器就不再是严格按照双亲委派模型，很多可能就在平级的类加载器中执行了</li>
+</ol>
+<h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><p>就是将已经读入内存的类的二进制数据合并到JVM运行时环境中去，包含如以下几个步骤：</p>
+<ol>
+<li>验证:确保被加载类的正确性</li>
+<li>准备：为类的静态变量分配内存，并初始化它们</li>
+<li>解析：把常量池中的符号引用转换成直接引用</li>
+</ol>
+<h3 id="类连接主要验证的内容"><a href="#类连接主要验证的内容" class="headerlink" title="类连接主要验证的内容"></a>类连接主要验证的内容</h3><ol>
+<li>类文件结构检查：按照JVM规范规定的类文件结构进行</li>
+<li>元数据验证：对字节码描述的信息进行语义分析，保证其符合Java语言规范要求</li>
+<li>字节码验证:通过对数据流和控制流进行分析，确保程序语义是合法和符合逻辑的。这里主要对方法体进行校验</li>
+<li>符号引用验证:对类自身以外的信息，也就是常量池中的各种符号引用，进行匹配校验。</li>
+</ol>
+<h3 id="类连接中的解析"><a href="#类连接中的解析" class="headerlink" title="类连接中的解析"></a>类连接中的解析</h3><ol>
+<li>所谓解析就是把常量池中的符号引用转换成直接引用的过程，包括：符号引用：以一组无歧义的符号来描述所引用的目标，与虚拟机的实现无关。</li>
+<li>直接引用：直接指向目标的指针，相对偏移量，或者能间接定位到目标的句柄，是和虚拟机实现相关的</li>
+<li>解析的动作主要针对：类，接口，字段，类方法，接口方法，方法类型，方法句柄，调用点限定符</li>
+</ol>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><h3 id="类的初始化"><a href="#类的初始化" class="headerlink" title="类的初始化"></a>类的初始化</h3><p>类的初始化就是为类的静态变量赋初始值，或者说是执行类构造器<clinit>方法的过程</clinit></p>
+<ul>
+<li>如果类还没有加载和连接，就先加载和连接</li>
+<li>如果类存在父类，且父类没有初始化，就先初始化父类</li>
+<li>如果类中存在初始化语句，就依次执行这些初始化语句</li>
+<li>如果是接口的话：<ul>
+<li>a.初始化一个类的时候，并不会先初始化它实现的接口</li>
+<li>b.初始化一个接口时,并不会初始化它的父接口</li>
+<li>c.只有当程序首次使用接口里面的变量或者是调用接口方法的时候，才会导致接口初始化</li>
+</ul>
+</li>
+<li>调用Classloader类的loadClass方法来装载一个类，并不会初始化这个类，不是对类的主动使用</li>
+</ul>
+<h3 id="类的初始化时机"><a href="#类的初始化时机" class="headerlink" title="类的初始化时机"></a>类的初始化时机</h3><ol>
+<li>Java程序对类的使用方式分成：主动使用和被动使用，JVM必须在每个类或接口“首次主动使用”时才初始化它们；被动使用类不会导致类的初始化，主动使用的情况：</li>
+</ol>
+<ul>
+<li>创建类</li>
+<li>访问某个类或接口的静态变量</li>
+<li>调用类的静态方法</li>
+<li>反射某个类</li>
+<li>初始化某个类的子类，而父类还没有初始化</li>
+<li>JVM启动的时候运行的主类</li>
+<li>定义了default方法的接口，当接口实现类初始化时</li>
+</ul>
+<h2 id="类的卸载"><a href="#类的卸载" class="headerlink" title="类的卸载"></a>类的卸载</h2><ol>
+<li>当代表一个类的Class对象不再被引用，那么Class对象的生命周期就结束了，对应的在方法区中的数据也会被卸载</li>
+<li>JVM自带的类加载器装载的类，是不会卸载的，由用户自定义的类加载器加载的类是可以卸载的</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/21/类加载，连接和初始化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-认识JVM规范" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -872,73 +1048,9 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Linux按照rz-sz命令" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/Linux按照rz-sz命令/">Linux按照rz sz命令</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/15/Linux按照rz-sz命令/" class="archive-article-date">
-  	<time datetime="2020-06-15T02:57:32.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-15</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="安装与使用"><a href="#安装与使用" class="headerlink" title="安装与使用"></a>安装与使用</h1><h2 id="yum安装"><a href="#yum安装" class="headerlink" title="yum安装"></a>yum安装</h2><p><code>yum -y install lrzsz</code></p>
-<h2 id="上传文件"><a href="#上传文件" class="headerlink" title="上传文件"></a>上传文件</h2><p>使用上传文件，执行命令<code>rz</code>，会跳出文件选择窗口，选择好文件，点击确认即可。</p>
-<h2 id="下载文件"><a href="#下载文件" class="headerlink" title="下载文件"></a>下载文件</h2><p>下载文件，执行命令<code>sz</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/15/Linux按照rz-sz命令/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 
@@ -1041,7 +1153,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1049,7 +1161,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1057,11 +1169,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1077,11 +1189,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1105,11 +1217,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1129,15 +1241,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1158,10 +1274,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>
