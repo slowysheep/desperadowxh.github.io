@@ -159,6 +159,95 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-github和hexo构建自己的博客系统" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/05/github和hexo构建自己的博客系统/">github和hexo构建自己的博客系统</a>
+    </h1>
+  
+
+        
+        <a href="/2016/07/05/github和hexo构建自己的博客系统/" class="archive-article-date">
+  	<time datetime="2016-07-05T02:43:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-05</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>经过在网上查资料 终于搭建好了自己的博客系统，完全通过markdown书写自己的博客简单方便</p>
+<h3 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h3><p>安装Node，这是必须的。<br>作用：用来生成静态页面<br>安装Git（必须）<br>作用：把本地的hexo内容提交到github上去<br>申请github（必须）<br>作用：是用来做博客的远程仓库，域名，服务器之类的。<br>如何申请guthub仓库就不再赘述。</p>
+<h3 id="正式安装Hexo"><a href="#正式安装Hexo" class="headerlink" title="正式安装Hexo"></a>正式安装Hexo</h3><p>Node和Git都安装好之后（如何安装Node和Git 以及如何使用git，可以自行学习），首先创建一个文件夹，如blog，用户存放hexo的配置文件，然后进入blog安装Hexo。<br>执行如下命令安装Hexo：  </p>
+<p><strong>npm install -g hexo</strong><br>初始化然后，执行init命令初始化hexo,命令：<br><strong>hexo init</strong><br>到这里为止，所有的安装工作已经完成！<br>生成静态页面<br><strong>hexo generate</strong>（hexo g也可以）<br>本地启动<br>启动本地服务，进行文章预览调试，命令：<br><strong>hexo server</strong><br>浏览器输入<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 可以访问</p>
+<h3 id="配置Github"><a href="#配置Github" class="headerlink" title="配置Github"></a>配置Github</h3><p>建立Repository<br>建立与你用户名对应的仓库，仓库名必须为【your_user_name.github.io】，固定写法然后建立联系，我的blog之前建立的东西也全部在这里面<br>有<br><strong>_config.yml</strong> <strong>node_modules</strong> <strong>public</strong> <strong>source</strong>   <strong>db.json</strong><br><strong>package.json</strong>    <strong>scaffolds</strong>  <strong>themes</strong><br>现在我们需要_config.yml文件，来建立关联<br>用文件编辑器打开_config.yml(我个人喜欢用sublime)<br>翻到最下面，改成我这样子的  </p>
+<p>deploy:</p>
+<pre><code>type: git
+
+repo: https://github.com/desperadowxh/desperadowxh.github.io.git 
+
+branch: master
+</code></pre><p>然后执行命令：  </p>
+<p><strong>npm install hexo-deployer-git –save</strong></p>
+<p>还有一种是用ssh keys协议的 上传的时候就不用输入账号和密码了，可以改成这个样子  </p>
+<p>deploy:<br>  type: git </p>
+<p>  repo: git@github.com:desperadowxh/desperadowxh.github.io.git    </p>
+<p>  branch: master  </p>
+<p>然后执行命令：  </p>
+<p><strong>npm install hexo-deployer-git –save</strong><br>然后执行配置命令：<br><strong>hexo deploy（hexo d）</strong><br>然后再浏览器中输入 <a href="http://desperadowxh.github.io/" target="_blank" rel="external">http://desperadowxh.github.io/</a>  就行了，我的github的账户叫desperadowxh,把这个改成你github的账户名就行了</p>
+<h3 id="部署步骤"><a href="#部署步骤" class="headerlink" title="部署步骤"></a>部署步骤</h3><p>每次部署的步骤，可以按照以下的来进行<br><strong>hexo clean</strong><br><strong>hexo generate（hexo g）</strong><br><strong>hexo deploy（hexo d）</strong>  </p>
+<h3 id="一些常用的命令"><a href="#一些常用的命令" class="headerlink" title="一些常用的命令"></a>一些常用的命令</h3><p><strong>hexo new”postName” #新建文章</strong></p>
+<p><strong>hexo new page”pageName” #新建页面</strong></p>
+<p><strong>hexo generate #生成静态页面至public目录</strong></p>
+<p><strong>hexo server #开启预览访问端口（默认端口4000，’ctrl + c’关闭server）</strong></p>
+<p><strong>hexo deploy #将.deploy目录部署到GitHub</strong></p>
+<p><strong>hexo help # 查看帮助</strong></p>
+<p><strong>hexo version #查看Hexo的版本</strong></p>
+<h3 id="markDown语法"><a href="#markDown语法" class="headerlink" title="markDown语法"></a>markDown语法</h3><p><a href="https://www.zybuluo.com/mdeditor" target="_blank" rel="external">链接</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/07/05/github和hexo构建自己的博客系统/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-201606111600" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -354,19 +443,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">json</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -406,11 +495,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -422,6 +511,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
@@ -430,11 +523,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -443,10 +536,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

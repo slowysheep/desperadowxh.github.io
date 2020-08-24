@@ -159,6 +159,116 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Java内存分配" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/24/Java内存分配/">Java内存分配</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/24/Java内存分配/" class="archive-article-date">
+  	<time datetime="2020-08-24T07:44:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-24</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="JVM的简化架构和运行时数据区"><a href="#JVM的简化架构和运行时数据区" class="headerlink" title="JVM的简化架构和运行时数据区"></a>JVM的简化架构和运行时数据区</h2><h3 id="JVM的简化架构"><a href="#JVM的简化架构" class="headerlink" title="JVM的简化架构"></a>JVM的简化架构</h3><p><img src="//www.villagehead.cn/2020/08/24/Java内存分配/1.png" alt="1"></p>
+<h3 id="运行时数据区"><a href="#运行时数据区" class="headerlink" title="运行时数据区"></a>运行时数据区</h3><p>包括：PC寄存器，Java虚拟机栈，Java堆，方法区，运行时常量池，本地方法栈等</p>
+<h4 id="PC寄存器-程序计数器"><a href="#PC寄存器-程序计数器" class="headerlink" title="PC寄存器(程序计数器)"></a>PC寄存器(程序计数器)</h4><p>PC(Program Counter)寄存器说明：</p>
+<ol>
+<li>每个线程拥有一个PC寄存器，是线程私有的，用来存储指向下一条指令的地址</li>
+<li>在创建线程的时候，创建相应的PC寄存器</li>
+<li>执行本地方法时，PC寄存器的值为undefined</li>
+<li>PC寄存器是一块较小的内存空间，是唯一一个在JVM规范中没有规定OutOfMemoryError的内存区域</li>
+</ol>
+<h4 id="Java栈"><a href="#Java栈" class="headerlink" title="Java栈"></a>Java栈</h4><ol>
+<li>栈由一系列帧（Frame）组成（因此Java栈也叫做帧栈），是线程私有的</li>
+<li>帧用来保存一个方法的局部变量，操作数栈（Java没有寄存器，所有参数传递使用操作数栈），常量池指针，动态链接，方法返回值等</li>
+<li>每一次方法调用创建一个帧，并压栈，退出方法的时候，修改栈顶指针就可以把栈帧中的内容销毁</li>
+<li>局部变量表存放了编译期可知的各种基本数据类型和引用类型，每个slot存放32位的数据，long，double占两个槽位</li>
+<li>栈的优点：存取速度比堆快，仅次于寄存器</li>
+<li>栈的缺点：存在栈中的数据大小，生存期是在编译器决定的，缺乏灵活性</li>
+</ol>
+<h4 id="Java堆"><a href="#Java堆" class="headerlink" title="Java堆"></a>Java堆</h4><ol>
+<li>用来存放应用系统创建的对象和数组，所有线程共享Java堆</li>
+<li>GC主要就管理堆空间，对分代GC来说，堆也是分代的</li>
+<li>堆的优点：运行期动态分配内存大小，自动进行垃圾回收；堆的缺点：效率相对较慢</li>
+</ol>
+<h4 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h4><ol>
+<li>方法区是线程共享的，通常用来保存装载的类的结构信息</li>
+<li>通常和元空间关联在一起，但具体的跟JVM实现和版本有关</li>
+<li>JVM规范把方法区描述为堆的一个逻辑部分，但它有一个别名称为Non-heap（非堆），应是为了与Java堆区分开</li>
+</ol>
+<h4 id="运行时常量池"><a href="#运行时常量池" class="headerlink" title="运行时常量池"></a>运行时常量池</h4><ol>
+<li>运行时常量池是Class文件中每个类或接口的常量池表，在运行期间的表示形式，通常包括:类的版本，字段，方法，接口等信息。</li>
+<li>运行时常量池在方法区分配</li>
+<li>通常在加载类和接口到JVM后，就创建相应的运行时常量池</li>
+</ol>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><ol>
+<li>在JVM中用来支持native方法执行的栈就是本地方法栈</li>
+</ol>
+<h4 id="栈，堆，方法区交互关系"><a href="#栈，堆，方法区交互关系" class="headerlink" title="栈，堆，方法区交互关系"></a>栈，堆，方法区交互关系</h4><p><img src="//www.villagehead.cn/2020/08/24/Java内存分配/2.png" alt="2"><br>运行期间首先有个栈，栈内存放我们的局部变量表里面的一些变量（A b），当然包括一些引用类型（user）。那么引用类型需要指向某个对象实例，对象实例肯定不在栈上存放，对象实例是存放在堆内的。那堆内创建了自己的对象，比如User对象，User对象包括两类数据：1.User类的元数据信息（这个元数据信息指向方法区，是一个句柄，一个引用）。2.实例数据。由上图看出，栈上的user变量指向了堆内的User对象，而堆内的User对象持有了User类的元数据信息。堆内的元数据信息就会去方法区去找User类的类定义，字段，方法。<br></p>
+        
+          <a class="article-more-a" href="/2020/08/24/Java内存分配/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/24/Java内存分配/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-类加载，连接和初始化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -861,116 +971,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-RocketMQ集群方式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/RocketMQ集群方式/">RocketMQ集群方式</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/15/RocketMQ集群方式/" class="archive-article-date">
-  	<time datetime="2020-06-15T07:59:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-15</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>推荐的几种Broker集群部署方式，这里的Slave不可写，但可读，类似于Mysql主备方式。</p>
-<h1 id="单个Master"><a href="#单个Master" class="headerlink" title="单个Master"></a>单个Master</h1><p>这种方式风险较大，一旦Broker重启或者宕机时，会导致整个服务不可用，不建议线上环境使用。</p>
-<h1 id="多Master模式"><a href="#多Master模式" class="headerlink" title="多Master模式"></a>多Master模式</h1><p>一个集群无Slave，全是Master，例如2个Master或者3个Master</p>
-<p>优点：配置简单，单个Master 宕机或重启维护对应用无影响，在磁盘配置为RAID10时，即使机器宕机不可恢复情况下，由于RAID10磁盘非常可靠，消息也不会丢（异步刷盘丢失少量消息，同步刷盘一条不丢）。性能最高。</p>
-<p>缺点：单台机器宕机期间，这台机器上未被消费的消息在机器恢复之前不可订阅，消息实时性会受到影响。</p>
-<p><strong>启动流程</strong></p>
-<ul>
-<li>先启动NameServer</li>
-<li>在机器A，启动第一个Master</li>
-<li>在机器B，启动第二个Master</li>
-</ul>
-<h1 id="多-Master-多-Slave-模式，异步复制"><a href="#多-Master-多-Slave-模式，异步复制" class="headerlink" title="多 Master 多 Slave 模式，异步复制"></a>多 Master 多 Slave 模式，异步复制</h1><p>每个Master配置一个Slave，有多对Master-Slave，HA采用异步复制方式，主备有短暂消息延迟，毫秒级。</p>
-<p>优点：即使磁盘损坏，消息丢失的非常少，且消息实时性不会影响，因为Master宕机后，消费者仍然可以从 Slave消费，此过程对应用透明。不需要人工干预。性能同多Master模式几乎一样。</p>
-<p>缺点：Master宕机，磁盘损坏情况，会丢失少量消息。</p>
-<p><strong>启动流程</strong></p>
-<ul>
-<li>先启动 NameServer</li>
-<li>在机器 A, 启动第一个 Master</li>
-<li>在机器 B, 启动第二个 Master</li>
-<li>在机器 C, 启动第一个 Slave</li>
-<li>在机器 D, 启动第二个 Slave</li>
-</ul>
-<h1 id="多-Master-多-Slave-模式，同步双写"><a href="#多-Master-多-Slave-模式，同步双写" class="headerlink" title="多 Master 多 Slave 模式，同步双写"></a>多 Master 多 Slave 模式，同步双写</h1><p>每个 Master 配置一个 Slave，有多对Master-Slave，HA采用同步双写方式，主备都写成功，向应用返回成功。</p>
-<p>优点：数据与服务都无单点，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高</p>
-<p>缺点：性能比异步复制模式略低，大约低10%左右，发送单个消息的RT会略高。目前主宕机后，备机不能自动切换为主机，后续会支持自动切换功能。</p>
-<p><strong>启动流程</strong></p>
-<ul>
-<li>先启动 NameServer</li>
-<li>在机器 A，启动第一个 Master</li>
-<li>在机器 B，启动第二个 Master</li>
-<li>在机器 C，启动第一个 Slave</li>
-<li>在机器 D, 启动第二个 Slave</li>
-</ul>
-<p>以上 Broker 与 Slave 配对是通过指定相同的brokerName 参数来配对，Master的BrokerId 必须是0，Slave的BrokerId必须是大于0的数。另外一个Master下面可以挂载多个Slave，同一Master下的多个Slave通过指定不同的BrokerId来区分</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">消息队列</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RocketMQ/" class="article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/15/RocketMQ集群方式/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1104,19 +1104,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">json</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1156,11 +1156,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1172,6 +1172,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
@@ -1180,11 +1184,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1193,10 +1197,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

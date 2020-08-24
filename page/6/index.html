@@ -159,6 +159,88 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-构建第一个Docker化的Java-web应用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/14/构建第一个Docker化的Java-web应用/">构建第一个Docker化的Java web应用</a>
+    </h1>
+  
+
+        
+        <a href="/2018/12/14/构建第一个Docker化的Java-web应用/" class="archive-article-date">
+  	<time datetime="2018-12-14T08:58:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-14</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载jpress的war包"><a href="#下载jpress的war包" class="headerlink" title="下载jpress的war包"></a>下载jpress的war包</h2><p>jpress是一个相当于一个java版WordPress。下载地址：<code>https://gitee.com/GalaIO/jpress/blob/master/wars/jpress-web-newest.war</code></p>
+<h2 id="在Linux根目录编写自己的Dockerfile文件"><a href="#在Linux根目录编写自己的Dockerfile文件" class="headerlink" title="在Linux根目录编写自己的Dockerfile文件"></a>在Linux根目录编写自己的Dockerfile文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">from  hub.c.163.com/library/tomcat</div><div class="line"></div><div class="line">MAINTAINER wangxh 1043768045@qq.com</div><div class="line"></div><div class="line">copy jpress.war /usr/local/tomcat/webapps</div></pre></td></tr></table></figure>
+<h2 id="依赖tomcat的镜像"><a href="#依赖tomcat的镜像" class="headerlink" title="依赖tomcat的镜像"></a>依赖tomcat的镜像</h2><p>由于war包启动需要依赖tomcat镜像，所以我们要去下载一个Tomcat的Docker镜像。我们可以网易蜂巢镜像仓库：<code>https://c.163yun.com/hub#/m/home/</code> </p>
+<p>复制命令下载<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull hub.c.163.com/library/tomcat:latest</div></pre></td></tr></table></figure></p>
+<h2 id="构建自己的镜像"><a href="#构建自己的镜像" class="headerlink" title="构建自己的镜像"></a>构建自己的镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/* 如果构建文件在当前目录下 直接用.就行*/</div><div class="line">docker build -t jpress .</div></pre></td></tr></table></figure>
+<h2 id="启动自己的镜像"><a href="#启动自己的镜像" class="headerlink" title="启动自己的镜像"></a>启动自己的镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 8888:8080 jpress</div></pre></td></tr></table></figure>
+<h2 id="下载mysql镜像"><a href="#下载mysql镜像" class="headerlink" title="下载mysql镜像"></a>下载mysql镜像</h2><p>访问自己的jpress站点的时候发现，他需要依赖于mysql。去网易蜂巢镜像仓库下载一个mysql的镜像。复制以下命令执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull hub.c.163.com/library/mysql:latest</div></pre></td></tr></table></figure></p>
+<h2 id="run-mysql镜像"><a href="#run-mysql镜像" class="headerlink" title="run mysql镜像"></a>run mysql镜像</h2><p>阅读镜像文档，可以告诉你如何执行这个镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=jpress hub.c.163.com/library/mysql:latest</div></pre></td></tr></table></figure></p>
+<h2 id="重启你的jpress"><a href="#重启你的jpress" class="headerlink" title="重启你的jpress"></a>重启你的jpress</h2><p>配置好jpress之后 需要你重启你的jpress容器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker restart fbeb15f7c97c</div></pre></td></tr></table></figure></p>
+<p>现在就可以访问你的项目地址了</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Docker/" class="article-tag-list-link color2">Docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/12/14/构建第一个Docker化的Java-web应用/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-在centos上安装docker" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1026,85 +1108,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-使用Electron打包windows下的exe桌面程序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/09/使用Electron打包windows下的exe桌面程序/">使用Electron打包windows下的exe桌面程序</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/09/使用Electron打包windows下的exe桌面程序/" class="archive-article-date">
-  	<time datetime="2018-10-09T05:44:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-09</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Electron简介"><a href="#Electron简介" class="headerlink" title="Electron简介"></a>Electron简介</h2><p>Electron是由Github开发，用HTML，CSS和JavaScript来构建跨平台桌面应用程序的一个开源库。 Electron通过将Chromium和Node.js合并到同一个运行时环境中，并将其打包为Mac，Windows和Linux系统下的应用来实现这一目的。</p>
-<p>Electron于2013年作为构建Github上可编程的文本编辑器Atom的框架而被开发出来。这两个项目在2014春季开源。</p>
-<h2 id="一个简单的Electron应用Demo"><a href="#一个简单的Electron应用Demo" class="headerlink" title="一个简单的Electron应用Demo"></a>一个简单的Electron应用Demo</h2><p>Electron 可以让你使用纯 JavaScript 调用丰富的原生(操作系统) APIs 来创造桌面应用。 你可以把它看作一个专注于桌面应用的 Node. js 的变体，而不是 Web 服务器。</p>
-<p>这不意味着 Electron 是某个图形用户界面（GUI）库的 JavaScript 版本。 相反，Electron 使用 web 页面作为它的 GUI，所以你能把它看作成一个被 JavaScript 控制的，精简版的 Chromium 浏览器。</p>
-<p>从开发的角度来看, Electron application 本质上是一个 Node. js 应用程序。 应用启动的入口是一个与 Node.js 模块相同的 package.json 文件。 一个最基本的 Electron 应用一般来说会有如下的目录结构：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">your-app/</div><div class="line">  ├── package.json</div><div class="line">  ├── main.js</div><div class="line">  └── index.html</div></pre></td></tr></table></figure></p>
-<p>为你的新Electron应用创建一个新的空文件夹。 打开你的命令行工具，然后从该文件夹运行npm init<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm init</div></pre></td></tr></table></figure></p>
-<p>npm 会帮助你创建一个基本的 package.json 文件。 其中的 main 字段所表示的脚本为应用的启动脚本，它将会在主进程中执行。 如下片段是一个 package.json 的示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;name&quot;: &quot;your-app&quot;,</div><div class="line">    &quot;version&quot;: &quot;0.1.0&quot;,</div><div class="line">    &quot;main&quot;: &quot;main.js&quot;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
-<p><strong>注意</strong>：如果 <code>main</code> 字段没有在 <code>package.json</code> 中出现，那么 Electron 将会尝试加载 <code>index.js</code> 文件（就像 Node.js 自身那样）。 如果你实际开发的是一个简单的 Node 应用，那么你需要添加一个 <code>start</code> 脚本来指引 <code>node</code> 去执行当前的 package：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;name&quot;: &quot;your-app&quot;,</div><div class="line">    &quot;version&quot;: &quot;0.1.0&quot;,</div><div class="line">    &quot;main&quot;: &quot;main.js&quot;,</div><div class="line">    &quot;scripts&quot;: &#123;</div><div class="line">      &quot;start&quot;: &quot;node .&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
-<p>把这个 Node 应用转换成一个 Electron 应用也是非常简单的，我们只不过是把 node 运行时替换成了 electron 运行时。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    &quot;name&quot;: &quot;your-app&quot;,</div><div class="line">    &quot;version&quot;: &quot;0.1.0&quot;,</div><div class="line">    &quot;main&quot;: &quot;main.js&quot;,</div><div class="line">    &quot;scripts&quot;: &#123;</div><div class="line">      &quot;start&quot;: &quot;electron .&quot;</div><div class="line">    &#125;</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
-<h3 id="安装-Electron"><a href="#安装-Electron" class="headerlink" title="安装 Electron"></a>安装 Electron</h3><p>现在，您需要安装electron。 我们推荐的安装方法是把它作为您 app 中的开发依赖项，这使您可以在不同的 app 中使用不同的 Electron 版本。 在您的app所在文件夹中运行下面的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install --save-dev electron</div></pre></td></tr></table></figure></p>
-<h3 id="开始写一个简易的Electron"><a href="#开始写一个简易的Electron" class="headerlink" title="开始写一个简易的Electron"></a>开始写一个简易的Electron</h3><p>Electron apps 使用JavaScript开发，其工作原理和方法与Node.js 开发相同。 electron模块包含了Electron提供的所有API和功能，引入方法和普通Node.js模块一样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">const electron = require(&apos;electron&apos;)</div></pre></td></tr></table></figure></p>
-<p>在你的应用文件夹下面新增一个main.js，并贴入下面代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">const &#123; app, BrowserWindow &#125; = require(&apos;electron&apos;)</div><div class="line">  </div><div class="line">  // Keep a global reference of the window object, if you don&apos;t, the window will</div><div class="line">  // be closed automatically when the JavaScript object is garbage collected.</div><div class="line">  let win</div><div class="line">  </div><div class="line">  function createWindow () &#123;</div><div class="line">    // 创建浏览器窗口。</div><div class="line">    win = new BrowserWindow(&#123; width: 800, height: 600 &#125;)</div><div class="line">  </div><div class="line">    // 然后加载应用的 index.html。</div><div class="line">    win.loadFile(&apos;index.html&apos;)</div><div class="line">  </div><div class="line">    // 打开开发者工具</div><div class="line">    win.webContents.openDevTools()</div><div class="line">  </div><div class="line">    // 当 window 被关闭，这个事件会被触发。</div><div class="line">    win.on(&apos;closed&apos;, () =&gt; &#123;</div><div class="line">      // 取消引用 window 对象，如果你的应用支持多窗口的话，</div><div class="line">      // 通常会把多个 window 对象存放在一个数组里面，</div><div class="line">      // 与此同时，你应该删除相应的元素。</div><div class="line">      win = null</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  // Electron 会在初始化后并准备</div><div class="line">  // 创建浏览器窗口时，调用这个函数。</div><div class="line">  // 部分 API 在 ready 事件触发后才能使用。</div><div class="line">  app.on(&apos;ready&apos;, createWindow)</div><div class="line">  </div><div class="line">  // 当全部窗口关闭时退出。</div><div class="line">  app.on(&apos;window-all-closed&apos;, () =&gt; &#123;</div><div class="line">    // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，</div><div class="line">    // 否则绝大部分应用及其菜单栏会保持激活。</div><div class="line">    if (process.platform !== &apos;darwin&apos;) &#123;</div><div class="line">      app.quit()</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">  </div><div class="line">  app.on(&apos;activate&apos;, () =&gt; &#123;</div><div class="line">    // 在macOS上，当单击dock图标并且没有其他窗口打开时，</div><div class="line">    // 通常在应用程序中重新创建一个窗口。</div><div class="line">    if (win === null) &#123;</div><div class="line">      createWindow()</div><div class="line">    &#125;</div><div class="line">  &#125;)</div><div class="line">  </div><div class="line">  // 在这个文件中，你可以续写应用剩下主进程代码。</div><div class="line">  // 也可以拆分成几个文件，然后用 require 导入。</div></pre></td></tr></table></figure></p>
-<p>最后，创建你想展示的index.html:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;!DOCTYPE html&gt;</div><div class="line">  &lt;html&gt;</div><div class="line">    &lt;head&gt;</div><div class="line">      &lt;meta charset=&quot;UTF-8&quot;&gt;</div><div class="line">      &lt;title&gt;Hello World!&lt;/title&gt;</div><div class="line">    &lt;/head&gt;</div><div class="line">    &lt;body&gt;</div><div class="line">      &lt;h1&gt;Hello World!&lt;/h1&gt;</div><div class="line">      We are using node &lt;script&gt;document.write(process.versions.node)&lt;/script&gt;,</div><div class="line">      Chrome &lt;script&gt;document.write(process.versions.chrome)&lt;/script&gt;,</div><div class="line">      and Electron &lt;script&gt;document.write(process.versions.electron)&lt;/script&gt;.</div><div class="line">    &lt;/body&gt;</div><div class="line">  &lt;/html&gt;</div></pre></td></tr></table></figure></p>
-<h3 id="启动你的应用"><a href="#启动你的应用" class="headerlink" title="启动你的应用"></a>启动你的应用</h3><p>在创建并初始化完成 main.js、 index.html和package.json之后，您就可以在当前工程的根目录执行 npm start 命令来启动刚刚编写好的Electron程序了。</p>
-<h2 id="打包成exe文件"><a href="#打包成exe文件" class="headerlink" title="打包成exe文件"></a>打包成exe文件</h2><p>在你的项目文件下，打开命令窗口，输入以下命令，安装我们的打包神器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install electron-packager -g</div></pre></td></tr></table></figure></p>
-<p>安装好打包神器之后，继续在命令行内输入以下命令打包：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">electron-packager . app --win --out myapp --arch=x64 --electron-version 3.0.3 --overwrite --ignore=node_modules</div></pre></td></tr></table></figure></p>
-<p><strong>注释</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">electron-packager . &lt;应用名称&gt; --win --out ../&lt;输出目录&gt; --arch=x64位还是32位 --electron-version=版本号 --overwrite --ignore=node_module</div></pre></td></tr></table></figure></p>
-<p>至此，打包成功。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/09/使用Electron打包windows下的exe桌面程序/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -1238,19 +1241,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">json</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">工具</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1290,11 +1293,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1306,6 +1309,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
@@ -1314,11 +1321,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1327,10 +1334,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>
