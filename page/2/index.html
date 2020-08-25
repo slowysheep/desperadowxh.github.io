@@ -159,6 +159,74 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CentOS-7虚拟机下设置固定IP详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/">CentOS 7虚拟机下设置固定IP详解</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/" class="archive-article-date">
+  	<time datetime="2020-06-16T07:53:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-16</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="采用方案和配置环境"><a href="#采用方案和配置环境" class="headerlink" title="采用方案和配置环境"></a>采用方案和配置环境</h1><p>采用方式为NAT模式+固定IP的模式</p>
+<p>配置环境说明：主机为Win10家庭版，虚拟机虚拟机为VMware Workstation 12 Pro中文版，虚拟机中的Linux系统为CentOS 7 64位。</p>
+<h1 id="设置虚拟机的网络连接方式："><a href="#设置虚拟机的网络连接方式：" class="headerlink" title="设置虚拟机的网络连接方式："></a>设置虚拟机的网络连接方式：</h1><p>按照下图设置，英文版按实际的功能位置对照设置即可<br><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/1.jpg" alt="1"></p>
+<h1 id="配置虚拟机的NAT模式具体地址参数"><a href="#配置虚拟机的NAT模式具体地址参数" class="headerlink" title="配置虚拟机的NAT模式具体地址参数"></a>配置虚拟机的NAT模式具体地址参数</h1><h2 id="编辑–虚拟网络编辑器–更改设置"><a href="#编辑–虚拟网络编辑器–更改设置" class="headerlink" title="编辑–虚拟网络编辑器–更改设置"></a>编辑–虚拟网络编辑器–更改设置</h2><p><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/2.jpg" alt="2"></p>
+<h2 id="选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置"><a href="#选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置" class="headerlink" title="选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置"></a>选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置</h2><p>说明：修改子网IP设置，实现自由设置固定IP，若你想设置固定IP为192.168.58.2-255，比如192.168.58.128，则子网IP为192.168.58.0；具体原因：去了解子网ip，子网掩码以及网关IP的原理和关系<br><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/3.jpg" alt="3"><br></p>
+        
+          <a class="article-more-a" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-RocketMQ集群方式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -898,83 +966,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-React脚手架，Yarn介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/26/React脚手架，Yarn介绍/">React脚手架，Yarn介绍</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/26/React脚手架，Yarn介绍/" class="archive-article-date">
-  	<time datetime="2020-03-26T05:59:24.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-26</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="如何安装和使用React脚手架"><a href="#如何安装和使用React脚手架" class="headerlink" title="如何安装和使用React脚手架"></a>如何安装和使用React脚手架</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 安装脚手架</div><div class="line">npm install -g create-react-app </div><div class="line"></div><div class="line">//使用脚手架 </div><div class="line">create-react-app my-app</div><div class="line"></div><div class="line">//切换到应用目录</div><div class="line">cd my-app</div><div class="line"></div><div class="line">//启动应用</div><div class="line">npm start</div></pre></td></tr></table></figure>
-<h2 id="什么是Yarn"><a href="#什么是Yarn" class="headerlink" title="什么是Yarn"></a>什么是Yarn</h2><p>Yarn是新一代包管理工具</p>
-<h2 id="为什么使用Yarn"><a href="#为什么使用Yarn" class="headerlink" title="为什么使用Yarn"></a>为什么使用Yarn</h2><ul>
-<li>速度快</li>
-<li>安装版本统一，更安全</li>
-<li>更简洁的输出</li>
-<li>更好的语义<h2 id="如何使用Yarn"><a href="#如何使用Yarn" class="headerlink" title="如何使用Yarn"></a>如何使用Yarn</h2></li>
-<li>yarn init （初始化项目）</li>
-<li>yarn add （安装一个包）</li>
-<li>yarn remove （删除一个包）</li>
-<li>yarn / yarn install（安装当前项目所有的依赖包）</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">react</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/26/React脚手架，Yarn介绍/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1096,11 +1087,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1116,11 +1107,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1156,15 +1147,39 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1176,31 +1191,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
             
             <div class="clearfix"></div>

@@ -6,19 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.villagehead.cn">
-  <title>PMP-每日一题整合 | 村长的博客</title>
+  <title>字节码执行引擎 | 村长的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="2019.4.2每日一题A network diagram shows that the earliest an activity could start is at the end of week 7 and that it must be completed by the start of week 20. The activity requires a total of 10 busines">
-<meta name="keywords" content="PMP">
+  <meta name="description" content="字节码执行引擎概述 JVM的字节码执行引擎，功能基本就是输入字节码文件，然后对字节码进行解析并处理，最后输出执行的结果 实现方式可能有通过解释器直接解释执行字节码，或者是通过即时编译器产生本地代码，也就是编译执行，当然也可能两者皆有  栈帧概述 栈帧是用于支持JVM进行方法调用和方法执行的数据结构 栈帧随着方法调用而创建，随着方法结束而销毁 栈帧里面存储了方法的局部变量，操作数栈，动态连接，方法返">
+<meta name="keywords" content="JVM">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PMP-每日一题整合">
-<meta property="og:url" content="http://www.villagehead.cn/2019/06/04/PMP-每日一题整合/index.html">
+<meta property="og:title" content="字节码执行引擎">
+<meta property="og:url" content="http://www.villagehead.cn/2020/08/25/字节码执行引擎/index.html">
 <meta property="og:site_name" content="村长的博客">
-<meta property="og:description" content="2019.4.2每日一题A network diagram shows that the earliest an activity could start is at the end of week 7 and that it must be completed by the start of week 20. The activity requires a total of 10 busines">
-<meta property="og:updated_time" content="2019-06-17T01:10:12.391Z">
+<meta property="og:description" content="字节码执行引擎概述 JVM的字节码执行引擎，功能基本就是输入字节码文件，然后对字节码进行解析并处理，最后输出执行的结果 实现方式可能有通过解释器直接解释执行字节码，或者是通过即时编译器产生本地代码，也就是编译执行，当然也可能两者皆有  栈帧概述 栈帧是用于支持JVM进行方法调用和方法执行的数据结构 栈帧随着方法调用而创建，随着方法结束而销毁 栈帧里面存储了方法的局部变量，操作数栈，动态连接，方法返">
+<meta property="og:image" content="http://www.villagehead.cn/2020/08/25/字节码执行引擎/1.png">
+<meta property="og:updated_time" content="2020-08-25T06:03:14.452Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PMP-每日一题整合">
-<meta name="twitter:description" content="2019.4.2每日一题A network diagram shows that the earliest an activity could start is at the end of week 7 and that it must be completed by the start of week 20. The activity requires a total of 10 busines">
+<meta name="twitter:title" content="字节码执行引擎">
+<meta name="twitter:description" content="字节码执行引擎概述 JVM的字节码执行引擎，功能基本就是输入字节码文件，然后对字节码进行解析并处理，最后输出执行的结果 实现方式可能有通过解释器直接解释执行字节码，或者是通过即时编译器产生本地代码，也就是编译执行，当然也可能两者皆有  栈帧概述 栈帧是用于支持JVM进行方法调用和方法执行的数据结构 栈帧随着方法调用而创建，随着方法结束而销毁 栈帧里面存储了方法的局部变量，操作数栈，动态连接，方法返">
+<meta name="twitter:image" content="http://www.villagehead.cn/2020/08/25/字节码执行引擎/1.png">
   
     <link rel="alternative" href="/atom.xml" title="村长的博客" type="application/atom+xml">
   
@@ -159,20 +161,20 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-PMP-每日一题整合" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-字节码执行引擎" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      PMP-每日一题整合
+      字节码执行引擎
     </h1>
   
 
         
-        <a href="/2019/06/04/PMP-每日一题整合/" class="archive-article-date">
-  	<time datetime="2019-06-03T16:01:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-04</time>
+        <a href="/2020/08/25/字节码执行引擎/" class="archive-article-date">
+  	<time datetime="2020-08-25T06:02:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-25</time>
 </a>
         
       </header>
@@ -186,7 +188,7 @@ ga('send', 'pageview');
   <div id="toc-article" class="toc-article">
       <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
     <strong class="toc-title">文章目录</strong>
-           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-2每日一题"><span class="toc-number">1.</span> <span class="toc-text">2019.4.2每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-3每日一题"><span class="toc-number">2.</span> <span class="toc-text">2019.4.3每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-4每日一题"><span class="toc-number">3.</span> <span class="toc-text">2019.4.4每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-8每日一题"><span class="toc-number">4.</span> <span class="toc-text">2019.4.8每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-9每日一题"><span class="toc-number">5.</span> <span class="toc-text">2019.4.9每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-10每日一题"><span class="toc-number">6.</span> <span class="toc-text">2019.4.10每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-12每日一题"><span class="toc-number">7.</span> <span class="toc-text">2019.4.12每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-15每日一题"><span class="toc-number">8.</span> <span class="toc-text">2019.4.15每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-16每日一题"><span class="toc-number">9.</span> <span class="toc-text">2019.4.16每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-17每日一题"><span class="toc-number">10.</span> <span class="toc-text">2019.4.17每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-19每日一题"><span class="toc-number">11.</span> <span class="toc-text">2019.4.19每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-22每日一题"><span class="toc-number">12.</span> <span class="toc-text">2019.4.22每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-23每日一题"><span class="toc-number">13.</span> <span class="toc-text">2019.4.23每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-25每日一题"><span class="toc-number">14.</span> <span class="toc-text">2019.4.25每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-26每日一题"><span class="toc-number">15.</span> <span class="toc-text">2019.4.26每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-28每日一题"><span class="toc-number">16.</span> <span class="toc-text">2019.4.28每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-29每日一题"><span class="toc-number">17.</span> <span class="toc-text">2019.4.29每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-4-30每日一题"><span class="toc-number">18.</span> <span class="toc-text">2019.4.30每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-5每日一题"><span class="toc-number">19.</span> <span class="toc-text">2019.5.5每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-6每日一题"><span class="toc-number">20.</span> <span class="toc-text">2019.5.6每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-7每日一题"><span class="toc-number">21.</span> <span class="toc-text">2019.5.7每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-8每日一题"><span class="toc-number">22.</span> <span class="toc-text">2019.5.8每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-9每日一题"><span class="toc-number">23.</span> <span class="toc-text">2019.5.9每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-10每日一题"><span class="toc-number">24.</span> <span class="toc-text">2019.5.10每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-13每日一题"><span class="toc-number">25.</span> <span class="toc-text">2019.5.13每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-14每日一题"><span class="toc-number">26.</span> <span class="toc-text">2019.5.14每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-15每日一题"><span class="toc-number">27.</span> <span class="toc-text">2019.5.15每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-16每日一题"><span class="toc-number">28.</span> <span class="toc-text">2019.5.16每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-17每日一题"><span class="toc-number">29.</span> <span class="toc-text">2019.5.17每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-20每日一题"><span class="toc-number">30.</span> <span class="toc-text">2019.5.20每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-21每日一题"><span class="toc-number">31.</span> <span class="toc-text">2019.5.21每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-22每日一题"><span class="toc-number">32.</span> <span class="toc-text">2019.5.22每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-23每日一题"><span class="toc-number">33.</span> <span class="toc-text">2019.5.23每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-24每日一题"><span class="toc-number">34.</span> <span class="toc-text">2019.5.24每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-27每日一题"><span class="toc-number">35.</span> <span class="toc-text">2019.5.27每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-28每日一题"><span class="toc-number">36.</span> <span class="toc-text">2019.5.28每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-29每日一题"><span class="toc-number">37.</span> <span class="toc-text">2019.5.29每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-30每日一题"><span class="toc-number">38.</span> <span class="toc-text">2019.5.30每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-5-31每日一题"><span class="toc-number">39.</span> <span class="toc-text">2019.5.31每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-3每日一题"><span class="toc-number">40.</span> <span class="toc-text">2019.6.3每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-4每日一题"><span class="toc-number">41.</span> <span class="toc-text">2019.6.4每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-5每日一题"><span class="toc-number">42.</span> <span class="toc-text">2019.6.5每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-6每日一题"><span class="toc-number">43.</span> <span class="toc-text">2019.6.6每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-10每日一题"><span class="toc-number">44.</span> <span class="toc-text">2019.6.10每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-11每日一题"><span class="toc-number">45.</span> <span class="toc-text">2019.6.11每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-12每日一题"><span class="toc-number">46.</span> <span class="toc-text">2019.6.12每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-13每日一题"><span class="toc-number">47.</span> <span class="toc-text">2019.6.13每日一题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2019-6-14每日一题"><span class="toc-number">48.</span> <span class="toc-text">2019.6.14每日一题</span></a></li></ol>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#字节码执行引擎概述"><span class="toc-number">1.</span> <span class="toc-text">字节码执行引擎概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#栈帧概述"><span class="toc-number">2.</span> <span class="toc-text">栈帧概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#栈帧概念结构"><span class="toc-number">3.</span> <span class="toc-text">栈帧概念结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#局部变量表"><span class="toc-number">3.1.</span> <span class="toc-text">局部变量表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#操作数栈"><span class="toc-number">3.2.</span> <span class="toc-text">操作数栈</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态连接"><span class="toc-number">3.3.</span> <span class="toc-text">动态连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法返回地址"><span class="toc-number">3.4.</span> <span class="toc-text">方法返回地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#方法调用"><span class="toc-number">3.5.</span> <span class="toc-text">方法调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分派"><span class="toc-number">4.</span> <span class="toc-text">分派</span></a></li></ol>
          </div>
    <script type="text/javascript">
   function showToc(){
@@ -206,716 +208,47 @@ ga('send', 'pageview');
 <!-- 目录内容结束 -->
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="2019-4-2每日一题"><a href="#2019-4-2每日一题" class="headerlink" title="2019.4.2每日一题"></a>2019.4.2每日一题</h2><p>A network diagram shows that the earliest an activity could start is at the end of week 7 and that it must be completed by the start of week 20. The activity requires a total of 10 business days to complete. In terms of weeks, what is the float for the performance of this activity? </p>
-<ul>
-<li>A. 3 </li>
-<li>B. 10 </li>
-<li>C. 13 </li>
-<li>D. 17 </li>
-</ul>
-<p>网络图显示，某项活动的最早开始时间是在第 7 周结束时，并且必须在第 20 周开始之前完成。这项活动总共需要 10 个工作日完成。那么这项活动绩效的浮动时间是多少周？</p>
-<ul>
-<li>A.3 </li>
-<li>B.10 </li>
-<li>C.13 </li>
-<li>D.17 </li>
-</ul>
-<p><strong>答案：B<br>解析：10个工作日就是2周，第20周开始之前完成就是第19周结束时，因此浮动时间=19-7-2=10周。</strong></p>
-<h2 id="2019-4-3每日一题"><a href="#2019-4-3每日一题" class="headerlink" title="2019.4.3每日一题"></a>2019.4.3每日一题</h2><p>Midway through a project with a 12-month contract, written notice is unexpectedly received<br>from the customer requesting transfer of the project to a competitor, what should the project<br>manager do? </p>
-<ul>
-<li>A. Ask company management for assistance. </li>
-<li>B. Initiate project closure. </li>
-<li>C. Review the project charter. </li>
-<li><p>D. Review the terms of the signed customer contract. </p>
-<p>A公司承接了一个为期 12个月的合同。当项目进行到一半的时候，突然接到客户的书面<br>通知将项目转移给竞争公司B。这个时候A公司的项目经理下一步应该做什么？</p>
-</li>
-<li>A. 请求公司管理层的协助。</li>
-<li>B. 启动项目收尾工作。</li>
-<li>C. 查看项目章程中的相关规定。</li>
-<li>D. 查看与客户签署的合同条款。</li>
-</ul>
-<p><strong>答案：D<br>解析：在请示管理层的协助，启动收尾之前，需要查阅合同中的相关规定。</strong></p>
-<a id="more"></a>
-<h2 id="2019-4-4每日一题"><a href="#2019-4-4每日一题" class="headerlink" title="2019.4.4每日一题"></a>2019.4.4每日一题</h2><p>A matrix-based organization initiates a project and assigns five engineers to be responsible for different specialized areas;however, the project involves many new areas in which the assigned<br>engineers are generally lacking expertise. What should the project manager do? </p>
-<ul>
-<li>A. Organize relevant training to improve the team’s skills. </li>
-<li>B. Apply for an exclusive work region so the team can collocate. </li>
-<li>C. Use interpersonal skills to improve team cohesiveness </li>
-<li>D. Hold regular internal project communication meetings.</li>
-</ul>
-<p>公司的组织结构是矩阵式的，在项目启动的时候，管理层分配给该项目 5 个工程师，分<br>别负责项目的不同专业。工程师的工作经验普遍不足，而且该项目涉及了很多新的领域。项<br>目经理该怎么做？</p>
-<ul>
-<li>A.组织相关的培训，以提高团队成员的技能。</li>
-<li>B.申请项目专有工作区域，让大家集中办公</li>
-<li>C.运用人际关系技能，提高团队凝聚力。</li>
-<li>D.定期召集项目内部沟通会。</li>
-</ul>
-<p><strong>答案：A<br>解析：本题考点在于项目人力资源管理的工具，根据题意，培训作为建设项目团队的工具，<br>用来提升团队绩效，在此题作为首选。</strong></p>
-<h2 id="2019-4-8每日一题"><a href="#2019-4-8每日一题" class="headerlink" title="2019.4.8每日一题"></a>2019.4.8每日一题</h2><p>A client assigns a project manager from a consulting company. What should the project<br>manager do first? </p>
-<ul>
-<li>A. Conduct a kick-off meeting for the client’s employees and the consultants involved in the<br>project. </li>
-<li>B. Contact key customer stakeholders to obtain their input and establish relationships. </li>
-<li>C. Ask the consulting company’s resource manager to review available resources. </li>
-<li>D. Ensure that the project charter is formally issued. </li>
-</ul>
-<p>客户任命一位来自咨询公司的项目经理。项目经理首先应该做什么？</p>
-<ul>
-<li>A.为参与项目的客户员工和咨询顾问召开一次项目启动大会。</li>
-<li>B.联系关键客户干系人，获得他们的输入并建立关系。</li>
-<li>C.要求咨询公司的资源经理审查可用资源。</li>
-<li>D.确保正式签发项目章程。</li>
-</ul>
-<p><strong>答案：D<br>解析：在ABD三个参考答案中，最优参考答案为D，项目章程的发布是项目正式启动的标志，接下来再做B，再做A。</strong></p>
-<h2 id="2019-4-9每日一题"><a href="#2019-4-9每日一题" class="headerlink" title="2019.4.9每日一题"></a>2019.4.9每日一题</h2><p>Two project team members disagree on the technical solution for a given requirement, which<br>reduces team morale. Who has the initial responsibility for resolving this disagreement? </p>
-<ul>
-<li>A. Project sponsor </li>
-<li>B. Project team members </li>
-<li>C. Project manager </li>
-<li>D. Human resource manager </li>
-</ul>
-<p>两名项目团队成员对给定要求的解决方案有意见上的分歧，从而降低了团队士气。谁拥<br>有解决这一分歧的初始责任？</p>
-<ul>
-<li>A 项目发起人</li>
-<li>B.项目团队成员</li>
-<li>C.项目经理</li>
-<li>D.人力资源经理</li>
-</ul>
-<p><strong>答案：B<br>解析：冲突解决的初始责任首先是冲突者双方，然后是项目经理。</strong></p>
-<h2 id="2019-4-10每日一题"><a href="#2019-4-10每日一题" class="headerlink" title="2019.4.10每日一题"></a>2019.4.10每日一题</h2><p>A project is in the execution phase and performing according to plan. Next month, a critical<br>activity will start that requires specialized resources. The project manager is satisfied with the<br>human resource management plan that pre-assigned all required staff. However, the functional<br>manager now informs the project manager that the resource for this critical activity has resigned.<br>What should the project manager do?</p>
-<ul>
-<li>A. Re-assign the critical activity across the team.</li>
-<li>B. Ask the human resource manager to help retain the resource.</li>
-<li>C. Update the risk register and schedule an urgent meeting with the project sponsor.</li>
-<li>D. Contract a comparably skilled resource</li>
-</ul>
-<p>项目处于执行阶段，并按计划执行。下个月，将开始一项需要专门资源的关键活动。项<br>目经理对预先分配所有必要工作人员的人力资源管理规划感到满意。然而，职能经理现在通<br>知项目经理，这项关键活动的资源已经辞职。项目经理应该怎么做？</p>
-<ul>
-<li>A.重新分配整个团队的关键活动。</li>
-<li>B.要求人力资源经理帮助留住资源。</li>
-<li>C.更新风险登记册，并安排与项目发起人召开紧急会议。</li>
-<li>D.与同等技能的资源签订合同</li>
-</ul>
-<p><strong>答案：D<br>解析：预先安排的组织内部资源不可用，可以与组织外部资源签订合同。</strong></p>
-<h2 id="2019-4-12每日一题"><a href="#2019-4-12每日一题" class="headerlink" title="2019.4.12每日一题"></a>2019.4.12每日一题</h2><p>An ongoing project is on schedule when a subject matter expert (SME) on the project’s critical<br>path requests three days off, what should the project manager do?</p>
-<ul>
-<li>A. Initiate a change request through performs integrated change control process.</li>
-<li>B. Send a change request to the change control board (CCB) for approval.</li>
-<li>C. Persuade the SME to work as planned; if unsuccessful, update the project management plan.</li>
-<li>D. Identify this as a resource risk that is out of control, and update the risk register.</li>
-</ul>
-<p>一个正在进行的项目正按进度计划进行，这时一名在项目关键路径上的主题专家（SME）<br>请求请三天假。项目经理应该怎么做？</p>
-<ul>
-<li>A.通过执行整体变更控制过程提出变更请求。</li>
-<li>B.向变更控制委员会（CCB）发送一份变更请求批准。</li>
-<li>C.说服 SME 按计划工作：如果不成功，则更新项目管理计划。</li>
-<li>D.将其识别为失控的资源风险，更新风险登记册。</li>
-</ul>
-<p><strong>答案：D。<br>解析：关键路径上的资源变更可能引起进度基准的变更，代表了不确定性，是风险。先查<br>看有无应急储备，如果实在没办法才提变更。</strong></p>
-<h2 id="2019-4-15每日一题"><a href="#2019-4-15每日一题" class="headerlink" title="2019.4.15每日一题"></a>2019.4.15每日一题</h2><p>During a project’s construction phase, the customer submits an important change that will<br>affect the budget and schedule. What should the project manager do?</p>
-<p>A. Review the change management plan and proceed according to its requirements.<br>B. Ask the supervisor for instructions on how to proceed.<br>C. Implement the change and report it to the supervisor.<br>D. Ask the customer to withdraw the request to avoid affecting the budget and schedule.</p>
-<p>项目进入了施工阶段。这个时候客户提出了一项重要变更，这将会改变项目的预算及进<br>度。作为项目经理将如何处理这个问题？</p>
-<p>A.查阅项目变更管理计划，根据其要求执行。<br>B.将变更情况向主管汇报，根据主管的批示执行。<br>C.按照客户的要求进行变更修改，并向主管汇报变更情况。<br>D.说服客户不要进行变更，避免带来巨大的损失。</p>
-<p><strong>答案：A。<br>解析：参照变更管理计划中将对于变更管理的要求进行处理，是正确的。B参考答案中，主<br>管不能决定涉及基准的变更；C和D明显不对。</strong></p>
-<h2 id="2019-4-16每日一题"><a href="#2019-4-16每日一题" class="headerlink" title="2019.4.16每日一题"></a>2019.4.16每日一题</h2><p>To prepare project forecast information, a project manager performs earned value (EV)<br>analysis. The project manager identifies that by next month, the schedule variance (SV) and cost<br>variance (CV) will be negative, and the actual cost (AC) will exceed the baseline cost. What should<br>the project manager do?</p>
-<ul>
-<li>A. Crash the schedule.</li>
-<li>B. Use the management reserve.</li>
-<li>C. Fast track the schedule.</li>
-<li>D. Create a change request.</li>
-</ul>
-<p>为了准备项目预测信息，项目经理执行了挣值（EV）分析。项目经理识别到在下个月前，<br>进度偏差（SV）和成本偏差（CV）将为负数，而实际成本(AC）将超出基准成本PV，项目经<br>理应该怎么做？</p>
-<ul>
-<li>A.赶工。</li>
-<li>B.使用管理储备。</li>
-<li>C.快速跟进进度计划。</li>
-<li>D.创建变更请求。</li>
-</ul>
-<p><strong>答案：D<br>解析：D是参考答案。需要综合解决挣值分析所表明的各种绩效不良（进度、成本等）<br>，提交变更请求是四个选项中的最优选择。</strong></p>
-<h2 id="2019-4-17每日一题"><a href="#2019-4-17每日一题" class="headerlink" title="2019.4.17每日一题"></a>2019.4.17每日一题</h2><p>Midway through a project’s execution phase, a team member proposes changes to provide<br>more flexibility and additional features. Project requirements define only the need for a simple<br>solution that is less flexible. Implementing these changes will result in a delay. What should the<br>project manager do?</p>
-<ul>
-<li>A. Reject the proposal, and follow the project management plan.</li>
-<li>B. Escalate it to the project sponsor via a change request.</li>
-<li>C. Agree to the changes, and arrange for more resources at maintain the schedule.</li>
-<li>D. Incorporate the changes, and update the project management plan.</li>
-</ul>
-<p>在项目执行阶段中途一名团队成员提出变更建议，能提供更多的灵活性和额外功能。项<br>目需求定义仅需要具有较少灵活性的简单解决方案，而实施这些变更将导致延期。项目经理<br>应该怎么做？</p>
-<ul>
-<li>A.拒绝该建议，并遵循项目管理计划。</li>
-<li>B.通过变更请求将该问题上报给项目发起人。</li>
-<li>C.同意变更，并安排更多的资源来保持进度计划。</li>
-<li>D.包含变更，并更新项目管理计划。</li>
-</ul>
-<p><strong>答案：A<br>解析：项目范围管理要求做且只做完成项目所需要的全部工作，要按照定义的需求来实施<br>项目，避免镀金。</strong></p>
-<h2 id="2019-4-19每日一题"><a href="#2019-4-19每日一题" class="headerlink" title="2019.4.19每日一题"></a>2019.4.19每日一题</h2><p>A project manager wants to ensure that the customer is kept current on a project’s progress<br>and performance. What should the project manager do?</p>
-<ul>
-<li>A. Create a communications management plan.</li>
-<li>B. Apply earned value management (EVM) methodology.</li>
-<li>C. Determine the percent complete.</li>
-<li>D. Conduct a cost-benefit analysis.</li>
-</ul>
-<p>项目经理希望确保客户能随时获取项目进度和绩效的最新信息。项目经理应该怎么做？</p>
-<ul>
-<li>A 创建沟通管理计划。</li>
-<li>B.应用挣值管理（EVM）方法论。</li>
-<li>C.确定已完成百分比。</li>
-<li>D.进行成本效益分析。</li>
-</ul>
-<p><strong>答案：A<br>解析：通过沟通管理计划，了解并明确客户需要的信息的内容，格式，接收频率等。</strong></p>
-<h2 id="2019-4-22每日一题"><a href="#2019-4-22每日一题" class="headerlink" title="2019.4.22每日一题"></a>2019.4.22每日一题</h2><p>The procurement department collects and delivers vendor quotes to the project manager.<br>The project sponsor asks for the project team’s recommendations regarding vendor selection.<br>What should the project manager do?</p>
-<ul>
-<li>A. Review the quotes and select the quote based on the best priceonly</li>
-<li>B. Conduct a project team meeting to obtain a recommendation.</li>
-<li>C. Review the quotes and select a vendor that previously worked with the company.</li>
-<li>D. Recommend a vendor based on a match with the selection criteria.</li>
-</ul>
-<p>采购部收集供应商报价，并将其提交给项目经理。项目发起人征求项目团队对于供应商<br>选择的建议，项目经理应该怎么做？</p>
-<ul>
-<li>A.审查报价，并仅根据最佳价格选择报价。</li>
-<li>B.召开项目团队会议，获得建议。</li>
-<li>C.审查报价并选择之前与公司合作过的供应商。</li>
-<li>D.根据是否与选择标准匹配推荐供应商。</li>
-</ul>
-<p><strong>答案：D<br>解析：根据供方选择标准来确定供应商是专业的采购管理行为。</strong></p>
-<h2 id="2019-4-23每日一题"><a href="#2019-4-23每日一题" class="headerlink" title="2019.4.23每日一题"></a>2019.4.23每日一题</h2><p>To achieve competitive market advantage, a project sponsor requests delivery of a product three months ahead of schedule. What should the project manger do next?</p>
-<ul>
-<li>A. Implement overall change control.</li>
-<li>B. Update the project management plan.</li>
-<li>C. Exert influence on the factors that led to the schedule change.</li>
-<li>D. Submit a change request.</li>
-</ul>
-<p>因为新产品的早发布有利于先于竞争对手抢占市场，项目发起人要求交付时间提早三个<br>月。项目经理接下来应该怎么做？</p>
-<ul>
-<li>A.实施整体变更控制。</li>
-<li>B.更新项目管理计划。</li>
-<li>C.对引起进度变更的因素施加影响。</li>
-<li>D.提出变更请求。</li>
-</ul>
-<p><strong>答案：A<br>解析：在参考答案A与BCD之间，推荐A参考答案，整体变更控制的全流程包括B、C、D答案。</strong></p>
-<h2 id="2019-4-25每日一题"><a href="#2019-4-25每日一题" class="headerlink" title="2019.4.25每日一题"></a>2019.4.25每日一题</h2><p>A company wins a new project, half of which involves an area with which the company is<br>unfamiliar. The project manager identifies the need to hire a subcontractor. What should the<br>project manager do next?</p>
-<ul>
-<li>A. Develop a procurement plan</li>
-<li>B. Meet with experts to create a procurement plan.</li>
-<li>C. Plan procurement management.</li>
-<li>D. Prepare the framework for a fixed-price contract.</li>
-</ul>
-<p>公司赢得了一个新项目，其中50%的交付部分不是公司熟悉的领域，需要引入分包商。<br>作为项目经理该怎么做？</p>
-<ul>
-<li>A .制定采购工作说明书</li>
-<li>B.召集专家讨论，决定采购方案</li>
-<li>C.规划采购管理</li>
-<li>D.着手准备一个固定总价的合同框架。</li>
-</ul>
-<p><strong>答案：C<br>解析：C参考答案包括了A、B、D</strong></p>
-<h2 id="2019-4-26每日一题"><a href="#2019-4-26每日一题" class="headerlink" title="2019.4.26每日一题"></a>2019.4.26每日一题</h2><p>A full-time project manager retains technicians from other departments for a new project,<br>However, the technicians complain that their existing workloads are seriously affecting the new<br>project’s progress. The project manager has the right to arrange for the technicians to make<br>completion of the new project a priority. What type of organizational structure does this<br>describe?</p>
-<ul>
-<li>A. Strong matrix</li>
-<li>B. Balanced matrix</li>
-<li>C. Projectized</li>
-<li>D. Weak matrix</li>
-</ul>
-<p>一位全职项目经理被授权可以调用其他业务部门的技术人员来参与新项目。当技术人员<br>抱怨其本部门业务严重影响了新项目运作时，项目经理有权利协调该技术人员优先完成新项<br>目的工作。该公司属于以下哪个组织？</p>
-<ul>
-<li>A.强矩阵型组织</li>
-<li>B.平衡矩阵型组织</li>
-<li>C.项目型组织</li>
-<li>D.弱矩阵型组织</li>
-</ul>
-<p><strong>答案：A<br>解析：典型的强矩阵组织特点，对于资源有优先支配权。情境中包含了其他业务部门，说明是矩阵型组织非项目型组织，项目经理有权利协调该技术人员优先完成新项目，说明是强矩阵型组织。</strong></p>
-<h2 id="2019-4-28每日一题"><a href="#2019-4-28每日一题" class="headerlink" title="2019.4.28每日一题"></a>2019.4.28每日一题</h2><p>At the last minute, a project team implements a new feature that is not included in the scope<br>statement. To obtain customer approval, what process should the project manager implement<br>next?</p>
-<ul>
-<li>A. Plan Scope Management</li>
-<li>B. Validate Scope</li>
-<li>C. Perform Integrated Change Control</li>
-<li>D. Perform Qualitative Risk Analysis</li>
-</ul>
-<p>在最后一刻，项目团队实施了范围说明书中未包含的新功能。若要获得客户的批准，项<br>目经理下一步应执行哪个过程？</p>
-<ul>
-<li>A. 制定范围管理计划</li>
-<li>B. 核实范围</li>
-<li>C. 执行整体变更控制</li>
-<li>D. 执行定性风险分析</li>
-</ul>
-<p><strong>答案：C<br>解析：得到客户的批准，正确的做法就是通过整体变更控制，也是四个选项中最好的参考答案。</strong></p>
-<h2 id="2019-4-29每日一题"><a href="#2019-4-29每日一题" class="headerlink" title="2019.4.29每日一题"></a>2019.4.29每日一题</h2><p>A project manager realizes that a project is six weeks behind schedule and 15 percent over<br>budget, what should the project manager have employed to predict and plan for this?</p>
-<ul>
-<li>A. Schedule management</li>
-<li>B. Cost management</li>
-<li>C. Earned value management (EVM)</li>
-<li>D. Risk management</li>
-</ul>
-<p>项目经理意识到项目落后于进度六周时间，超出预算15%。若要预测这个问题并为其制<br>定计划，项目经理应该利用什么？</p>
-<ul>
-<li>A.进度管理</li>
-<li>B.成本管理</li>
-<li>C.挣值管理（EVM）</li>
-<li>D.风险管理</li>
-</ul>
-<p><strong>答案：D<br>解析：挣值管理可以计算出EAC，ETC等预算数值但是不包括制定应对计划。通过风险管理，提前识别基于进度与成本的风险并制定应对计划，更符合本题意。</strong></p>
-<h2 id="2019-4-30每日一题"><a href="#2019-4-30每日一题" class="headerlink" title="2019.4.30每日一题"></a>2019.4.30每日一题</h2><p>A project is near closure, and the developer has finished product development. The project<br>sponsor now wants the project manager to deliver the product ahead of schedule. What should<br>the project manager do?</p>
-<ul>
-<li>A. Ask the sponsor to withdraw the request.</li>
-<li>B. Hold a stakeholder meeting.</li>
-<li>C. Deliver the product as originally scheduled.</li>
-<li>D. Have the developer start project wrap-up activities, and prepare to deliver ahead of<br>schedule.</li>
-</ul>
-<p>项目接近尾声，开发人员也已完成了产品的开发。项目发起人要求项目经理提前向客户<br>交付该产品。项目经理应该怎么做？</p>
-<ul>
-<li>A.找项目发起人谈话试图说服他收回请求。</li>
-<li>B.召开干系人会议。</li>
-<li>C.仍按原计划发布产品。</li>
-<li>D.让开发人员展开项目的收尾工作，准备提前交付。</li>
-</ul>
-<p><strong>答案：D<br>解析：项目已经完成项目产品需求，可以进行提前收尾，PMI关于项目收尾的管理要求。</strong></p>
-<h2 id="2019-5-5每日一题"><a href="#2019-5-5每日一题" class="headerlink" title="2019.5.5每日一题"></a>2019.5.5每日一题</h2><p>A project member does not get along with the rest of the team, and the Projectmanager<br>constantly receives complaints from other team members. However, the project manager<br>believes that this member is a top performer and that the issue will not affect the schedule.</p>
-<ul>
-<li>A. Ask team members to resolve the issue on their own.</li>
-<li>B. Encourage the team member to improve their attitude.</li>
-<li>C. Nothing, as it will not affect the schedule.</li>
-<li>D. Replace the team member.</li>
-</ul>
-<p>项目组的其中一位项目成员与其他项目成员都不能和睦相处，并且项目经理不断收到其他成员对该成员的投诉。但项目经理认为该成员的工作能力很好，并且该问题也没有对项目<br>进展造成影响。请问项目经理应该如何解决此问题？</p>
-<ul>
-<li>A.让成员自己解决内部的问题。</li>
-<li>B.找该成员谈话，提醒他修正自己的问题。</li>
-<li>C.不做任何处理，因为没有影响项目进度。</li>
-<li>D.替换掉该成员。</li>
-</ul>
-<p><strong>答案：B<br>解析：根据题意，已经有其它成员投诉，如果选择A、C解决方法是消极；选择D，过于直接，没有做多标准决策。最好的选择是B，PM与该成员进行正式的口头沟通谈话。</strong></p>
-<h2 id="2019-5-6每日一题"><a href="#2019-5-6每日一题" class="headerlink" title="2019.5.6每日一题"></a>2019.5.6每日一题</h2><p>A customer learns that a requirement will not be met unless a task that was not identified<br>during planning is added to the project. A team fielder successfully executes the task and later<br>inform the project manager during a weekly meeting. Despite the favorable outcome, the project<br>manager is unhappy with this information, since the task did not have the necessary approval.<br>What plan outlines the requirement for approval?</p>
-<ul>
-<li>A. Risk management</li>
-<li>B. Change management</li>
-<li>C. Scope management</li>
-<li>D. Cost management</li>
-</ul>
-<p>客户意识到除非在项目中添加一项在规划期间未识别到的任务，否则将不满足要求。团<br>队成员成功执行了这项任务，并在之后的一次周会上通知项目经理。即使是有利的结果，但<br>项目经理对这个信息感到不满，因为任务没有得到必要的批准。哪一份计划概述了批准要求？</p>
-<ul>
-<li>A.风险管理</li>
-<li>B.变更管理</li>
-<li>C.范围管理</li>
-<li>D.成本管理</li>
-</ul>
-<p><strong>答案：B<br>解析：变更管理计划将对如何变更做出详细规定。</strong></p>
-<h2 id="2019-5-7每日一题"><a href="#2019-5-7每日一题" class="headerlink" title="2019.5.7每日一题"></a>2019.5.7每日一题</h2><p>Several vendors are preparing bids based on the customer’s bidding requirements. A few<br>hours before bid opening, the customer notifies the project manager that a bidding requirement<br>h changed.What should the project manager do? </p>
-<ul>
-<li>A. Accept bids as originally proposed, as insufficient notice was given prior to bid opening.</li>
-<li>B. Immediately confirm with the customer, consult with relevant specialists in the company,<br>report it to company leadership, and accept bids as originally proposed.</li>
-<li>C. Accept bids as originally proposed, provide an informal verbal response to the customer’s<br>new bidding requirement, and defer change procedures for a later date.</li>
-<li>D. Address the customer’s new bidding requirement by confirming with the customer, and<br>follow the processes for changing an invitation for bid.</li>
-</ul>
-<p>几家供应商按照客户的招标要求准备投标，在开标前几小时，客户通知项目经理一项招<br>标要求有变化。作为项目经理应该如何去做？</p>
-<ul>
-<li>A.客户在开标前几小时才通知，时间不够仍按原计划投标。</li>
-<li>B.迅速与客户联系确认。同时咨询公司相关领域专家，向公司领导汇报后，按原计划正式投<br>标。</li>
-<li>C.仍按原提案进行投标，在讲标时针对客户该新招标需求进行口头非正式回应，将来走变更<br>流程。</li>
-<li>D. 针对客户新提出的招标要求，迅速与客户联系确认并参照招标书的变更流程进行响应。</li>
-</ul>
-<p><strong>答案：D<br>解析：四个选项中最专业的作法是D。</strong></p>
-<h2 id="2019-5-8每日一题"><a href="#2019-5-8每日一题" class="headerlink" title="2019.5.8每日一题"></a>2019.5.8每日一题</h2><p>During a Protects execution phase. Project members have frequent disagreements. As a result,<br>the project is running over budget and behind schedule. The project manager conducts project<br>communication based on subjective ideas and does not consider other team members’ input.<br>The project manager also objects to the idea of team members setting up an internal learning<br>platform.<br>What communication method does the project manager use?</p>
-<ul>
-<li>A. Interactive</li>
-<li>B. Pull</li>
-<li>C. Independent</li>
-<li>D.Push</li>
-</ul>
-<p>项目经理在项目执行过程内，项目成员经常出现分歧，发生争执，项目一直超成本而且<br>进度落后。项目经理习惯按照自己的主观意见进行项目沟通，不善于听取其他项目成员意见，<br>同时也对项目成员建立内部学习的平台持不同意见。请问项目经理采用了哪种沟通方式？</p>
-<ul>
-<li>A.互动式沟通</li>
-<li>B.拉式沟通</li>
-<li>C.独立沟通</li>
-<li>D.推式沟通</li>
-</ul>
-<p><strong>答案：D<br>解析：推式沟通的特点之一是向特定接收方发送信息，但是不能确定信息被目标受众理解，<br>倾向于单向沟通，比较符合本题意的描述。</strong></p>
-<h2 id="2019-5-9每日一题"><a href="#2019-5-9每日一题" class="headerlink" title="2019.5.9每日一题"></a>2019.5.9每日一题</h2><p>During a weekly project stakeholder meeting, a product support manager brings up a concern<br>that is important to customer satisfaction, but may require some product design changes. What<br>should the project manager do next?</p>
-<ul>
-<li>A. Record the concern in the issue log.</li>
-<li>B. Update the project management plan.</li>
-<li>C. Update the risk register.</li>
-<li>D. Create a change request.</li>
-</ul>
-<p>在项目进度周会上，一位产品支持经理表达了一项对于客户满意度很重要的担忧，但是<br>这将需要进行一些产品设计变更，PM接下来应当怎么做。</p>
-<ul>
-<li>A.将这种担忧记录在问题日志中</li>
-<li>B.更新项目管理计划</li>
-<li>C.更新风险登记册</li>
-<li>D.发起一项变更请求</li>
-</ul>
-<p><strong>答案：C。<br>解析：产品经理表达的是一种担忧，是发现了一个新的风险，应该更新风险登记册。</strong></p>
-<h2 id="2019-5-10每日一题"><a href="#2019-5-10每日一题" class="headerlink" title="2019.5.10每日一题"></a>2019.5.10每日一题</h2><p>A project is in the user testing phase. A user suggests new functionalities. And a change<br>request is approved. The project team works overtime to add these functionalities, but is still<br>experiencing difficulty with completing the project as scheduled, The customer demands that the<br>project be up and running according to the original schedule.<br>What should the project manager do?</p>
-<ul>
-<li>A. Add resources so the project can be executed as originally scheduled.</li>
-<li>B. Redevelop the project management plan by reducing project scope.</li>
-<li>C. Evaluate team performance and identify ways to improve.</li>
-<li>D. Redevelop the project management plan by postponing the scheduled “go-live” date.</li>
-</ul>
-<p>项目已经到用户测试阶段而用户此时提出了很多产品修改意见。并且也提交了项目变更。<br>尽管项团队一直在加班来满足这些新功能，但项目不能按照原定计划按时完成。客户强烈要<br>求项目在原时间上线。项目经理应该怎么做？</p>
-<ul>
-<li>A.添加人员，使项目按照原计划执行。</li>
-<li>B.重新制定项目计划，缩减项目范围。</li>
-<li>C.评估团队绩效，找到改进方法。</li>
-<li>D.重新制定项目计划，延迟项目上线时间。</li>
-</ul>
-<p><strong>答案：C<br>解析：变更请求遵循了变更管理流程，没有范围蔓延，不应该主动去缩减范围。进度可能<br>会落后，看团队是否能够找到新方法压缩进度。</strong></p>
-<h2 id="2019-5-13每日一题"><a href="#2019-5-13每日一题" class="headerlink" title="2019.5.13每日一题"></a>2019.5.13每日一题</h2><p>A program manager reviews the monthly reports from four project managers.<br>Project manager A reports a cost variance (CV) of US$-150,000 and a schedule variance (SV) of<br>US$-30,000.<br>Project manager B reports a cost performance index (CPI) of 1.08 and a schedule performance<br>index (SPl) of 1.15.<br>Project manager C’s report asks to outsource part of the deliverable to complete the project on<br>time. If outsourcing is used, the variance at completion (VAC) will be US$-400,000. if not, the VAC<br>will be US$50,000.<br>Project manager D reports a CV of US$-30,000 and an SPI of 0.98.<br>On which project should the program manager focus?</p>
-<ul>
-<li>A. A</li>
-<li>B. B</li>
-<li>C. C</li>
-<li>D. D</li>
-</ul>
-<p>项目群经理审查四名项目经理提交的月度报告。<br>项目经理A报告成本偏差（CV）为-150，000美元，进度偏差（SV）为-30，000 美元。<br>项目经理B报告成本绩效指数(CPI)为1.08，进度绩效指数（SPI）为1.15。<br>项目经理C的报告要求外包部分可交付成果，以便按时完成项目。如果使用外包，则完工偏差（VAC）将为-400，000美元。如果没有外包，VAC 将为50，000美元。<br>项目经理D报告成本偏差为-30，000 美元，进度绩效指数为0.98。<br>项目群经理应该关注哪一个项目？</p>
-<ul>
-<li>A.项目A</li>
-<li>B.项目B</li>
-<li>C.项目C</li>
-<li>D.项目D</li>
-</ul>
-<p><strong>答案：C<br>解析：C项目需要做出自制或外包决策，超出项目经理决策范围，由更高一级管理层，比如<br>项目群经理进行决策。</strong></p>
-<h2 id="2019-5-14每日一题"><a href="#2019-5-14每日一题" class="headerlink" title="2019.5.14每日一题"></a>2019.5.14每日一题</h2><p>A project manager estimates the time and price for a client’s project. The client, who is the<br>project manager’s close friend, discloses the project’s value in a casual meeting. The project<br>manager realizes that their estimate is below the client’s budget.What should the project<br>manager do?</p>
-<ul>
-<li>A. Increase the estimate before submission.</li>
-<li>B. Retain the estimate.</li>
-<li>C. Request the disclosure of competitors’ estimates.</li>
-<li>D. Conduct a cost efficiency analysis.</li>
-</ul>
-<p>项目经理估算某个客户项目的时间和价格。该客户是项目经理的亲友，在一次休闲聚会<br>中透露了项目价值。项目经理意识到他们的估算低于客户预算，项目经理应该怎么做？</p>
-<ul>
-<li>A.提交之前增加估算。</li>
-<li>B.保持估算不变。</li>
-<li>C.请求透露竞争对手的估算。</li>
-<li>D.进行成本效益分析。</li>
-</ul>
-<p><strong>答案：D<br>解析：本题题点在于PMI道德与职业规范以及PM的专业性，推荐选择D参考答案，在最终报价前再次进行商业论证（包括成本效益分析），根据分析来进行报价。</strong></p>
-<h2 id="2019-5-15每日一题"><a href="#2019-5-15每日一题" class="headerlink" title="2019.5.15每日一题"></a>2019.5.15每日一题</h2><p>A project manager identifies that a product can be improved with additional features without<br>impacting the schedule, budget, or resources. Believing that all original requirements are met with these added features, the project manager does not inform the client to what does this<br>refer?</p>
-<ul>
-<li>A. Scope creep</li>
-<li>B. Scope baseline</li>
-<li>C. Scope float</li>
-<li>D. Scope change</li>
-</ul>
-<p>项目经理确定产品可以通过增加额外功能得以改进，但不影响进度、预算或资源。相信<br>这些新增的功能能满足所有原始需求，项目经理没有通知客户。这称为什么？</p>
-<ul>
-<li>A.范围蔓延</li>
-<li>B.范围基准</li>
-<li>C.范围浮动</li>
-<li>D.范围变更</li>
-</ul>
-<p><strong>答案：A<br>解析：未经批准的范围变更，属于范围蔓延。</strong></p>
-<h2 id="2019-5-16每日一题"><a href="#2019-5-16每日一题" class="headerlink" title="2019.5.16每日一题"></a>2019.5.16每日一题</h2><p>A project manager finalizes a project scope statement and realizes it is similar to one<br>completed last year. Based on last year’s project, what should the project manager reuse?</p>
-<ul>
-<li>A. Project charter</li>
-<li>B. Risk management plan</li>
-<li>C. Project budget</li>
-<li>D. Work breakdown structure (WBS)</li>
-</ul>
-<p>项目经理最终确定项目范围说明书，并意识到该项目与去年完成的一个项目类似。根据<br>去年的项目，项目经理应该重复利用下列哪一项？</p>
-<ul>
-<li>A.项目章程</li>
-<li>B.风险管理计划</li>
-<li>C.项目预算</li>
-<li>D.工作分解结构（WBS）</li>
-</ul>
-<p><strong>答案：D<br>解析：本题属于组织过程资产的应用，在确定范围说明书如果可以确定与过去项目类似，<br>接下来的WBS则可以参照和利用过往的模板。虽然A、B参考答案中，项目章程和项目管理计划也属于组织过程资产，但是题意说明当前结点是在确定范围说明书后，即章程也已经完成了；而项目管理计划则范围太大，最切合题意的是参考答案D。</strong></p>
-<h2 id="2019-5-17每日一题"><a href="#2019-5-17每日一题" class="headerlink" title="2019.5.17每日一题"></a>2019.5.17每日一题</h2><p>Early in a project’s life cycle, a project manager plans to enhance the project’s chance of<br>success by building partnerships and coalitions with project stakeholders. What should the project ragger do to achieve this?</p>
-<ul>
-<li>A. Create a stakeholders engagement assessments matrix to identify gaps between current and<br>desired engagement levels.</li>
-<li>B. Map the interest levels of each stakeholder to the project’s objectives.</li>
-<li>C. Document and clarify stakeholder roles by developing a responsible, accountable, consult,and<br>inform (RACI) matrix</li>
-<li>D. Gather and analyze information on potential stakeholders to determine whose interests should<br>be considered.</li>
-</ul>
-<p>在项目生命周期早期，项目经理打算通过与项目干系人建立合作伙伴关系和联合体，提<br>高项目的成功概率。若要实现这一点，项目经理应该怎么做？</p>
-<ul>
-<li>A.创建项目干系人参与评估矩阵，识别当前参与程度与所需参与程度之间的差距。</li>
-<li>B.将每位项目干系人的利益层级与项目目标映射。</li>
-<li>C.通过制定一份执行、负责、咨询和知情（RACI）矩阵记录并澄清干系人的角色。</li>
-<li>D.收集并分析潜在干系人的相关信息，确定应考虑谁的利益。</li>
-</ul>
-<p><strong>答案：D<br>解析：A参考答案为制定干系人管理计划，B为干系人分析，C为RACI，D参考答案为识别干系人。题干提示为项目生命周期早期，首先做识别干系人。</strong></p>
-<h2 id="2019-5-20每日一题"><a href="#2019-5-20每日一题" class="headerlink" title="2019.5.20每日一题"></a>2019.5.20每日一题</h2><p>A project manager receives an approved project scope based on a cost estimate and begins the<br>implementation of a new software system. What type of cost estimate was used at implementation’?</p>
-<ul>
-<li>A. Parametric</li>
-<li>B. Bottom-up</li>
-<li>C. Rough order of magnitude (ROM)</li>
-<li>D. Analogous</li>
-</ul>
-<p>项目经理收到基于成本估算的已批准项目范围，并开始实施新的软件系统。实施时使用<br>的是什么类型的成本估算？</p>
-<ul>
-<li>A.参数估算</li>
-<li>B.自下而上估算</li>
-<li>C.粗略量级估算（ROM）</li>
-<li>D.类比估算</li>
-</ul>
-<p><strong>答案：B<br>解析：已批准的范围，可以理解为范围基准清楚、基于WBS的估算为自下而上估算。本题中没有看到和参数估算有关的数据与统计类数值，同时也没有体现出粗略量级估算相<br>关的的信息（-25% ~ +75%），排除C。</strong></p>
-<h2 id="2019-5-21每日一题"><a href="#2019-5-21每日一题" class="headerlink" title="2019.5.21每日一题"></a>2019.5.21每日一题</h2><p>During project implementation, the project manager discovers that a team member has used<br>open source software. This is a violation of company regulations and will seriously affect the<br>project’s release.What should the project manager do?</p>
-<ul>
-<li>A. Execute the risk management plan.</li>
-<li>B. Remove the team member.</li>
-<li>C. Log the risk in the risk register.</li>
-<li>D. Submit a change request to delete the open source software.</li>
-</ul>
-<p>项目经理在项目执行过程中发现团队成员违规使用开源软件，违反公司规章并且将严重<br>影响项目的发布。这时候项目经理应该如何处理？</p>
-<ul>
-<li>A.执行风险管理计划。</li>
-<li>B.开除该成员。</li>
-<li>C.在风险登记册中记录该风险。</li>
-<li>D.提交变更请求，删除使用的开源软件。</li>
-</ul>
-<p><strong>答案：D<br>解析：纠正措施属于变更，需要提交变更请求。</strong></p>
-<h2 id="2019-5-22每日一题"><a href="#2019-5-22每日一题" class="headerlink" title="2019.5.22每日一题"></a>2019.5.22每日一题</h2><p>A company is planning to develop a new product. Project stakeholders come from different<br>countries and regions, speak various languages, and have diverse political and cultural<br>backgrounds.What should be a priority for the project manager when developing the<br>communications management plan?</p>
-<ul>
-<li>A. Information confidentiality and sensitivity</li>
-<li>B. Project environment</li>
-<li>C. The number of communication channels</li>
-<li>D. Technological availability</li>
-</ul>
-<p>某个公司计划进行一个产品开发项目。干系人来自不同的国家及地区，使用不同的母语<br>语言，拥有不同的政治及文化背景。项目经理在制定沟通计划时应优先考虑下列哪项因素？</p>
-<ul>
-<li>A.信息的保密和敏感度</li>
-<li>B.项目环境</li>
-<li>C.沟通渠道的数量</li>
-<li>D.技术的可用性</li>
-</ul>
-<p><strong>答案：B<br>解析：根据题意描述的信息，项目环境将是本项目比较大的沟通制约因素，做项目沟通计<br>划需要考虑事业环境因素。</strong></p>
-<h2 id="2019-5-23每日一题"><a href="#2019-5-23每日一题" class="headerlink" title="2019.5.23每日一题"></a>2019.5.23每日一题</h2><p>Six team members are working on a project. Two team members work from remote location<br>X;four team members and the project manager work at location Y.How many communication<br>channels are there?</p>
-<ul>
-<li>A.8</li>
-<li>B.14</li>
-<li>C.15</li>
-<li>D.21</li>
-</ul>
-<p>六名团队成员为一个项目工作。其中两名团队成员在远程位置X工作：四名团队成员和<br>项目经理在位置Y工作。总共存在多少个沟通渠道？</p>
-<ul>
-<li>A.8</li>
-<li>B.14</li>
-<li>C.15</li>
-<li>D.21</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">解析：N=2+4+1，N*（N-1）/2=7*6/2=21</div></pre></td></tr></table></figure>
-<h2 id="2019-5-24每日一题"><a href="#2019-5-24每日一题" class="headerlink" title="2019.5.24每日一题"></a>2019.5.24每日一题</h2><p>A company’s director is concerned with project failure and hires a project manager to<br>determine where additional funding should be allocated to ensure success. For what activity<br>should the project manager recommend additional funding?</p>
-<ul>
-<li>A. Warranty work</li>
-<li>B.Rework</li>
-<li>C.Testing</li>
-<li>D. Scrap</li>
-</ul>
-<p>公司董事担心项目失败，并聘用一名项目经理，以确定应分配额外的资金确保项目成功。<br>项目经理应建议对哪项活动分配额外资金？</p>
-<ul>
-<li>A.保修工作</li>
-<li>B.返工</li>
-<li>C.测试</li>
-<li>D.废料</li>
-</ul>
-<p><strong>答案：C<br>解析：本题点在于质量成本。预防胜于检查，测试属于质量成本中的一致性成本，其它三<br>项都属于非一致性成本。</strong></p>
-<h2 id="2019-5-27每日一题"><a href="#2019-5-27每日一题" class="headerlink" title="2019.5.27每日一题"></a>2019.5.27每日一题</h2><p>A new warehouse is ready for operations. Before operations begin, the project manager must<br>prepare the final project report. What should the project manager refer to?</p>
-<ul>
-<li>A. Lessons learned, project charter, and work breakdown structure (WBS)</li>
-<li>B. Project baselines,accepted deliverables, and earned value (EV)</li>
-<li>C. Checklists, responsibility assignment matrix(RAM), and risk management plan</li>
-<li>D. Accepted deliverables, lessons learned, and transition criteria</li>
-</ul>
-<p>一个新的仓库准备好运营。运营开始之前，项目经理必须准备最终项目报告。项目经理<br>应该查阅哪些文件？</p>
-<ul>
-<li>A.经验教训、项目章程和工作分解结构(WBS)</li>
-<li>B.项目基准、已验收的可交付成果和挣值（EV）</li>
-<li>C.核对表、责任分配矩阵(RAM）和风险管理计划</li>
-<li>D.已验收的可交付成果、经验教训和移交标准</li>
-</ul>
-<p><strong>答案：D<br>解析：四个参考答案中，作为项目转入运营之前的最终报告，最好的内容是参考答案D。</strong></p>
-<h2 id="2019-5-28每日一题"><a href="#2019-5-28每日一题" class="headerlink" title="2019.5.28每日一题"></a>2019.5.28每日一题</h2><p>Three months into a nine-month project, the company asks a key technical consultant to<br>transfer to another project. However, the company does not have an alternative resource to<br>complete the original project.What should the project manager do?</p>
-<ul>
-<li>A. Negotiate with the supervisor to have the technical consultant work part-time on the original<br>project.</li>
-<li>B. Adjust the project plan, arrange for another employee to receiving training, and coordinate<br>this with the technical consultant’s schedule.</li>
-<li>C. If the budget permits, ask the technical consultant to work overtime on the original project.</li>
-<li>D. If the budget permits, hire a third-party technical consultant.</li>
-</ul>
-<p>为期9个月的项目，已进行了3 个月。此时，项目关键的技术顾问被主管调到另一个项<br>目中去，在6个月内无法兼顾本项目。而此时，本企业中没有其他可替代资源。此时项目经<br>理应该如何操作？</p>
-<ul>
-<li>A.和主管协商争取该人员兼职本项目。</li>
-<li>B.调整项目计划，安排其他员工培训并配合该技术人员的时间。</li>
-<li>C.在预算允许的情况下，支付加班费，直接要求该技术人员加班。</li>
-<li>D.在预算允许的情况下，外聘第三方技术顾问。</li>
-</ul>
-<p><strong>答案：D<br>解析：本题点落在招募，团队管理的工具。</strong></p>
-<h2 id="2019-5-29每日一题"><a href="#2019-5-29每日一题" class="headerlink" title="2019.5.29每日一题"></a>2019.5.29每日一题</h2><p>In a weekly meeting, a project team member reports that they are unaware of what task is<br>to be performed next, what should the project manager review with the team member?</p>
-<ul>
-<li>A. Work breakdown structure (WBS)</li>
-<li>B. Project schedule</li>
-<li>C. Critical path</li>
-<li>D, Milestone list</li>
-</ul>
-<p>在一次周会上，项目团队成员报告他们不知道下一步要执行什么任务。项目经理应与团<br>队成员查阅下列哪一项？</p>
-<ul>
-<li>A.工作分解结构(WBS)</li>
-<li>B.项目进度计划</li>
-<li>C.关键路径</li>
-<li>D.里程碑清单</li>
-</ul>
-<p><strong>答案：B<br>解析：项目进度计划是进度模型的输出，展示活动之间的相互关联，以及计划日期、持续<br>时间、里程碑和所需资源。项目进度计划中至少要包括每个活动的计划开始日期与计划结<br>束日期。项目团队成员的工作是根据项目进度计划进行安排的。B参考答案包括了C与D的内容。</strong></p>
-<h2 id="2019-5-30每日一题"><a href="#2019-5-30每日一题" class="headerlink" title="2019.5.30每日一题"></a>2019.5.30每日一题</h2><p>Based on the design and the customer’s criteria, new equipment being imported from<br>another country will be used during project implementation. The project manager identifies that,due to the project’s lengthy delivery cycle, uncontrollable factors could affect the schedule.What should the project manager do if the new equipment does not clear customs on time?</p>
-<ul>
-<li>A. Change the plan and not use the equipment.</li>
-<li>B. Update the risk register.</li>
-<li>C. Meet with the customer and project team to assess the risks.</li>
-<li>D. Wait until the equipment clears customs, and update the project plan.</li>
-</ul>
-<p>根据设计和客户标准，在项目实施阶段要使用从另一国家进口的新型设备，项目经理已<br>经估计到此项目交付周期长，不可控因素将影响项目进度。如果设备无法按时入关，项目经<br>理将如何处理？</p>
-<ul>
-<li>A.变更方案，不使用此设备。</li>
-<li>B.更新风险登记册。</li>
-<li>C.与客户和项目团队开会评估风险。</li>
-<li>D.等待设备入关并更新项目计划。</li>
-</ul>
-<p><strong>答案：C<br>解析：面对不确定性，项目经理与客户和项目团队开会评估风险是一种积极的做法。评估<br>风险后制定应对措施。</strong></p>
-<h2 id="2019-5-31每日一题"><a href="#2019-5-31每日一题" class="headerlink" title="2019.5.31每日一题"></a>2019.5.31每日一题</h2><p>After a product is released for user acceptance testing, several defects are found. This<br>results in the product being rejected by the customer,What should the project manager do next?</p>
-<ul>
-<li>A. Review the quality management plan using the defect analysis acceptance testing, and<br>update if necessary.</li>
-<li>B. Advise the customer that the defects are within the product tolerance limits outlined in the<br>quality management plan.</li>
-<li>C. Meet with the project team to review the product’s requirement specifications.</li>
-<li>D. Hold a project team meeting to identify the problems, the time of the occurrence, and why it<br>occurred.</li>
-</ul>
-<p>在一个产品发布用于用户验收测试后，发现了几个缺陷。这导致产品被客户拒收。项目<br>经理下一步应该怎么做？</p>
-<ul>
-<li>A.审查质量管理计划时应用缺陷分析验收测试（标准），并在必要时更新。</li>
-<li>B.通知客户，缺陷在质量管理计划中概述的产品公差范围内。</li>
-<li>C.与项目团队开会审查产品的需求规范。</li>
-<li>D.召开项目团队会议，识别问题、发生的时间以及为什么会发生。</li>
-</ul>
-<p><strong>答案：D<br>解析：遇到问题首先分析问题、识别原因、然后解决问题。</strong></p>
-<h2 id="2019-6-3每日一题"><a href="#2019-6-3每日一题" class="headerlink" title="2019.6.3每日一题"></a>2019.6.3每日一题</h2><p>During a project’s testing phase,the project team learns of a software tool that could have<br>reduced the project’s development effort by 40 days. Where should this be recorded？</p>
-<ul>
-<li>A. Procurement documents</li>
-<li>B. Project or phase closure documents</li>
-<li>C. Lessons learned knowledge base</li>
-<li>D. Change log</li>
-</ul>
-<p>在项目的测试阶段，项目团队得知一款软件工具能够减少项目的开发工作40 天时间。<br>这些应记录在哪里？</p>
-<ul>
-<li>A.采购文件</li>
-<li>B.项目或阶段收尾文件</li>
-<li>C.经验教训知识库</li>
-<li>D.变更日志</li>
-</ul>
-<p><strong>答案：C<br>解析：组织过程资产需要及时更新，无需等到项目或阶段结束。无论是团队生成的经验教<br>训还是团队获取的经验教训，都属于经验教训知识库。</strong></p>
-<h2 id="2019-6-4每日一题"><a href="#2019-6-4每日一题" class="headerlink" title="2019.6.4每日一题"></a>2019.6.4每日一题</h2><p>A company provides the following annual data for the cost of quality (COQ):To reduce overall<br>appraisal costs, on what should the company focus?</p>
-<ul>
-<li>A.Rework</li>
-<li>B. Documentation of processes</li>
-<li>C.Testing</li>
-<li>D.Training</li>
-</ul>
-<p>公司提供了以下质量成本（COQ）的年度数据：为了降低总体评价成本，公司应该重点<br>关注哪一点？</p>
-<ul>
-<li>A.返工</li>
-<li>B.过程文档</li>
-<li>C.测试</li>
-<li>D.培训</li>
-</ul>
-<p><strong>答案：C<br>解析：B、C、D都属于一致性成本，其中过程文档和培训属于预防成本，测试属于评价成本。</strong></p>
-<h2 id="2019-6-5每日一题"><a href="#2019-6-5每日一题" class="headerlink" title="2019.6.5每日一题"></a>2019.6.5每日一题</h2><p>A key project team member requests to leave the company for personal reasons. This<br>will prevent the project from being completed as planned,what should the project manager do?</p>
-<ul>
-<li>A. Detail the issue in the risk register, and request a replacement.</li>
-<li>B. Ask the departing employee’s department for a replacement with comparable abilities.</li>
-<li>C.Record the issue on a watch list, and adjust the project plan based on available personnel.</li>
-<li>D. Ask company management to hold the team member until the project is complete.</li>
-</ul>
-<p>某项目中的一个重要团队成员由于个人原因要求离开公司，这将导致该项目无法按计划<br>完成。项目经理下一步该怎么办？</p>
-<ul>
-<li>A.在风险登记册详细记录该问题，并申请替代人员。</li>
-<li>B.跟离职员工的部门沟通，要求获得同等能力的团队成员补充到项目中。</li>
-<li>C.将该问题记录到观察清单，并按照现有人员条件调整项目计划。</li>
-<li>D.和公司管理层汇报，要求公司和该成员沟通，等项目完成后再离职。</li>
-</ul>
-<p><strong>答案：A。<br>解析：识别到风险之后，首先应该记录下来更新进风险登记册，然后制定应对措施。</strong></p>
-<h2 id="2019-6-6每日一题"><a href="#2019-6-6每日一题" class="headerlink" title="2019.6.6每日一题"></a>2019.6.6每日一题</h2><p>A project management office (PMO) is presented with three project choices for<br>implementation.Project A has an internal rate of return (IRR) of 12%, project B has a schedule<br>performance index (SPI) of 0.8, and project C has a benefit-cost ratio (BCR) of 1:2.<br>Based on this information, which of the following projects should be pursued?</p>
-<ul>
-<li>A. Project B</li>
-<li>B. Projects C and B</li>
-<li>C. Project A</li>
-<li>D. Project C</li>
-</ul>
-<p>项目管理办公室（PMO）有三个项目可供选择实施。项目A 的内部收益率（IRR）为12%，<br>项目B 的进度绩效指数（SPI）为0.8，项目C的效益-成本比（BCR）为1:2。根据这个信息，<br>应选择实施下列哪一个项目？</p>
-<ul>
-<li>A.项目B</li>
-<li>B.项目C和B</li>
-<li>C.项目A</li>
-<li>D.项目C</li>
-</ul>
-<p><strong>答案：C<br>解析：项目B进度延误，项目C的BCR小于1.推荐项目A，内部收益率通常与银行利率相比，高于当期利率即可选。</strong></p>
-<h2 id="2019-6-10每日一题"><a href="#2019-6-10每日一题" class="headerlink" title="2019.6.10每日一题"></a>2019.6.10每日一题</h2><p>A project team meeting is scheduled in direct conflict with a senior manager’s team-building<br>exercise. All project team members are required to attend both. What should the project<br>manager do to accommodate the senior manager?</p>
-<ul>
-<li>A. Attend the team-building exercise with the orient team.</li>
-<li>B. Reschedule the project team meeting.</li>
-<li>C. Suggest that the team-building exercise be rescheduled.</li>
-<li>D. Conduct the team meeting and then attend the team-building exercise.</li>
-</ul>
-<p>一次项目团队会议的安排时间与高级经理的团队建设训练直接发生了冲突。所有项目团<br>队成员都必须参加这两项活动。为了适应高级经理，项目经理应该怎么做？</p>
-<ul>
-<li>A.与项目团队一起参加团队建设练习。</li>
-<li>B.重新安排项目团队会议的时间。</li>
-<li>C.建议重新安排团队建设练习的时间。</li>
-<li>D.召开团队会议，然后参加团队建设练习。</li>
-</ul>
-<p><strong>答案：B<br>解析：本题点在于冲突处理，B参考答案为回避，是避免冲突的较好解决措施。</strong></p>
-<h2 id="2019-6-11每日一题"><a href="#2019-6-11每日一题" class="headerlink" title="2019.6.11每日一题"></a>2019.6.11每日一题</h2><p>A project manager discovers that the critical ratio is 0.7. What does this indicate?</p>
-<ul>
-<li>A. The cost performance Index(CPI) is better than planned.</li>
-<li>B. The CPl is worse than planned</li>
-<li>C. The project’s progress is worse than planned.</li>
-<li>D. The project’s progress is better than planned.</li>
-</ul>
-<p>项目经理发现临界比是 0.7。这说明什么？</p>
-<ul>
-<li>A.成本绩效指数（CPI）比计划好。</li>
-<li>B.CPI 比计划差。</li>
-<li>C.项目进展比计划差。</li>
-<li>D.项目进展比计划好。</li>
-</ul>
-<p><strong>答案：C<br>解析：临界比的计算方法是CPI*SPI，临界比等于0.7，说明项目进展不好（也叫临界<br>指数，是由梅瑞狄斯和曼特尔在1985年提出来的）。</strong></p>
-<h2 id="2019-6-12每日一题"><a href="#2019-6-12每日一题" class="headerlink" title="2019.6.12每日一题"></a>2019.6.12每日一题</h2><p>Rather than use Triangular Distribution while doing Three Point Estimation you choose to use Beta Distribution.Based on your analysis and understanding you are confident that the project would be completed with a total cost of 108,000 $.You also estimate that a best case estimate would be 90000 $ while a worst case scenario would result in the costs incurred to shoot up to 138000 USD. What would the Three point Cost estimate be using Beta Distribution ?</p>
-<ul>
-<li>A.112000 $</li>
-<li>B.110000 $</li>
-<li>C.101000 $</li>
-<li>D.None of the above</li>
-</ul>
-<p>在进行三点估算时，与使用三角分布相比，你更倾向选择使用Beta分布。基于你的分析和理解，你有信心完成一个总成本为108,000美元的项目。你估计最佳的案例成本估计值是 90000美元，而最坏的情况将导致成本预算高达138000美元的费用。在这种情况下使用Beta分布三点成本估算会有多少呢？</p>
-<ul>
-<li>A.112000 $</li>
-<li>B.110000 $</li>
-<li>C.101000 $</li>
-<li>D.以上都不是</li>
-</ul>
-<p><strong>参考答案：B<br>解析：问题说明我们应该使用三点估计，使用Beta分布。这个估计方法的公式是4a + b + c / 6，其中a =最可能估计，b =基于最佳案例情况的估计和c =基于最坏情况的估计。所以使用Beta分布的三点估计计算值是（4 * 108000）+ 90000 + 138000/6 = 660000/6 = 110000 $ ，参考PMBOK245。</strong></p>
-<h2 id="2019-6-13每日一题"><a href="#2019-6-13每日一题" class="headerlink" title="2019.6.13每日一题"></a>2019.6.13每日一题</h2><p>John is managing a project.The project is about three fourths done when the site engineer reports that due to inherent complexities in a certain task the deliverables would get delayed.This would involve additional analysis and then implementation.He requests that this new work that was not envisioned earlier be added to the scope and also the time required be added to the schedule.You and the site engineer have analyzed the impact of this change to cost, and have written up a change request and requested approval from change control board.Just today you have received approval from the change control board - what should be the imemdiate course of action ?</p>
-<ul>
-<li>A. Start work immediately</li>
-<li>B. Ascertain the impact of this change to scope , schedule and cost before making any change.</li>
-<li>C. Perform Quality Assurance</li>
-<li>D. Make sure that the scope baseline and schedule baseline are updated to reflect the approved change before implementing the change.</li>
-</ul>
-<p>约翰正在管理一个项目。当项目工程师报告说，由于某些任务的内在复杂性，可交付成果会被延迟，项目大约有四分之三完成。这将涉及到额外的分析和实施。他要求这项新工作是以前没有预想的，并将被添加到范围内，而且还需要将时间添加到日程表中。你和现场工程师已经分析了此变更对成本的影响，并且写下了变更请求并要求变更控制委员会批准。今天你已经收到变更控制委员会的批准 - 应该采取什么样的行动？</p>
-<ul>
-<li>A.立即开始工作</li>
-<li>B.在作出任何改变之前确定这种变化对范围，时间表和成本的影响。</li>
-<li>C.执行质量保证</li>
-<li>D.确保在实施更改之前更新范围基线和时间表基准以反映批准的更改。</li>
-</ul>
-<p><strong>参考答案：D<br>解析：由于更改已获得批准，因此在实施更改之前，应先更新基准（此例中为范围和时间表基准）。</strong></p>
-<h2 id="2019-6-14每日一题"><a href="#2019-6-14每日一题" class="headerlink" title="2019.6.14每日一题"></a>2019.6.14每日一题</h2><p>You are in charge of managing a software development project which is related to simulations for driving racing cars.In one of your team meetings - it has been reported that a lot of issues have been reported in the air tunnel modelling module.On deeper analysis - it is found that many of the issues could have been prevented had a simple code review checklist been used.You prepare a code review checklist and ensure the code is reviewed as per the checklist.This is a good example of :</p>
-<ul>
-<li>A. Corrective Action</li>
-<li>B. Preventive Action</li>
-<li>C. Defect Repair</li>
-<li>D. Quality Control</li>
-</ul>
-<p>你负责管理与驾驶赛车模拟相关的软件开发项目。在你的一次团队会议中 - 据报道，在空气隧道建模模块中报告了很多问题。进一步分析发现只要使用简单的代码审查清单就可以避免许多问题。你准备了代码审查清单，并确保代码按照清单进行审查。这是一个很好的示例：</p>
-<ul>
-<li>A.纠正措施</li>
-<li>B.预防性行动</li>
-<li>C.缺陷修复</li>
-<li>D.质量控制</li>
-</ul>
-<p><strong>参考答案：A<br>解析：这个问题是为了测试你对纠正措施和预防措施之间的区别的理解。缺陷修复适用于当前交付中发现的问题，这也不是关于质量控制。所以使我们只有两种选择 ：纠正或预防措施。而预防措施之前不会出现不符合。预防措施总是采取积极主动，在所述问题没有任何示范采取积极措施，因此这不是预防措施的一个例子。所以正确的答案是选项A纠正措施。参考PMBOK96。</strong></p>
+        <h2 id="字节码执行引擎概述"><a href="#字节码执行引擎概述" class="headerlink" title="字节码执行引擎概述"></a>字节码执行引擎概述</h2><ol>
+<li>JVM的字节码执行引擎，功能基本就是输入字节码文件，然后对字节码进行解析并处理，最后输出执行的结果</li>
+<li>实现方式可能有通过解释器直接解释执行字节码，或者是通过即时编译器产生本地代码，也就是编译执行，当然也可能两者皆有</li>
+</ol>
+<h2 id="栈帧概述"><a href="#栈帧概述" class="headerlink" title="栈帧概述"></a>栈帧概述</h2><ol>
+<li>栈帧是用于支持JVM进行方法调用和方法执行的数据结构</li>
+<li>栈帧随着方法调用而创建，随着方法结束而销毁</li>
+<li>栈帧里面存储了方法的局部变量，操作数栈，动态连接，方法返回地址等信息</li>
+</ol>
+<h2 id="栈帧概念结构"><a href="#栈帧概念结构" class="headerlink" title="栈帧概念结构"></a>栈帧概念结构</h2><p><img src="//www.villagehead.cn/2020/08/25/字节码执行引擎/1.png" alt="1"><br>上图是一个栈帧概念结构,这个图里面有很多的线程。我们先来看一下当前线程，对一个线程在同一时刻肯定是在执行一条指令，也就是说它一定在一个方法里面。一个线程里面有很多的帧栈，比如当前栈帧里面就存放着局部变量表，操作数栈，动态链接，方法返回地址等等。一个线程里面可以有很多这样的栈帧，这些栈帧组合起来就是我们的栈，也就是说栈里面放的是帧，而多个帧组合起来也就是我们的栈。大概就是这个意思</p>
+<h3 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h3><p>局部变量表：用来存放方法参数和方法内部定义的局部变量的存储空间</p>
+<ol>
+<li>以变量槽slot为单位，目前一个slot存放32位以内的数据类型</li>
+<li>对于64位的数据占2个slot</li>
+<li>对于实例方法，第0位slot存放的是this，然后从1到n，依次分配给参数列表</li>
+<li>然后根据方法体内部定义的变量顺序和作用域来分配slot</li>
+<li>slot是复用的，以节省栈帧的空间，这种设计可能会影响到系统的垃圾收集行为</li>
+</ol>
+<h3 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h3><p>操作数栈:用来存放方法运行期间，各个指令操作的数据。</p>
+<ol>
+<li>操作数栈中元素的数据类型必须和字节码指令的顺序严格匹配</li>
+<li>虚拟机在实现栈帧的时候可能会做一些优化，让两个栈帧出现部分重叠区域，以存放公用的数据</li>
+</ol>
+<h3 id="动态连接"><a href="#动态连接" class="headerlink" title="动态连接"></a>动态连接</h3><p>动态连接：每个栈帧持有一个指向运行时常量池中该栈帧所属方法的引用，以支持方法调用过程的动态连接</p>
+<ol>
+<li>静态解析：类加载的时候，符号引用就转化成直接引用</li>
+<li>动态连接。运行期间转换未直接引用</li>
+</ol>
+<h3 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h3><p>方法返回地址：方法执行后返回的地址</p>
+<h3 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h3><p>方法调用：方法调用就是确定具体调用那一个方法，并不涉及方法内部的执行过程</p>
+<ol>
+<li>部分方法是直接在类加载的解析阶段，就确定了直接引用关系</li>
+<li>但是对于实例方法，也称虚方法，因为重载和多态，需要运行期动态委派</li>
+</ol>
+<h2 id="分派"><a href="#分派" class="headerlink" title="分派"></a>分派</h2><p>分派：又分成静态分派和动态分派</p>
+<ol>
+<li>静态分派：所有依赖静态类型来定位方法执行版本的分派方式，比如：重载方法</li>
+<li>动态分派：根据运行期的实际类型来定位方法执行版本的分派方式，比如：覆盖方法</li>
+<li>单分派和多分派：就是按照分派思考的维度，多余一个的就是算多分派，只有一个的称为单分派</li>
+<li>如何执行方法中的字节码指令：JVM通过基于栈的字节码解释执行引擎来执行指令，JVM的指令集也是基于栈的</li>
+</ol>
 
       
 
@@ -950,7 +283,7 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PMP</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -962,7 +295,7 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/PMP/" class="article-tag-list-link color4">PMP</a>
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
@@ -1017,7 +350,7 @@ ga('send', 'pageview');
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="http://s.jiathis.com/qrcode.php?url=http://www.villagehead.cn/2019/06/04/PMP-每日一题整合/" alt="微信分享二维码">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.villagehead.cn/2020/08/25/字节码执行引擎/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -1031,18 +364,9 @@ ga('send', 'pageview');
   
 <nav id="article-nav">
   
-    <a href="/2019/06/10/PMPBOK（第六版）-管理储备和应急储备对比/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          PMPBOK（第六版）-管理储备和应急储备对比
-        
-      </div>
-    </a>
   
-  
-    <a href="/2019/06/03/PMBOK指南第六版-10大知识领域，5大过程组，49个过程/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">PMBOK指南第六版-10大知识领域，5大过程组，49个过程</div>
+    <a href="/2020/08/24/Java内存分配/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java内存分配</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -1053,7 +377,7 @@ ga('send', 'pageview');
 
 
   
-  <div id="SOHUCS" sid="PMP-每日一题整合" style="padding: 0px 30px 0px 46px;"></div> 
+  <div id="SOHUCS" sid="字节码执行引擎" style="padding: 0px 30px 0px 46px;"></div> 
 <script type="text/javascript"> 
 (function(){ 
 var appid = "cyt6c86LT"; 

@@ -159,6 +159,119 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-字节码执行引擎" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/25/字节码执行引擎/">字节码执行引擎</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/25/字节码执行引擎/" class="archive-article-date">
+  	<time datetime="2020-08-25T06:02:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-25</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="字节码执行引擎概述"><a href="#字节码执行引擎概述" class="headerlink" title="字节码执行引擎概述"></a>字节码执行引擎概述</h2><ol>
+<li>JVM的字节码执行引擎，功能基本就是输入字节码文件，然后对字节码进行解析并处理，最后输出执行的结果</li>
+<li>实现方式可能有通过解释器直接解释执行字节码，或者是通过即时编译器产生本地代码，也就是编译执行，当然也可能两者皆有</li>
+</ol>
+<h2 id="栈帧概述"><a href="#栈帧概述" class="headerlink" title="栈帧概述"></a>栈帧概述</h2><ol>
+<li>栈帧是用于支持JVM进行方法调用和方法执行的数据结构</li>
+<li>栈帧随着方法调用而创建，随着方法结束而销毁</li>
+<li>栈帧里面存储了方法的局部变量，操作数栈，动态连接，方法返回地址等信息</li>
+</ol>
+<h2 id="栈帧概念结构"><a href="#栈帧概念结构" class="headerlink" title="栈帧概念结构"></a>栈帧概念结构</h2><p><img src="//www.villagehead.cn/2020/08/25/字节码执行引擎/1.png" alt="1"><br>上图是一个栈帧概念结构,这个图里面有很多的线程。我们先来看一下当前线程，对一个线程在同一时刻肯定是在执行一条指令，也就是说它一定在一个方法里面。一个线程里面有很多的帧栈，比如当前栈帧里面就存放着局部变量表，操作数栈，动态链接，方法返回地址等等。一个线程里面可以有很多这样的栈帧，这些栈帧组合起来就是我们的栈，也就是说栈里面放的是帧，而多个帧组合起来也就是我们的栈。大概就是这个意思</p>
+<h3 id="局部变量表"><a href="#局部变量表" class="headerlink" title="局部变量表"></a>局部变量表</h3><p>局部变量表：用来存放方法参数和方法内部定义的局部变量的存储空间</p>
+<ol>
+<li>以变量槽slot为单位，目前一个slot存放32位以内的数据类型</li>
+<li>对于64位的数据占2个slot</li>
+<li>对于实例方法，第0位slot存放的是this，然后从1到n，依次分配给参数列表</li>
+<li>然后根据方法体内部定义的变量顺序和作用域来分配slot</li>
+<li>slot是复用的，以节省栈帧的空间，这种设计可能会影响到系统的垃圾收集行为</li>
+</ol>
+<h3 id="操作数栈"><a href="#操作数栈" class="headerlink" title="操作数栈"></a>操作数栈</h3><p>操作数栈:用来存放方法运行期间，各个指令操作的数据。</p>
+<ol>
+<li>操作数栈中元素的数据类型必须和字节码指令的顺序严格匹配</li>
+<li>虚拟机在实现栈帧的时候可能会做一些优化，让两个栈帧出现部分重叠区域，以存放公用的数据</li>
+</ol>
+<h3 id="动态连接"><a href="#动态连接" class="headerlink" title="动态连接"></a>动态连接</h3><p>动态连接：每个栈帧持有一个指向运行时常量池中该栈帧所属方法的引用，以支持方法调用过程的动态连接</p>
+<ol>
+<li>静态解析：类加载的时候，符号引用就转化成直接引用</li>
+<li>动态连接。运行期间转换未直接引用</li>
+</ol>
+<h3 id="方法返回地址"><a href="#方法返回地址" class="headerlink" title="方法返回地址"></a>方法返回地址</h3><p>方法返回地址：方法执行后返回的地址</p>
+<h3 id="方法调用"><a href="#方法调用" class="headerlink" title="方法调用"></a>方法调用</h3><p>方法调用：方法调用就是确定具体调用那一个方法，并不涉及方法内部的执行过程</p>
+<ol>
+<li>部分方法是直接在类加载的解析阶段，就确定了直接引用关系</li>
+<li>但是对于实例方法，也称虚方法，因为重载和多态，需要运行期动态委派</li>
+</ol>
+<h2 id="分派"><a href="#分派" class="headerlink" title="分派"></a>分派</h2><p>分派：又分成静态分派和动态分派</p>
+<ol>
+<li>静态分派：所有依赖静态类型来定位方法执行版本的分派方式，比如：重载方法</li>
+<li>动态分派：根据运行期的实际类型来定位方法执行版本的分派方式，比如：覆盖方法</li>
+<li>单分派和多分派：就是按照分派思考的维度，多余一个的就是算多分派，只有一个的称为单分派</li>
+<li>如何执行方法中的字节码指令：JVM通过基于栈的字节码解释执行引擎来执行指令，JVM的指令集也是基于栈的</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/25/字节码执行引擎/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-Java内存分配" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -903,74 +1016,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-CentOS-7虚拟机下设置固定IP详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/">CentOS 7虚拟机下设置固定IP详解</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/" class="archive-article-date">
-  	<time datetime="2020-06-16T07:53:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-16</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="采用方案和配置环境"><a href="#采用方案和配置环境" class="headerlink" title="采用方案和配置环境"></a>采用方案和配置环境</h1><p>采用方式为NAT模式+固定IP的模式</p>
-<p>配置环境说明：主机为Win10家庭版，虚拟机虚拟机为VMware Workstation 12 Pro中文版，虚拟机中的Linux系统为CentOS 7 64位。</p>
-<h1 id="设置虚拟机的网络连接方式："><a href="#设置虚拟机的网络连接方式：" class="headerlink" title="设置虚拟机的网络连接方式："></a>设置虚拟机的网络连接方式：</h1><p>按照下图设置，英文版按实际的功能位置对照设置即可<br><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/1.jpg" alt="1"></p>
-<h1 id="配置虚拟机的NAT模式具体地址参数"><a href="#配置虚拟机的NAT模式具体地址参数" class="headerlink" title="配置虚拟机的NAT模式具体地址参数"></a>配置虚拟机的NAT模式具体地址参数</h1><h2 id="编辑–虚拟网络编辑器–更改设置"><a href="#编辑–虚拟网络编辑器–更改设置" class="headerlink" title="编辑–虚拟网络编辑器–更改设置"></a>编辑–虚拟网络编辑器–更改设置</h2><p><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/2.jpg" alt="2"></p>
-<h2 id="选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置"><a href="#选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置" class="headerlink" title="选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置"></a>选择VMnet8–取消勾选使用本地DHCP–设置子网IP–网关IP设置</h2><p>说明：修改子网IP设置，实现自由设置固定IP，若你想设置固定IP为192.168.58.2-255，比如192.168.58.128，则子网IP为192.168.58.0；具体原因：去了解子网ip，子网掩码以及网关IP的原理和关系<br><img src="//www.villagehead.cn/2020/06/16/CentOS-7虚拟机下设置固定IP详解/3.jpg" alt="3"><br></p>
-        
-          <a class="article-more-a" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/16/CentOS-7虚拟机下设置固定IP详解/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1092,11 +1137,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">c#</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
+                <a href="javascript:void(0)" class="js-tag color3">c#</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1112,11 +1157,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1152,15 +1197,39 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">js</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1172,31 +1241,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">消息队列</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
             
             <div class="clearfix"></div>
