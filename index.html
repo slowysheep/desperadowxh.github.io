@@ -159,6 +159,138 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-垃圾回收" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/28/垃圾回收/">垃圾回收</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/28/垃圾回收/" class="archive-article-date">
+  	<time datetime="2020-08-28T05:19:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="垃圾回收的概述"><a href="#垃圾回收的概述" class="headerlink" title="垃圾回收的概述"></a>垃圾回收的概述</h2><p>什么是垃圾:简单说就是内存中已经不再使用到的内存空间就是垃圾</p>
+<h2 id="垃圾回收的方式"><a href="#垃圾回收的方式" class="headerlink" title="垃圾回收的方式"></a>垃圾回收的方式</h2><h3 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h3><p>给对象添加一个引用计数器，有访问就加1，引用失效就减1。这种方式的优点：实现简单，效率高；缺点：不能解决对象之间循环引用的问题。在商用虚拟机内不会使用这个方法</p>
+<h3 id="根搜索算法"><a href="#根搜索算法" class="headerlink" title="根搜索算法"></a>根搜索算法</h3><p>从根（GC Roots）节点向下搜索对象节点，搜索走过的路径称为引用链，当一个对象到根之间没有连通的话，则该对象不可用。</p>
+<ol>
+<li>根搜索算法示意图<br><img src="//www.villagehead.cn/2020/08/28/垃圾回收/1.png" alt="1"><br>在上图如果能跟根节点联通的，则被认为是存活的对象。如果不能联通则认为是可以被GC回收的对象</li>
+<li>可作为GC Roots的对象包括：虚拟机栈（栈帧局部变量）中引用的对象，方法区类静态属性引用的对象，方法区中常量引用的对象，本地方法栈中JNI引用的对象</li>
+<li>HotSpot使用了一组叫做OopMap的数据结构达到准确式GC的目的</li>
+<li>在OopMap的协助下，JVM可以很快的做完GC Roots枚举。但是JVM并没有为每一条指令生成一个OopMap</li>
+<li>记录OopMap的这些“特定位置”被称为安全点，即当前线程执行到安全点后才允许暂停进行GC</li>
+<li>如果一段代码中，对象引用关系不会发生变化，这个区域中任何地方开始GC都是安全的，那么这个区域称为安全区域</li>
+</ol>
+<h2 id="引用分类"><a href="#引用分类" class="headerlink" title="引用分类"></a>引用分类</h2><ol>
+<li>强引用：类似于Object a = new A()这样的，不会被回收</li>
+<li>软引用：还有用但并不必须的对象。用SoftReference来实现软引用</li>
+<li>弱引用：非必须对象，比软引用还要弱，垃圾回收时会回收掉。用WeakReference来实现弱引用</li>
+<li>虚引用：也称为幽灵引用或幻影引用，是最弱的引用。垃圾回收时会回收掉。用PhantomReference来实现虚引用</li>
+</ol>
+<h2 id="跨代引用"><a href="#跨代引用" class="headerlink" title="跨代引用"></a>跨代引用</h2><ol>
+<li>跨代引用：也就是一个代中的对象引用另一个代中的对象</li>
+<li>跨代引用假说：跨代引用相对于同代引用来说只是极少数</li>
+<li>隐含推论：存在互相引用关系的两个对象，是应该倾向于同时生成或同时消亡的</li>
+</ol>
+<h2 id="记忆集"><a href="#记忆集" class="headerlink" title="记忆集"></a>记忆集</h2><p>记忆集（Remembered Set）:一种用于记录从非收集区域指向收集区域的的指针集合的抽象数据结构</p>
+<ol>
+<li>字长精度：每个记录精确到一个机器字长，该字包含跨代指针</li>
+<li>对象精度：每个记录精确到一个对象，该对象里有字段含有跨代指针</li>
+<li>卡精度：每个记录精确到一块内存区域，该区域内有对象含有跨代指针。也可以称之为卡表（Card Table）:是记忆集的一种具体实现，定义了记忆集的记录精度和堆内存的映射关系等。卡表的每个元素都对应着其标识的内存区域中一块特定大小的内存块，这个内存块称为卡页（Card Page）</li>
+</ol>
+<h2 id="写屏障"><a href="#写屏障" class="headerlink" title="写屏障"></a>写屏障</h2><ol>
+<li>写屏障可以看成是JVM对”引用类型字段赋值”这个动作AOP</li>
+<li>通过写屏障来实现当对象状态改变后，维护卡表状态</li>
+</ol>
+<h2 id="判断是否垃圾的步骤"><a href="#判断是否垃圾的步骤" class="headerlink" title="判断是否垃圾的步骤"></a>判断是否垃圾的步骤</h2><ol>
+<li>根搜索算法判断不可用</li>
+<li>看是否有必要执行finalize方法</li>
+<li>两个步骤走完后对象仍然没有人使用，那就属于垃圾</li>
+</ol>
+<h2 id="GC类型"><a href="#GC类型" class="headerlink" title="GC类型"></a>GC类型</h2><ol>
+<li>MinorGC/YoungGC：发生在新生代的收集动作</li>
+<li>MajorGC/OldGC：发生在老年代的GC,目前只有CMS收集器会有单独收集老年代的行为</li>
+<li>MixedGC：收集整个新生代以及部分老年代，目前只有G1收集器会有这种行为</li>
+<li>FullGC：收集整个Java堆和方法区的GC</li>
+</ol>
+<h2 id="Stop-The-World"><a href="#Stop-The-World" class="headerlink" title="Stop-The-World"></a>Stop-The-World</h2><ol>
+<li>STW是Java中一种全局暂停的现象，多半由于GC引起。所谓全局停顿，就是所有Java代码停止运行，native代码可以执行，但不能和JVM交互</li>
+<li>其危害是长时间服务停止，没有响应；对于HA系统，可能引起主备切换，严重危害生成环境</li>
+</ol>
+<h2 id="垃圾收集类型"><a href="#垃圾收集类型" class="headerlink" title="垃圾收集类型"></a>垃圾收集类型</h2><ol>
+<li>串行收集：GC单线程内存回收，会暂停所有的用户线程，如：Serial</li>
+<li>并行收集：多个GC线程并发工作，此时用户线程是暂停的，如：Parallel</li>
+<li>并发收集：用户线程和GC线程同时执行（不一定是并行，可能交替执行）不需要停顿用户线程，如：CMS</li>
+</ol>
+<h2 id="判断类无用的条件"><a href="#判断类无用的条件" class="headerlink" title="判断类无用的条件"></a>判断类无用的条件</h2><ol>
+<li>JVM中该类的所有实例都已经被回收</li>
+<li>加载该类的ClassLoader已经被回收</li>
+<li>没有任何地方引用该类的Class对象</li>
+<li>无法在任何地方通过反射访问这个类</li>
+</ol>
+        
+          <a class="article-more-a" href="/2020/08/28/垃圾回收/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/28/垃圾回收/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-字节码执行引擎" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -919,103 +1051,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-RocketMQ-主从模式部署" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/22/RocketMQ-主从模式部署/">RocketMQ-主从模式部署</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/22/RocketMQ-主从模式部署/" class="archive-article-date">
-  	<time datetime="2020-06-22T05:52:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-22</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="宿主环境"><a href="#宿主环境" class="headerlink" title="宿主环境"></a>宿主环境</h1><ul>
-<li>RedHat &amp; CentOs7</li>
-<li>JDK1.8+</li>
-<li>RocketMQ 4.7.X</li>
-</ul>
-<p>准备两台以上配置的机器，可以在本地搭建虚拟机，方便操作</p>
-<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p><code>vi /etc/hosts</code></p>
-<p>192.168.58.128 机器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192.168.58.128 rocketmq-nameserver1</div><div class="line">192.168.58.128 rocketmq-master1</div><div class="line">192.168.58.129 rocketmq-nameserver2</div><div class="line">192.168.58.129 rocketmq-master1-slave</div></pre></td></tr></table></figure></p>
-<p>192.168.58.129 机器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192.168.58.128 rocketmq-nameserver1</div><div class="line">192.168.58.128 rocketmq-master1</div><div class="line">192.168.58.129 rocketmq-nameserver2</div><div class="line">192.168.58.129 rocketmq-master1-slave</div></pre></td></tr></table></figure></p>
-<h1 id="配置主从模式，异步复制"><a href="#配置主从模式，异步复制" class="headerlink" title="配置主从模式，异步复制"></a>配置主从模式，异步复制</h1><p><strong>以下所有步骤如果没有特别指明是对那个IP的机器做配置，都是针对两台机器分别操作</strong></p>
-<h2 id="上传解压RocketMQ安装包"><a href="#上传解压RocketMQ安装包" class="headerlink" title="上传解压RocketMQ安装包"></a>上传解压RocketMQ安装包</h2><ul>
-<li>1.将apache-rocketmq.tar.gz文件上传到<code>/usr/local/software</code></li>
-<li>2.mkdir /usr/local/apache-rocketmq &amp;&amp; tar -zxvf apache-rocketmq.tar.gz -C /usr/local/apache-rocketmq</li>
-<li>3.建立一个链接<code>ln -s apache-rocketmq rocketmq</code></li>
-</ul>
-<h2 id="创建存储路径"><a href="#创建存储路径" class="headerlink" title="创建存储路径"></a>创建存储路径</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//实际的数据存储位置</div><div class="line">mkdir /usr/local/rocketmq/store </div><div class="line">//真正存储RocketMQ数据的地方</div><div class="line">mkdir /usr/local/rocketmq/store/commitlog</div><div class="line">//consumequeue逻辑上的存储，装的是类似数据库索引数据的文件结构</div><div class="line">mkdir /usr/local/rocketmq/store/consumequeue</div><div class="line">//索引文件，快速查询我们RocketMQ消息的文件</div><div class="line">mkdir /usr/local/rocketmq/store/index</div></pre></td></tr></table></figure>
-<h2 id="RocketMQ-配置文件"><a href="#RocketMQ-配置文件" class="headerlink" title="RocketMQ 配置文件"></a>RocketMQ 配置文件</h2><h3 id="配置192-168-58-128机器"><a href="#配置192-168-58-128机器" class="headerlink" title="配置192.168.58.128机器"></a>配置192.168.58.128机器</h3><p><code>cd /usr/local/rocketmq/conf/</code>进入到RocketMQ的配置文件夹,得到如下目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">drwxr-xr-x. 2 root root   118 Jun 15 02:42 2m-2s-async</div><div class="line">drwxr-xr-x. 2 root root   118 Jun 15 02:42 2m-2s-sync</div><div class="line">drwxr-xr-x. 2 root root    60 Jun 15 02:42 2m-noslave</div><div class="line">-rw-r--r--. 1 root root   949 Jul 26  2018 broker.conf</div><div class="line">-rw-r--r--. 1 root root 14978 Jul 26  2018 logback_broker.xml</div><div class="line">-rw-r--r--. 1 root root  3690 Jul 26  2018 logback_filtersrv.xml</div><div class="line">-rw-r--r--. 1 root root  3692 Jul 26  2018 logback_namesrv.xml</div><div class="line">-rw-r--r--. 1 root root  3761 Jul 26  2018 logback_tools.xml</div></pre></td></tr></table></figure></p>
-<p><code>cd 2m-2s-async/</code>进入双主双从目录，得到如下文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-rw-r--r--. 1 root root 929 Jul 26  2018 broker-a.properties</div><div class="line">-rw-r--r--. 1 root root 922 Jul 26  2018 broker-a-s.properties</div><div class="line">-rw-r--r--. 1 root root 929 Jul 26  2018 broker-b.properties</div><div class="line">-rw-r--r--. 1 root root 922 Jul 26  2018 broker-b-s.properties</div></pre></td></tr></table></figure></p>
-<p><code>vi broker-a.properties</code>进入到这个配置文件，写入下面的配置文件<br></p>
-        
-          <a class="article-more-a" href="/2020/06/22/RocketMQ-主从模式部署/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">消息队列</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RocketMQ/" class="article-tag-list-link color4">RocketMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/22/RocketMQ-主从模式部署/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1109,14 +1144,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1130,6 +1157,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1157,11 +1192,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1197,7 +1232,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1205,7 +1240,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1217,11 +1268,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1229,19 +1276,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

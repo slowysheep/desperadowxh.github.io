@@ -159,6 +159,83 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="w-PMPBOK（第六版）-管理储备和应急储备对比" class="article article-type-w  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/10/PMPBOK（第六版）-管理储备和应急储备对比/">PMPBOK（第六版）-管理储备和应急储备对比</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/10/PMPBOK（第六版）-管理储备和应急储备对比/" class="archive-article-date">
+  	<time datetime="2019-06-10T07:05:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-10</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="储备分析"><a href="#储备分析" class="headerlink" title="储备分析"></a>储备分析</h2><p>储备分析用于确定项目所需的应急储备和管理储备。</p>
+<h2 id="应急储备"><a href="#应急储备" class="headerlink" title="应急储备"></a>应急储备</h2><p>在考虑持续时间估算时，需要考虑应急储备（有时也称“进度储备”），以应对进度的不确定性。应急储备是包含在进度基准中的一段持续时间，用来应对已接受的已识别风险。应急储备和与“已知-未知”风险有关，应该在项目文件中列出应急储备。</p>
+<h2 id="管理储备"><a href="#管理储备" class="headerlink" title="管理储备"></a>管理储备</h2><p>管理储备是为了管理和控制项目而特别留出来的项目预算，来应对项目中的不可预见的工作，管理储备用来应对“未知-未知”风险。使用管理储备可能会变更进度基准。 </p>
+<p>成本基准包括应急储备，不包括管理储备。但是管理储备属于项目总预算和资金需求的一部份。动用管理储备应对不可预见的工作时，就要把管理储备增加到成本基准中去，从而导致成本基准的变更。 </p>
+<p>如果已识别的风险没有发生，就可能要把储备从项目预算中扣除，当做项目盈利。相反可能会发起变更，请求更多的储备来应对新识别的风险。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PMP</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/PMP/" class="article-tag-list-link color4">PMP</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/10/PMPBOK（第六版）-管理储备和应急储备对比/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-PMP-每日一题整合" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1036,82 +1113,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="w-SpringBoot-集成Kaptcha实现一个图片验证码" class="article article-type-w  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/">SpringBoot 集成Kaptcha实现一个图片验证码</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/" class="archive-article-date">
-  	<time datetime="2019-01-14T08:42:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>公司在一次投票活动中，发现有用户恶意刷票。有两种方式：1.直接拿接口刷。2.通过一种专门的刷票软件工具（猜测使用的是手机集控系统批量操作），先注册机器人用户，然后用这个用户进行投票。</p>
-<p>第一种方法是自己接口的漏洞，没有限制一人一票。导致被别人注册一个用户后，拿到接口用同一个用户恶意刷票，这个很好防范。第二种方法本质上操作流程上跟真实用户的操作流程是一样的，只不过他用软件实现了自动化。在注册用户这个功能上，我们之前是用手机验证码来做注册验证的，可是机器是可以拿到发送的验证码，并反填。所以我们针对这种情况，加一个图片验证码，增加注册难度，防止机器恶意注册。</p>
-        
-          <a class="article-more-a" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -1205,14 +1206,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1226,6 +1219,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1253,11 +1254,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1293,7 +1294,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1301,7 +1302,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1313,11 +1330,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1325,19 +1338,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

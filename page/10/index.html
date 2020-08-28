@@ -159,6 +159,97 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-201707061045" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/201707061045/">intellij IDEA 弹窗License activation 报 this license BIG3CLIK6F has been cancelled</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/201707061045/" class="archive-article-date">
+  	<time datetime="2017-07-06T02:45:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="什么是this-license-BIG3CLIK6F-has-been-cancelled错误"><a href="#什么是this-license-BIG3CLIK6F-has-been-cancelled错误" class="headerlink" title="什么是this license BIG3CLIK6F has been cancelled错误"></a>什么是this license BIG3CLIK6F has been cancelled错误</h5><p>具体如下图：<br><img src="http://img.blog.csdn.net/20170425185840512" alt="image"><br>之前我注册的时候可以用的，后来不知道是什么原因导致不能用了</p>
+<h5 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h5><h6 id="在Linux环境下"><a href="#在Linux环境下" class="headerlink" title="在Linux环境下"></a>在Linux环境下</h6><p>在Linux环境下修改系统配置，具体Linux在/etc/hosts中添加 0.0.0.0 account.jetbrains.com就好</p>
+<h6 id="在Widows环境下"><a href="#在Widows环境下" class="headerlink" title="在Widows环境下"></a>在Widows环境下</h6><p>在Windows环境下修改系统配置，具体Windows在C:\Windows\System32\drivers\etc\hosts<img src="http://img.blog.csdn.net/20170425185232806" alt="image"><br>要修改的是第一个HOSTS文件<br>使用时需要将“0.0.0.0 account.jetbrains.com”添加到hosts文件中，详细内容如下：<img src="http://img.blog.csdn.net/20170425185337995" alt="image">  </p>
+<p><strong>以上配置正确就可以继续使用了</strong> </p>
+<h5 id="深究什么是hosts"><a href="#深究什么是hosts" class="headerlink" title="深究什么是hosts"></a>深究什么是hosts</h5><h6 id="host概要"><a href="#host概要" class="headerlink" title="host概要"></a>host概要</h6><p>Hosts是一个没有扩展名的系统文件，可以用记事本等工具打开，其作用就是将一些常用的网址域名与其对应的IP地址建立一个关联“数据库”，当用户在浏览器中输入一个需要登录的网址时，系统会首先自动从Hosts文件中寻找对应的IP地址，一旦找到，系统会立即打开对应网页，如果没有找到，则系统会再将网址提交DNS域名解析服务器进行IP地址的解析。  </p>
+<h6 id="hosts的历史"><a href="#hosts的历史" class="headerlink" title="hosts的历史"></a>hosts的历史</h6><p>在引入DNS（Domain Name System，域名系统）之前，网络中的主机是将容易记忆的域名映射到IP地址并将它保存在一个共享的静态文件hosts中，再由hosts文件来实现网络中域名的管理。最初Internet非常小，仅使用这个集中管理的文件就可以通过FTP为连入Internet的站点和主机提供域名的发布和下载。每个Internet站点将定期地更新其主机文件的副本，并且发布主机文件的更新版本来反映网络的变化。<br>但是，当Internet上的计算机迅速增加时，通过一个中心授权机构为所有Internet主机管理一个主机文件的工作将无法进行。文件会随着时间的推移而增大，这样按当前和更新的形式维持文件以及将文件分配至所有站点将变得非常困难，甚至无法完成，于是便产生了DNS服务器。  </p>
+<h6 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h6><p>浏览器访问网站，要首先通过DNS服务器把要访问的网站域名解析成一个唯一的IP地址，之后，浏览器才能对此网站进行定位并且访问其数据。<br>操作系统规定，在进行DNS请求以前，先检查系自己的Hosts文件中是否有这个域名和IP的映射关系。如果有，则直接访问这个IP地址指定的网络位置，如果没有，再向已知的DNS服务器提出域名解析请求。也就是说Hosts的IP解析优先级比DNS要高。</p>
+<h6 id="具体作用"><a href="#具体作用" class="headerlink" title="具体作用"></a>具体作用</h6><p>来看一下Hosts文件的工作方式以及它在具体使用中起哪些作用。<br>1、加快域名解析<br>对于要经常访问的网站，我们可以通过在Hosts中配置域名和IP的映射关系，提高域名解析速度。由于有了映射关系，当我们输入域名计算机就能很快解析出IP，而不用请求网络上的DNS服务器。<br>2、方便局域网用户<br>在很多单位的局域网中，会有服务器提供给用户使用。但由于局域网中一般很少架设DNS服务器，访问这些服务器时，要输入难记的IP地址。这对不少人来说相当麻烦。可以分别给这些服务器取个容易记住的名字，然后在Hosts中建立IP映射，这样以后访问的时候，只要输入这个服务器的名字就行了。<br>3、屏蔽网站（域名重定向）<br>有很多网站不经过用户同意就将各种各样的插件安装到你的计算机中，其中有些说不定就是木马或病毒。对于这些网站我们可以利用Hosts把该网站的域名映射到错误的IP或本地计算机的IP，这样就不用访问了。在WINDOWS系统中，约定 127.0.0.1 为本地计算机的IP地址, 0.0.0.0是错误的IP地址。<br>如果，我们在Hosts中，写入以下内容：<br>127.0.0.1 # 要屏蔽的网站 A<br>0.0.0.0 # 要屏蔽的网站 B<br>这样，计算机解析域名A和 B时，就解析到本机IP或错误的IP，达到了屏蔽网站A 和B的目的。<br>4、顺利连接系统<br>对于Lotus的服务器和一些数据库服务器，在访问时如果直接输入IP地址那是不能访问的，只能输入服务器名才能访问。那么我们配置好Hosts文件，这样输入服务器名就能顺利连接了。</p>
+<h5 id="全零网络IP地址0-0-0-0表示意义详谈"><a href="#全零网络IP地址0-0-0-0表示意义详谈" class="headerlink" title="全零网络IP地址0.0.0.0表示意义详谈"></a>全零网络IP地址0.0.0.0表示意义详谈</h5><p>RFC：</p>
+<p>0.0.0.0/8 - Addresses in this block refer to source hosts on “this”<br>network. Address 0.0.0.0/32 may be used as a source address for this<br>host on this network; other addresses within 0.0.0.0/8 may be used to<br>refer to specified hosts on this network ([RFC1122], Section 3.2.1.3).  </p>
+<p>因此，根据RFC文档描述，它不只是代表本机，0.0.0.0/8可以表示本网络中的所有主机，0.0.0.0/32可以用作本机的源地址，0.0.0.0/8也可表示本网络上的某个特定主机,综合起来可以说0.0.0.0表示整个网络  </p>
+<p>在路由器配置中可用0.0.0.0/0表示默认路由，作用是帮助路由器发送路由表中无法查询的包。如果设置了全零网络的路由，路由表中无法查询的包都将送到全零网络的路由中去。  </p>
+<p>查阅百度知道里一些说法如下：  </p>
+<ol>
+<li><p>严格说来，0.0.0.0已经不是一个真正意义上的IP地址了。它表示的是这样一个集合：所有不清楚的主机和目的网络。这里的“不清楚”是指在本机的路由   表里没有特定条目指明如何到达。对本机来说，它就是一个“收容所”，所有不认识的“三无”人员，一 律送进去。如果你在网络设置中设置了缺省网关，那么Windows系统会自动产生一个目的地址为0.0.0.0的缺省路由。  </p>
+</li>
+<li><p>网络中0.0.0.0的IP地址表示整个网络，即网络中的所有主机。它的作用是帮助路由器发送路由表中无法查询的包。如果设置了全零网络的路由，路由表中无法查询的包都将送到全零网络的路由中去。</p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/201707061045/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="w-Linux如何卸载安装的jdk" class="article article-type-w  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -840,82 +931,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-201607241331" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/24/201607241331/">SQL Server中的事务与锁</a>
-    </h1>
-  
-
-        
-        <a href="/2016/07/24/201607241331/" class="archive-article-date">
-  	<time datetime="2016-07-24T05:31:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-24</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="在数据库中什么是事务和锁"><a href="#在数据库中什么是事务和锁" class="headerlink" title="在数据库中什么是事务和锁"></a>在数据库中什么是事务和锁</h2><h3 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h3><p>数据库事务是指作为单个逻辑工作单元的一系列操作，要么完全执行，要么完全的不执行。事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。一个逻辑工作单元要成为事务，必须满足ACID属性，即为原子性，一致性，隔离性，持久性。事务是数据库运行的逻辑工作单元，由DBMS中事务管理子系统负责事务的处理。</p>
-<h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>事务必须是原子工作单元；对于其数据修改，要么全部执行，要么全都不执行。</p>
-<h4 id="一致性"><a href="#一致性" class="headerlink" title="一致性"></a>一致性</h4><p>事务完成时 必须使所有的数据都保持一致的状态</p>
-<h4 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h4><p>由并发事务所作的修改必须与任何其它并发事务所作的修改隔离。</p>
-<h4 id="持久性"><a href="#持久性" class="headerlink" title="持久性"></a>持久性</h4><p>事务完成之后，它对于系统的影响是永久性的。该修改即使出现致命的系统故障也将一直保持。</p>
-<h4 id="sqlserver中按照事务的启动与执行方式，可以将事务分为三类"><a href="#sqlserver中按照事务的启动与执行方式，可以将事务分为三类" class="headerlink" title="sqlserver中按照事务的启动与执行方式，可以将事务分为三类"></a>sqlserver中按照事务的启动与执行方式，可以将事务分为三类</h4><p>1.显示事务：也称为用户定义或用户指定的事务，即可以显式地定义启动和结束的事务。分布式事务属于显示事务<br>2.自动提交事务：这是sqlserver默认的一种事务模式，每条sql语句都被看成一个事务进行处理。如果一个语句成功地完成，则提交该语句。如果遇到错误，则回滚该语句。例如一个update的sql语句更新两个字段，你不会见过其中一个字段更新成功，而另外一个没更新成功的情况。<br>3.隐形事务：使用Set IMPLICIT_TRANSACTIONS ON将隐形事务模式打开，不用Begin Transaction开启事务，当一个事务结束，这个模式会自动启用下一个事务，只用Commit Transaction提交事务，Rollback Transaction 回滚事务即可</p>
-<h4 id="显示事务的应用"><a href="#显示事务的应用" class="headerlink" title="显示事务的应用"></a>显示事务的应用</h4><p>常用的语句有4个：<br>Begin Transaction(也可以写成begin tran)：标记事务开始。<br>Commit Transaction（也可以写成commit tran）：事务已经成功执行，数据已经处理妥当。<br>Rollback Transaction（也可以写成rollback tran）：数据处理过程中出错，回滚到没有处理之前的数据状态，或回滚到事务内部的保存点。<br>Save   Transaction（也可以写成save tran）：事务内部设置的保存点，就是事务可以不全部回滚，只回滚到这里，保证事务内部不出错的前提下。<br>我比较喜欢括号中的写法<br><strong>书写事务的基本格式：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">---开启事务</div><div class="line">begin tran</div><div class="line">--错误扑捉机制</div><div class="line">begin try</div><div class="line">	--这里可以写你的要执行事务的逻辑代码块</div><div class="line">end try</div><div class="line">begin catch</div><div class="line">	--捕捉错误的日志 下面这句话是读取sql数据库系统的错误可以记录在自己的日志表里面，也可以其他自定义的日志系统</div><div class="line">    select Error_number() as ErrorNumber,  --错误代码</div><div class="line">          Error_severity() as ErrorSeverity,  --错误严重级别，级别小于10 try catch 捕获不到</div><div class="line">          Error_state() as ErrorState ,  --错误状态码</div><div class="line">         Error_Procedure() as ErrorProcedure , --出现错误的存储过程或触发器的名称。</div><div class="line">          Error_line() as ErrorLine,  --发生错误的行号</div><div class="line">           Error_message() as ErrorMessage  --错误的具体信息</div><div class="line"></div><div class="line">    if(@@trancount&gt;0) --全局变量@@trancount，事务开启此值+1，他用来判断是有开启事务</div><div class="line">       rollback tran  ---由于出错，这里回滚到开始</div><div class="line">end catch</div><div class="line">if(@@trancount&gt;0)</div><div class="line">commit tran --提交成功</div></pre></td></tr></table></figure></p>
-<p><strong>带save tran事务基本书写格式：</strong><br>save tran的作用就是可以自己设置你要回滚的地方<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">---开启事务</div><div class="line">begin tran</div><div class="line">--错误扑捉机制</div><div class="line">begin try</div><div class="line">	--这里可以写你的要执行事务的逻辑代码块</div><div class="line">	insert into table0 (one,two,three) values(1,2,3)</div><div class="line">	--加入事务保存点</div><div class="line">    save tran save0</div><div class="line">	insert into table1 (one,two,three) values(1,2,3)</div><div class="line">	insert into table2 (one,two,three) values(1,2,3)</div><div class="line">end try</div><div class="line">begin catch</div><div class="line">	--捕捉错误的日志 下面这句话是读取sql数据库系统的错误可以记录在自己的日志表里面，也可以其他自定义的日志系统</div><div class="line">    select Error_number() as ErrorNumber,  --错误代码</div><div class="line">          Error_severity() as ErrorSeverity,  --错误严重级别，级别小于10 try catch 捕获不到</div><div class="line">          Error_state() as ErrorState ,  --错误状态码</div><div class="line">         Error_Procedure() as ErrorProcedure , --出现错误的存储过程或触发器的名称。</div><div class="line">          Error_line() as ErrorLine,  --发生错误的行号</div><div class="line">           Error_message() as ErrorMessage  --错误的具体信息</div><div class="line"></div><div class="line">    if(@@trancount&gt;0) --全局变量@@trancount，事务开启此值+1，他用来判断是有开启事务</div><div class="line">       rollback tran  ---由于出错，这里回滚到开始</div><div class="line">end catch</div><div class="line">if(@@trancount&gt;0)</div><div class="line">rollback tran save0 --提交事务 如果第二条插入数据错误 则回滚到第二条数据，此时数据库里面只有一条数据。如果全部成功，则有三条数据</div></pre></td></tr></table></figure></p>
-<p><strong>使用set xact_abort的事务</strong><br>set xact_abort的作用是当set xact_abort设置为on时，如果Transact—SQL语句产生运行时错误，整个事务将终止并回滚。为OFF时，只回滚产生错误的Transact—SQL语句，而事务将继续进行处理。编译错误（如语法错误）不受不受 SET XACT_ABORT 的影响。对于大多数OLE DB提供程序（包括SQL Server），隐形或显式事务中的数据修改语句必须将xact_abort设置为ON。唯一不需要该选项的情况是提供程序支持嵌套事务时。set xact_abort的设置是在执行或运行时设置，而不是分析时设置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">set xact_abort off</div><div class="line">begin tran </div><div class="line">    --这里可以写你的要执行事务的逻辑代码块</div><div class="line">	insert into table0 (one,two,three) values(1,2,3)</div><div class="line">	insert into table1 (one,two,three) values(1,2,3) --如果这句话为错误的话 那么xact_abort设置为off时，只有这句错误的语句会回滚，其他没有错误的语句是不会回滚</div><div class="line">	insert into table2 (one,two,three) values(1,2,3)</div><div class="line">commit tran</div></pre></td></tr></table></figure>
-<h3 id="数据库的锁"><a href="#数据库的锁" class="headerlink" title="数据库的锁"></a>数据库的锁</h3><p>未完待续…</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sqlserver</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/07/24/201607241331/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
@@ -1009,14 +1024,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1030,6 +1037,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1057,11 +1072,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1097,7 +1112,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1105,7 +1120,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1117,11 +1148,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1129,19 +1156,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

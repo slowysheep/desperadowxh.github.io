@@ -159,6 +159,103 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-RocketMQ-主从模式部署" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/06/22/RocketMQ-主从模式部署/">RocketMQ-主从模式部署</a>
+    </h1>
+  
+
+        
+        <a href="/2020/06/22/RocketMQ-主从模式部署/" class="archive-article-date">
+  	<time datetime="2020-06-22T05:52:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-22</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="宿主环境"><a href="#宿主环境" class="headerlink" title="宿主环境"></a>宿主环境</h1><ul>
+<li>RedHat &amp; CentOs7</li>
+<li>JDK1.8+</li>
+<li>RocketMQ 4.7.X</li>
+</ul>
+<p>准备两台以上配置的机器，可以在本地搭建虚拟机，方便操作</p>
+<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p><code>vi /etc/hosts</code></p>
+<p>192.168.58.128 机器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192.168.58.128 rocketmq-nameserver1</div><div class="line">192.168.58.128 rocketmq-master1</div><div class="line">192.168.58.129 rocketmq-nameserver2</div><div class="line">192.168.58.129 rocketmq-master1-slave</div></pre></td></tr></table></figure></p>
+<p>192.168.58.129 机器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">192.168.58.128 rocketmq-nameserver1</div><div class="line">192.168.58.128 rocketmq-master1</div><div class="line">192.168.58.129 rocketmq-nameserver2</div><div class="line">192.168.58.129 rocketmq-master1-slave</div></pre></td></tr></table></figure></p>
+<h1 id="配置主从模式，异步复制"><a href="#配置主从模式，异步复制" class="headerlink" title="配置主从模式，异步复制"></a>配置主从模式，异步复制</h1><p><strong>以下所有步骤如果没有特别指明是对那个IP的机器做配置，都是针对两台机器分别操作</strong></p>
+<h2 id="上传解压RocketMQ安装包"><a href="#上传解压RocketMQ安装包" class="headerlink" title="上传解压RocketMQ安装包"></a>上传解压RocketMQ安装包</h2><ul>
+<li>1.将apache-rocketmq.tar.gz文件上传到<code>/usr/local/software</code></li>
+<li>2.mkdir /usr/local/apache-rocketmq &amp;&amp; tar -zxvf apache-rocketmq.tar.gz -C /usr/local/apache-rocketmq</li>
+<li>3.建立一个链接<code>ln -s apache-rocketmq rocketmq</code></li>
+</ul>
+<h2 id="创建存储路径"><a href="#创建存储路径" class="headerlink" title="创建存储路径"></a>创建存储路径</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//实际的数据存储位置</div><div class="line">mkdir /usr/local/rocketmq/store </div><div class="line">//真正存储RocketMQ数据的地方</div><div class="line">mkdir /usr/local/rocketmq/store/commitlog</div><div class="line">//consumequeue逻辑上的存储，装的是类似数据库索引数据的文件结构</div><div class="line">mkdir /usr/local/rocketmq/store/consumequeue</div><div class="line">//索引文件，快速查询我们RocketMQ消息的文件</div><div class="line">mkdir /usr/local/rocketmq/store/index</div></pre></td></tr></table></figure>
+<h2 id="RocketMQ-配置文件"><a href="#RocketMQ-配置文件" class="headerlink" title="RocketMQ 配置文件"></a>RocketMQ 配置文件</h2><h3 id="配置192-168-58-128机器"><a href="#配置192-168-58-128机器" class="headerlink" title="配置192.168.58.128机器"></a>配置192.168.58.128机器</h3><p><code>cd /usr/local/rocketmq/conf/</code>进入到RocketMQ的配置文件夹,得到如下目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">drwxr-xr-x. 2 root root   118 Jun 15 02:42 2m-2s-async</div><div class="line">drwxr-xr-x. 2 root root   118 Jun 15 02:42 2m-2s-sync</div><div class="line">drwxr-xr-x. 2 root root    60 Jun 15 02:42 2m-noslave</div><div class="line">-rw-r--r--. 1 root root   949 Jul 26  2018 broker.conf</div><div class="line">-rw-r--r--. 1 root root 14978 Jul 26  2018 logback_broker.xml</div><div class="line">-rw-r--r--. 1 root root  3690 Jul 26  2018 logback_filtersrv.xml</div><div class="line">-rw-r--r--. 1 root root  3692 Jul 26  2018 logback_namesrv.xml</div><div class="line">-rw-r--r--. 1 root root  3761 Jul 26  2018 logback_tools.xml</div></pre></td></tr></table></figure></p>
+<p><code>cd 2m-2s-async/</code>进入双主双从目录，得到如下文件夹<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-rw-r--r--. 1 root root 929 Jul 26  2018 broker-a.properties</div><div class="line">-rw-r--r--. 1 root root 922 Jul 26  2018 broker-a-s.properties</div><div class="line">-rw-r--r--. 1 root root 929 Jul 26  2018 broker-b.properties</div><div class="line">-rw-r--r--. 1 root root 922 Jul 26  2018 broker-b-s.properties</div></pre></td></tr></table></figure></p>
+<p><code>vi broker-a.properties</code>进入到这个配置文件，写入下面的配置文件<br></p>
+        
+          <a class="article-more-a" href="/2020/06/22/RocketMQ-主从模式部署/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">消息队列</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">RocketMQ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/RocketMQ/" class="article-tag-list-link color4">RocketMQ</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/06/22/RocketMQ-主从模式部署/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-CentOS-7虚拟机下设置固定IP详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -893,79 +990,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-react父组件调用子组件方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/03/26/react父组件调用子组件方法/">react父组件调用子组件方法</a>
-    </h1>
-  
-
-        
-        <a href="/2020/03/26/react父组件调用子组件方法/" class="archive-article-date">
-  	<time datetime="2020-03-26T07:26:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-26</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>实现父组件调用子组件方法：</p>
-<blockquote>
-<p>基本思路：父组件可以通过props把自己的函数方法传递给子组件调用，那么子组件通过这个函数把自己的组件实例传回给父组件，父组件只需要保存这些实例便可以调用子组件的方法</p>
-</blockquote>
-<h2 id="父组件"><a href="#父组件" class="headerlink" title="父组件"></a>父组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">import React, &#123; Component &#125; from &apos;react&apos;</div><div class="line">import &#123;Layout &#125; from &apos;antd&apos;</div><div class="line">import Friends from &apos;./friends&apos;</div><div class="line">import ChatWindow from &quot;./chatWindow&quot;;</div><div class="line">// 父组件</div><div class="line">class Home extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123; &#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 等待子组件被挂载之后调用子组件方法</div><div class="line">   		this.chatWindow.setChat ()</div><div class="line">   		// 调用friends子组件中的方法</div><div class="line">        this.friends.setFriends ()</div><div class="line">    &#125;</div><div class="line">    // 获取子组件</div><div class="line">    onRef (name, ref) &#123;</div><div class="line">        switch (name) &#123;</div><div class="line">            case &apos;chatWindow&apos;:</div><div class="line">                this.chatWindow = ref</div><div class="line">                break</div><div class="line">            case &apos;friends&apos;:</div><div class="line">                this.friends = ref</div><div class="line">                break</div><div class="line">            default:</div><div class="line">                break</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    render () &#123;</div><div class="line">        return(</div><div class="line">            &lt;Layout className=&apos;home&apos;&gt;</div><div class="line">            // 好友列表子组件</div><div class="line">                &lt;Friends</div><div class="line">                	 onRef=&#123;this.onRef.bind(this)&#125;</div><div class="line">                /&gt;</div><div class="line">                // 聊天窗口子组件</div><div class="line">                &lt;ChatWindow</div><div class="line">                            onRef=&#123;this.onRef.bind(this)&#125;</div><div class="line">                 /&gt;</div><div class="line">            &lt;/Layout&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default Home</div></pre></td></tr></table></figure>
-<h2 id="子组件"><a href="#子组件" class="headerlink" title="子组件"></a>子组件</h2><h3 id="friends子组件"><a href="#friends子组件" class="headerlink" title="friends子组件"></a>friends子组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import React, &#123;Component&#125; from &apos;react&apos;</div><div class="line"></div><div class="line">class friends extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123;&#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 调用父组件方法把当前实例传给父组件</div><div class="line">        this.props.onRef(&apos;friends&apos;, this)</div><div class="line">    &#125;</div><div class="line">    // 在父组件中调用的方法</div><div class="line">    setFriends () &#123;</div><div class="line">        alert(&apos;子组件friends&apos;)</div><div class="line">    &#125;</div><div class="line">    render () &#123;</div><div class="line">        return (</div><div class="line">            &lt;div className=&apos;friends&apos;&gt;friends&lt;/div&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default friends</div></pre></td></tr></table></figure>
-<h3 id="chatWindow子组件"><a href="#chatWindow子组件" class="headerlink" title="chatWindow子组件"></a>chatWindow子组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import React, &#123;Component&#125; from &apos;react&apos;</div><div class="line"></div><div class="line">class chatWindow extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123;&#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 调用父组件方法把当前实例传给父组件</div><div class="line">        this.props.onRef(&apos;chatWindow&apos;, this)</div><div class="line">    &#125;</div><div class="line">    // 在父组件中调用的方法</div><div class="line">    setFriends () &#123;</div><div class="line">        alert(&apos;子组件chatWindow&apos;)</div><div class="line">    &#125;</div><div class="line">    render () &#123;</div><div class="line">        return (</div><div class="line">            &lt;div className=&apos;chatWindow&apos;&gt;chatWindow&lt;/div&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default chatWindow</div></pre></td></tr></table></figure>
-<p>参考链接 <a href="https://blog.csdn.net/qq_35104586/article/details/81612127" target="_blank" rel="external">https://blog.csdn.net/qq_35104586/article/details/81612127</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">react</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/03/26/react父组件调用子组件方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1059,14 +1083,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1080,6 +1096,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1107,11 +1131,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1147,7 +1171,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1155,7 +1179,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1167,11 +1207,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1179,19 +1215,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

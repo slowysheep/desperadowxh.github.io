@@ -159,6 +159,125 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-http-升级-https技术调研" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/27/http-升级-https技术调研/">http 升级 https技术调研</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/27/http-升级-https技术调研/" class="archive-article-date">
+  	<time datetime="2018-06-27T07:05:22.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-27</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="http-缺点"><a href="#http-缺点" class="headerlink" title="http 缺点"></a>http 缺点</h2><ol>
+<li>通信使用明文(不加密)，内容可能会被窃听。</li>
+<li>不验证通信方的身份，因此有可能遭遇伪装。</li>
+<li>无法证明报文的完整性，所以有可能已遭篡改。</li>
+</ol>
+<p>于是有了通信加密协议 SSL/TLS保证通信的安全。<a href="http://www.ruanyifeng.com/blog/2014/02/ssl_tls.html" target="_blank" rel="external">关于SSL/TLS</a></p>
+<h2 id="https"><a href="#https" class="headerlink" title="https"></a>https</h2><h4 id="一、优势"><a href="#一、优势" class="headerlink" title="一、优势"></a>一、优势</h4><ol>
+<li>HTTPS = HTTP + SSL/TLS<br>HTTPS = HTTP + 加密 + 认证 + 完整性保护</li>
+<li>此外，https 也是使用 http2 的必要条件。 <a href="http://www.ruanyifeng.com/blog/2016/08/http.html#http2" target="_blank" rel="external">关于http2</a></li>
+<li>提升搜索排名。</li>
+</ol>
+<h4 id="二、-劣势"><a href="#二、-劣势" class="headerlink" title="二、 劣势"></a>二、 劣势</h4><ol>
+<li>购买证书是不小的开销。</li>
+<li>加密通信会消耗更多的CPU和内存资源。</li>
+</ol>
+<h2 id="https-or-not"><a href="#https-or-not" class="headerlink" title="https or not"></a>https or not</h2><p>淘宝、京东等电商已经采用https协议，腾讯、美团、新浪、网易等服务提供商仍然采用 http 协议.(时间 2016/12/12)<br>所以，如果你的网站属于电子商务、金融、社交网络等领域的话，那最好是采用 HTTPS 协议；如果是博客站点、宣传类网站、分类信息网站、或者是新闻网站之类的话，酌情考虑是否需要升级，非 HTTPS 网站很容易被劫持并插入广告，影响用户体验。</p>
+<h2 id="https升级步骤"><a href="#https升级步骤" class="headerlink" title="https升级步骤"></a>https升级步骤</h2><h3 id="一、购买证书"><a href="#一、购买证书" class="headerlink" title="一、购买证书"></a>一、购买证书</h3><p>证书分三种认证级别</p>
+<ul>
+<li>域名认证（Domain Validation）：最低级别认证，可以确认申请人拥有这个域名。对于这种证书，浏览器会在地址栏显示一把锁。</li>
+<li>公司认证（Company Validation）：确认域名所有人是哪一家公司，证书里面会包含公司信息。</li>
+<li>扩展认证（Extended Validation）：最高级别的认证，浏览器地址栏会显示公司名。</li>
+</ul>
+<p>还分为三种覆盖范围</p>
+<ul>
+<li>单域名证书：只能用于单一域名，foo.com 的证书不能用于 www.foo.com</li>
+<li>通配符证书：可以用于某个域名及其所有一级子域名，比如 *.foo.com 的证书可以用于 foo.com，也可以用于 www.foo.com</li>
+<li>多域名证书：可以用于多个域名，比如 foo.com 和 bar.com</li>
+</ul>
+<p>调研大公司的证书选择</p>
+<p>注意：通配符证书一般也只能支持到二级域名</p>
+<p><a href="https://www.sslcertificateshop.com/wildcard-ssl-certificates/" target="_blank" rel="external">各提供商通配符证书价格参考</a></p>
+<h3 id="二、-浏览器直接访问-http-资源"><a href="#二、-浏览器直接访问-http-资源" class="headerlink" title="二、 浏览器直接访问 http 资源"></a>二、 浏览器直接访问 http 资源</h3><p>在网站全站 HTTPS 后，如果用户手动敲入网站的 HTTP 地址，或者从其它地方点击了网站的 HTTP 链接，依赖于服务端 301/302 跳转才能使用 HTTPS 服务。<br>如：nginx<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">  listen 80;</div><div class="line">  server_name domain.com www.domain.com;</div><div class="line">  return 301 https://domain.com$request_uri;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>攻击者完全可以在用户发出HTTP请求时，劫持并篡改该请求。<br>另一种情况是恶意网站使用自签名证书，冒充另一个网站，这时浏览器会给出警告，但是许多用户会忽略警告继续访问。</p>
+<h4 id="HSTS-基本使用"><a href="#HSTS-基本使用" class="headerlink" title="HSTS 基本使用"></a>HSTS 基本使用</h4><p>HTTP严格传输安全”（简称 HSTS）的作用，就是强制浏览器只能发出HTTPS请求，并阻止用户接受不安全的证书。HSTS 是一个响应头，格式如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Strict-Transport-Security: max-age=31536000; includeSubDomains</div></pre></td></tr></table></figure>
+<p>上面这段头信息有两个作用。</p>
+<ol>
+<li>在接下来的一年（即31536000秒）中，浏览器只要向example.com或其子域名发送HTTP请求时，必须采用HTTPS来发起连接。用户点击超链接或在地址栏输入<a href="http://www.example.com/，浏览器应当自动将http转写成https，然后直接向https://www.example.com/发送请求。" target="_blank" rel="external">http://www.example.com/，浏览器应当自动将http转写成https，然后直接向https://www.example.com/发送请求。</a></li>
+<li>在接下来的一年中，如果example.com服务器发送的证书无效，用户不能忽略浏览器警告，将无法继续访问该网站。</li>
+</ol>
+<p>HSTS 这个响应头只能用于 HTTPS 响应；网站必须使用默认的 443 端口；必须使用域名，不能是 IP。而且启用 HSTS 之后，一旦网站证书错误，用户无法选择忽略。<br>HSTS 很大程度上解决了 SSL 剥离攻击。只要浏览器曾经与服务器建立过一次安全连接，之后浏览器会强制使用HTTPS，即使链接被换成了HTTP。<br>该方法的主要不足是，用户首次访问网站发出HTTP请求时，是不受HSTS保护的。为了解决这个问题，各浏览器提供商提出HSTS Preload List方案.参见<a href="https://hstspreload.appspot.com/" target="_blank" rel="external">申请加入谷歌HSTS预加载列表</a></p>
+<h3 id="三、资源替换"><a href="#三、资源替换" class="headerlink" title="三、资源替换"></a>三、资源替换</h3><p>https 页面中加载 http 资源称为混合内容(Mixed Content).各浏览器对混合内容的加载将表现不同的行为，为了最好的用户体验，Https 网站中不要出现混合内容，即Https页面中的所有资源都必须是 https 的。</p>
+<p>当前很多支持 HTTPS 的网站出于各种原因，针对老旧浏览器或特殊网络还是允许通过 HTTP 访问。这时候，强烈建议让所有资源服务都同时支持 HTTP/HTTPS 访问。这样只要页面在使用这些资源时省略协议部分，浏览器就能根据主页面协议类型来自动选择 HTTP/HTTPS 资源。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"https://example.com/static/img/blog/ququ.jpg"</span> /&gt;</span></div><div class="line">=&gt;</div><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"//example.com/static/img/blog/ququ.jpg"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<p>针对现代浏览器，还可以通过 upgrade-insecure-requests 这个 <strong>CSP</strong> 指令，让浏览器自动替换。<a href="https://googlechrome.github.io/samples/csp-upgrade-insecure-requests/index.html" target="_blank" rel="external">google提供的demo</a><br>目前支持的浏览器较少 <a href="http://caniuse.mojijs.com/Home/Html/item/key/upgradeinsecurerequests/index.html" target="_blank" rel="external">参考</a><br>HTTP 响应头方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">header(&quot;Content-Security-Policy: upgrade-insecure-requests&quot;);</div></pre></td></tr></table></figure></p>
+<p><code>&lt;meta&gt;</code>标签方式:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;upgrade-insecure-requests&quot;&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="四、服务代理"><a href="#四、服务代理" class="headerlink" title="四、服务代理"></a>四、服务代理</h3><p>在启用 HTTPS 的实际过程中，本站的静态资源和接口相对容易改造，毕竟都可控。但很多第三方资源或接口就是不提供 HTTPS，那就只能在服务端做一层 HTTPS 代理。</p>
+<p>需要注意:</p>
+<ol>
+<li>代理对请求 Referrer、被代理的 URL 都需要做好白名单机制；</li>
+<li>代理会造成第三方通过 REMOTE_ADDR 拿到的是代理 IP，很可能导致这个 IP 被限制请求频率或被封；</li>
+<li><p>代理只能拿到自己域名下的 Cookie，需要从其它域获取 Cookie 的第三方接口被代理后可能不能正常工作；</p>
+<p>另外，对于页面上通过 iframe 嵌入的第三方 HTTP 页面，如果要做 HTTPS 代理，还需要修改页面里的所有资源链接，很容易出问题。对于这种情况，强烈建议联系第三方修改或者换产品方案，不要在 HTTPS 代理上耗费太多精力。</p>
+</li>
+</ol>
+<h3 id="五、-注意"><a href="#五、-注意" class="headerlink" title="五、 注意"></a>五、 注意</h3><h4 id="证书选择"><a href="#证书选择" class="headerlink" title="证书选择"></a>证书选择</h4><p>如果要照顾没有打 XP SP3 补丁的 IE6 用户，只能继续使用 SHA-1 算法实现的SSL证书（SHA-1算法的安全性逐年降低）。</p>
+<h4 id="SSL选择"><a href="#SSL选择" class="headerlink" title="SSL选择"></a>SSL选择</h4><p>IE 6 默认只支持 SSLv2 和 SSLv3，也就是说 HTTPS 网站要支持 IE 6，就必须启用 SSLv3. Nginx 从 1.9.1 开始默认只支持 TLS 的三个版本。</p>
+<p><a href="https://imququ.com/post/sth-about-switch-to-https-2.html" target="_blank" rel="external">更多</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">https</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/27/http-升级-https技术调研/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-修改SSH的默认端口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -764,79 +883,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Lombok" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/03/23/Lombok/">Lombok</a>
-    </h1>
-  
-
-        
-        <a href="/2018/03/23/Lombok/" class="archive-article-date">
-  	<time datetime="2018-03-23T07:11:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-03-23</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Lombok介绍及优点<br>Lombok原理<br>Lombok引入项目<br>IDEA/Eclipse安装Lombok插件<br>Lombok实战Coding<br>反编译大法<br>Lombok验证<br>Lombok工作中需要注意的点<br><a href="https://my.oschina.net/darkness/blog/510808#h3_2" target="_blank" rel="external">https://my.oschina.net/darkness/blog/510808#h3_2</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/03/23/Lombok/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
@@ -930,14 +976,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -951,6 +989,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -978,11 +1024,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1018,7 +1064,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1026,7 +1072,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1038,11 +1100,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1050,19 +1108,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

@@ -159,6 +159,82 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="w-SpringBoot-集成Kaptcha实现一个图片验证码" class="article article-type-w  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/">SpringBoot 集成Kaptcha实现一个图片验证码</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/" class="archive-article-date">
+  	<time datetime="2019-01-14T08:42:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>公司在一次投票活动中，发现有用户恶意刷票。有两种方式：1.直接拿接口刷。2.通过一种专门的刷票软件工具（猜测使用的是手机集控系统批量操作），先注册机器人用户，然后用这个用户进行投票。</p>
+<p>第一种方法是自己接口的漏洞，没有限制一人一票。导致被别人注册一个用户后，拿到接口用同一个用户恶意刷票，这个很好防范。第二种方法本质上操作流程上跟真实用户的操作流程是一样的，只不过他用软件实现了自动化。在注册用户这个功能上，我们之前是用手机验证码来做注册验证的，可是机器是可以拿到发送的验证码，并反填。所以我们针对这种情况，加一个图片验证码，增加注册难度，防止机器恶意注册。</p>
+        
+          <a class="article-more-a" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/14/SpringBoot-集成Kaptcha实现一个图片验证码/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-Docker是个什么东西？" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1022,113 +1098,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-重温数据结构" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/11/重温数据结构/">重温数据结构</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/11/重温数据结构/" class="archive-article-date">
-  	<time datetime="2018-10-11T07:35:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-11</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="重温"><a href="#重温" class="headerlink" title="重温"></a>重温</h2><p>大学时候学习的数据结构这门基础课程已经忘得差不多了，现在开始重拾</p>
-<h2 id="为什么要学习数据结构"><a href="#为什么要学习数据结构" class="headerlink" title="为什么要学习数据结构"></a>为什么要学习数据结构</h2><ul>
-<li>数据结构是程序员同学必学，必会的课程。不会数据结构，严格意义来说不能称之为程序员。</li>
-<li>数据结构研究的是数据如何在计算机中进行组织和存储，使得我们可以高效的获取数据或者修改数据。</li>
-</ul>
-<h2 id="总体而言。数据结构可以分为三种结构"><a href="#总体而言。数据结构可以分为三种结构" class="headerlink" title="总体而言。数据结构可以分为三种结构"></a>总体而言。数据结构可以分为三种结构</h2><h3 id="线性结构"><a href="#线性结构" class="headerlink" title="线性结构"></a>线性结构</h3><ul>
-<li>数组</li>
-<li>栈</li>
-<li>队列</li>
-<li>链表</li>
-<li>哈希表 …</li>
-</ul>
-<h3 id="树结构"><a href="#树结构" class="headerlink" title="树结构"></a>树结构</h3><ul>
-<li>二叉树</li>
-<li>二分搜索树</li>
-<li>AVL</li>
-<li>红黑树</li>
-<li>Treap</li>
-<li>Splay</li>
-<li>堆</li>
-<li>Tril</li>
-<li>线段树</li>
-<li>K-D数</li>
-<li>并查集</li>
-<li>哈夫曼树…</li>
-</ul>
-<h3 id="图结构"><a href="#图结构" class="headerlink" title="图结构"></a>图结构</h3><ul>
-<li>邻接矩阵</li>
-<li>领接表</li>
-</ul>
-<h2 id="在计算机的世界里，数据结构无处不在"><a href="#在计算机的世界里，数据结构无处不在" class="headerlink" title="在计算机的世界里，数据结构无处不在"></a>在计算机的世界里，数据结构无处不在</h2><h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>数据库是我们在应用开发中要大量使用的基础工具，他本身也是从底层实现的一个软件，能够让我们通过sql语句来使用它。要开发这样的一个软件，就必须要使用大量的数据结构。包括:树结构；AVL;红黑树；Treap；伸展树；B树；哈希表等。如果没有这些数据结构，我们是无法开发出数据库的。</p>
-<h3 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h3><p>操作系统本质上也是一个软件，是一个平台性的软件。我们可以在这个平台软件上开发各种各样的应用。要开发这个软件也需要大量的数据结构。举一个简单的例子：快速在多任务间切换，就需要用到系统栈和优先队列（堆）等数据结构。</p>
-<h3 id="文件压缩"><a href="#文件压缩" class="headerlink" title="文件压缩"></a>文件压缩</h3><p>平时我们用的比较多rar压缩软件，png格式的图片，MP3，MP4<br>PDF文件都用到了压缩算法。文件压缩的时候也需要借助数据结构，比如最基础的压缩算法使用的的数据结构就是哈夫曼树。虽然现在这些软件用到的压缩算法的数据结构已经不是哈夫曼树了，而是更加的复杂的数据结构。但不管用什么样的数据结构，数据结构是不可缺少的。</p>
-<h2 id="数据结构是算法的基石"><a href="#数据结构是算法的基石" class="headerlink" title="数据结构是算法的基石"></a>数据结构是算法的基石</h2><p>比如游戏中的寻路算法，用到的就是图论算法。DFS算法使用的是栈这个数据结构，BFS算法使用的是队列这个数据结构。</p>
-<p>计算机科学里面有一句名言：数据结构+算法=程序。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/11/重温数据结构/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -1222,14 +1191,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1243,6 +1204,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1270,11 +1239,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1310,7 +1279,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1318,7 +1287,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1330,11 +1315,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1342,19 +1323,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

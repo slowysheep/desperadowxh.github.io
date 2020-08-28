@@ -159,6 +159,82 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-201607241331" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/07/24/201607241331/">SQL Server中的事务与锁</a>
+    </h1>
+  
+
+        
+        <a href="/2016/07/24/201607241331/" class="archive-article-date">
+  	<time datetime="2016-07-24T05:31:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-07-24</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="在数据库中什么是事务和锁"><a href="#在数据库中什么是事务和锁" class="headerlink" title="在数据库中什么是事务和锁"></a>在数据库中什么是事务和锁</h2><h3 id="数据库事务"><a href="#数据库事务" class="headerlink" title="数据库事务"></a>数据库事务</h3><p>数据库事务是指作为单个逻辑工作单元的一系列操作，要么完全执行，要么完全的不执行。事务处理可以确保除非事务性单元内的所有操作都成功完成，否则不会永久更新面向数据的资源。通过将一组相关操作组合为一个要么全部成功要么全部失败的单元，可以简化错误恢复并使应用程序更加可靠。一个逻辑工作单元要成为事务，必须满足ACID属性，即为原子性，一致性，隔离性，持久性。事务是数据库运行的逻辑工作单元，由DBMS中事务管理子系统负责事务的处理。</p>
+<h4 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h4><p>事务必须是原子工作单元；对于其数据修改，要么全部执行，要么全都不执行。</p>
+<h4 id="一致性"><a href="#一致性" class="headerlink" title="一致性"></a>一致性</h4><p>事务完成时 必须使所有的数据都保持一致的状态</p>
+<h4 id="隔离性"><a href="#隔离性" class="headerlink" title="隔离性"></a>隔离性</h4><p>由并发事务所作的修改必须与任何其它并发事务所作的修改隔离。</p>
+<h4 id="持久性"><a href="#持久性" class="headerlink" title="持久性"></a>持久性</h4><p>事务完成之后，它对于系统的影响是永久性的。该修改即使出现致命的系统故障也将一直保持。</p>
+<h4 id="sqlserver中按照事务的启动与执行方式，可以将事务分为三类"><a href="#sqlserver中按照事务的启动与执行方式，可以将事务分为三类" class="headerlink" title="sqlserver中按照事务的启动与执行方式，可以将事务分为三类"></a>sqlserver中按照事务的启动与执行方式，可以将事务分为三类</h4><p>1.显示事务：也称为用户定义或用户指定的事务，即可以显式地定义启动和结束的事务。分布式事务属于显示事务<br>2.自动提交事务：这是sqlserver默认的一种事务模式，每条sql语句都被看成一个事务进行处理。如果一个语句成功地完成，则提交该语句。如果遇到错误，则回滚该语句。例如一个update的sql语句更新两个字段，你不会见过其中一个字段更新成功，而另外一个没更新成功的情况。<br>3.隐形事务：使用Set IMPLICIT_TRANSACTIONS ON将隐形事务模式打开，不用Begin Transaction开启事务，当一个事务结束，这个模式会自动启用下一个事务，只用Commit Transaction提交事务，Rollback Transaction 回滚事务即可</p>
+<h4 id="显示事务的应用"><a href="#显示事务的应用" class="headerlink" title="显示事务的应用"></a>显示事务的应用</h4><p>常用的语句有4个：<br>Begin Transaction(也可以写成begin tran)：标记事务开始。<br>Commit Transaction（也可以写成commit tran）：事务已经成功执行，数据已经处理妥当。<br>Rollback Transaction（也可以写成rollback tran）：数据处理过程中出错，回滚到没有处理之前的数据状态，或回滚到事务内部的保存点。<br>Save   Transaction（也可以写成save tran）：事务内部设置的保存点，就是事务可以不全部回滚，只回滚到这里，保证事务内部不出错的前提下。<br>我比较喜欢括号中的写法<br><strong>书写事务的基本格式：</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">---开启事务</div><div class="line">begin tran</div><div class="line">--错误扑捉机制</div><div class="line">begin try</div><div class="line">	--这里可以写你的要执行事务的逻辑代码块</div><div class="line">end try</div><div class="line">begin catch</div><div class="line">	--捕捉错误的日志 下面这句话是读取sql数据库系统的错误可以记录在自己的日志表里面，也可以其他自定义的日志系统</div><div class="line">    select Error_number() as ErrorNumber,  --错误代码</div><div class="line">          Error_severity() as ErrorSeverity,  --错误严重级别，级别小于10 try catch 捕获不到</div><div class="line">          Error_state() as ErrorState ,  --错误状态码</div><div class="line">         Error_Procedure() as ErrorProcedure , --出现错误的存储过程或触发器的名称。</div><div class="line">          Error_line() as ErrorLine,  --发生错误的行号</div><div class="line">           Error_message() as ErrorMessage  --错误的具体信息</div><div class="line"></div><div class="line">    if(@@trancount&gt;0) --全局变量@@trancount，事务开启此值+1，他用来判断是有开启事务</div><div class="line">       rollback tran  ---由于出错，这里回滚到开始</div><div class="line">end catch</div><div class="line">if(@@trancount&gt;0)</div><div class="line">commit tran --提交成功</div></pre></td></tr></table></figure></p>
+<p><strong>带save tran事务基本书写格式：</strong><br>save tran的作用就是可以自己设置你要回滚的地方<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">---开启事务</div><div class="line">begin tran</div><div class="line">--错误扑捉机制</div><div class="line">begin try</div><div class="line">	--这里可以写你的要执行事务的逻辑代码块</div><div class="line">	insert into table0 (one,two,three) values(1,2,3)</div><div class="line">	--加入事务保存点</div><div class="line">    save tran save0</div><div class="line">	insert into table1 (one,two,three) values(1,2,3)</div><div class="line">	insert into table2 (one,two,three) values(1,2,3)</div><div class="line">end try</div><div class="line">begin catch</div><div class="line">	--捕捉错误的日志 下面这句话是读取sql数据库系统的错误可以记录在自己的日志表里面，也可以其他自定义的日志系统</div><div class="line">    select Error_number() as ErrorNumber,  --错误代码</div><div class="line">          Error_severity() as ErrorSeverity,  --错误严重级别，级别小于10 try catch 捕获不到</div><div class="line">          Error_state() as ErrorState ,  --错误状态码</div><div class="line">         Error_Procedure() as ErrorProcedure , --出现错误的存储过程或触发器的名称。</div><div class="line">          Error_line() as ErrorLine,  --发生错误的行号</div><div class="line">           Error_message() as ErrorMessage  --错误的具体信息</div><div class="line"></div><div class="line">    if(@@trancount&gt;0) --全局变量@@trancount，事务开启此值+1，他用来判断是有开启事务</div><div class="line">       rollback tran  ---由于出错，这里回滚到开始</div><div class="line">end catch</div><div class="line">if(@@trancount&gt;0)</div><div class="line">rollback tran save0 --提交事务 如果第二条插入数据错误 则回滚到第二条数据，此时数据库里面只有一条数据。如果全部成功，则有三条数据</div></pre></td></tr></table></figure></p>
+<p><strong>使用set xact_abort的事务</strong><br>set xact_abort的作用是当set xact_abort设置为on时，如果Transact—SQL语句产生运行时错误，整个事务将终止并回滚。为OFF时，只回滚产生错误的Transact—SQL语句，而事务将继续进行处理。编译错误（如语法错误）不受不受 SET XACT_ABORT 的影响。对于大多数OLE DB提供程序（包括SQL Server），隐形或显式事务中的数据修改语句必须将xact_abort设置为ON。唯一不需要该选项的情况是提供程序支持嵌套事务时。set xact_abort的设置是在执行或运行时设置，而不是分析时设置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">set xact_abort off</div><div class="line">begin tran </div><div class="line">    --这里可以写你的要执行事务的逻辑代码块</div><div class="line">	insert into table0 (one,two,three) values(1,2,3)</div><div class="line">	insert into table1 (one,two,three) values(1,2,3) --如果这句话为错误的话 那么xact_abort设置为off时，只有这句错误的语句会回滚，其他没有错误的语句是不会回滚</div><div class="line">	insert into table2 (one,two,three) values(1,2,3)</div><div class="line">commit tran</div></pre></td></tr></table></figure>
+<h3 id="数据库的锁"><a href="#数据库的锁" class="headerlink" title="数据库的锁"></a>数据库的锁</h3><p>未完待续…</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sqlserver</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/07/24/201607241331/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-基于hexo的博客系统主题设置" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -482,14 +558,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -503,6 +571,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -530,11 +606,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -570,7 +646,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -578,7 +654,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -590,11 +682,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -602,19 +690,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>

@@ -159,6 +159,79 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-react父组件调用子组件方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/26/react父组件调用子组件方法/">react父组件调用子组件方法</a>
+    </h1>
+  
+
+        
+        <a href="/2020/03/26/react父组件调用子组件方法/" class="archive-article-date">
+  	<time datetime="2020-03-26T07:26:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-03-26</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>实现父组件调用子组件方法：</p>
+<blockquote>
+<p>基本思路：父组件可以通过props把自己的函数方法传递给子组件调用，那么子组件通过这个函数把自己的组件实例传回给父组件，父组件只需要保存这些实例便可以调用子组件的方法</p>
+</blockquote>
+<h2 id="父组件"><a href="#父组件" class="headerlink" title="父组件"></a>父组件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">import React, &#123; Component &#125; from &apos;react&apos;</div><div class="line">import &#123;Layout &#125; from &apos;antd&apos;</div><div class="line">import Friends from &apos;./friends&apos;</div><div class="line">import ChatWindow from &quot;./chatWindow&quot;;</div><div class="line">// 父组件</div><div class="line">class Home extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123; &#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 等待子组件被挂载之后调用子组件方法</div><div class="line">   		this.chatWindow.setChat ()</div><div class="line">   		// 调用friends子组件中的方法</div><div class="line">        this.friends.setFriends ()</div><div class="line">    &#125;</div><div class="line">    // 获取子组件</div><div class="line">    onRef (name, ref) &#123;</div><div class="line">        switch (name) &#123;</div><div class="line">            case &apos;chatWindow&apos;:</div><div class="line">                this.chatWindow = ref</div><div class="line">                break</div><div class="line">            case &apos;friends&apos;:</div><div class="line">                this.friends = ref</div><div class="line">                break</div><div class="line">            default:</div><div class="line">                break</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">  </div><div class="line">    render () &#123;</div><div class="line">        return(</div><div class="line">            &lt;Layout className=&apos;home&apos;&gt;</div><div class="line">            // 好友列表子组件</div><div class="line">                &lt;Friends</div><div class="line">                	 onRef=&#123;this.onRef.bind(this)&#125;</div><div class="line">                /&gt;</div><div class="line">                // 聊天窗口子组件</div><div class="line">                &lt;ChatWindow</div><div class="line">                            onRef=&#123;this.onRef.bind(this)&#125;</div><div class="line">                 /&gt;</div><div class="line">            &lt;/Layout&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default Home</div></pre></td></tr></table></figure>
+<h2 id="子组件"><a href="#子组件" class="headerlink" title="子组件"></a>子组件</h2><h3 id="friends子组件"><a href="#friends子组件" class="headerlink" title="friends子组件"></a>friends子组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import React, &#123;Component&#125; from &apos;react&apos;</div><div class="line"></div><div class="line">class friends extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123;&#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 调用父组件方法把当前实例传给父组件</div><div class="line">        this.props.onRef(&apos;friends&apos;, this)</div><div class="line">    &#125;</div><div class="line">    // 在父组件中调用的方法</div><div class="line">    setFriends () &#123;</div><div class="line">        alert(&apos;子组件friends&apos;)</div><div class="line">    &#125;</div><div class="line">    render () &#123;</div><div class="line">        return (</div><div class="line">            &lt;div className=&apos;friends&apos;&gt;friends&lt;/div&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default friends</div></pre></td></tr></table></figure>
+<h3 id="chatWindow子组件"><a href="#chatWindow子组件" class="headerlink" title="chatWindow子组件"></a>chatWindow子组件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">import React, &#123;Component&#125; from &apos;react&apos;</div><div class="line"></div><div class="line">class chatWindow extends Component&#123;</div><div class="line">    constructor (props) &#123;</div><div class="line">        super(props)</div><div class="line">        this.state = &#123;&#125;</div><div class="line">    &#125;</div><div class="line">    componentDidMount () &#123;</div><div class="line">    	// 调用父组件方法把当前实例传给父组件</div><div class="line">        this.props.onRef(&apos;chatWindow&apos;, this)</div><div class="line">    &#125;</div><div class="line">    // 在父组件中调用的方法</div><div class="line">    setFriends () &#123;</div><div class="line">        alert(&apos;子组件chatWindow&apos;)</div><div class="line">    &#125;</div><div class="line">    render () &#123;</div><div class="line">        return (</div><div class="line">            &lt;div className=&apos;chatWindow&apos;&gt;chatWindow&lt;/div&gt;</div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">export default chatWindow</div></pre></td></tr></table></figure>
+<p>参考链接 <a href="https://blog.csdn.net/qq_35104586/article/details/81612127" target="_blank" rel="external">https://blog.csdn.net/qq_35104586/article/details/81612127</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">react</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/03/26/react父组件调用子组件方法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-React脚手架，Yarn介绍" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -953,88 +1026,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-PMBOK（第六版）-变更八步" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/17/PMBOK（第六版）-变更八步/">PMBOK（第六版）- 变更八步</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/17/PMBOK（第六版）-变更八步/" class="archive-article-date">
-  	<time datetime="2019-06-17T03:12:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-17</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>提交变更请求（正式书面记录）</li>
-<li>评估变更的影响</li>
-<li>寻找解决方案</li>
-<li>请求干系人批准</li>
-<li>更新计划/基准/文件</li>
-<li>通知受变更影响的干系人</li>
-<li>执行批准的变更</li>
-<li>跟踪实施情况</li>
-</ol>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PMP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/PMP/" class="article-tag-list-link color4">PMP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/17/PMBOK（第六版）-变更八步/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1128,14 +1119,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1149,6 +1132,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1176,11 +1167,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1216,7 +1207,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1224,7 +1215,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1236,11 +1243,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1248,19 +1251,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color4">JVM</a>
               </li>
             
             <div class="clearfix"></div>
