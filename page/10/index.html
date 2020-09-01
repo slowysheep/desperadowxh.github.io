@@ -159,6 +159,89 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-201707061052" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/201707061052/">关于脏读 幻读 不可重复读</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/201707061052/" class="archive-article-date">
+  	<time datetime="2017-07-06T02:52:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="脏读"><a href="#脏读" class="headerlink" title="脏读"></a>脏读</h2><p>一个事务读到另一个事务，尚未提交的修改，就是脏读。这里所谓的修改，除了Update操作,不要忘了,还包括Insert和Delete操作。脏读的后果：如果后一个事务回滚，那么它所做的修改，统统都会被撤销。前一个事务读到的数据，就是垃圾数据。</p>
+<p>举个例子：预订房间。<br>有一张Reservation表，往表中插入一条记录，来订购一个房间。<br> 事务1：在Reservation表中插入一条记录，用于预订99号房间。<br> 事务2：查询，尚未预定的房间列表，因为99号房间，已经被事务1预订。所以不在列表中。<br> 事务1：信用卡付款。由于付款失败，导致整个事务回滚。所以插入到Reservatio表中的记录并不置为持久（即它将被删除）。<br>现在99号房间则为可用。<br>所以，事务2所用的是一个无效的房间列表，因为99号房间，已经可用。如果它是最后一个没有被预定的房间，那么这将是一个严重的失误。<br>注：脏读的后果很严重。</p>
+<h2 id="幻读"><a href="#幻读" class="headerlink" title="幻读"></a>幻读</h2><p>事务1读取指定的where子句所返回的一些行。然后，事务2插入一个新行，这个新行也满足事务1使用的查询<br>where子句。然后事务1再次使用相同的查询读取行，但是现在它看到了事务2刚插入的行。这个行被称为幻象，<br>因为对事务1来说，这一行的出现是不可思议的。<br>举个例子：<br>事务1：请求没有预定的，双人床房间列表。<br>事务2：向Reservation表中插入一个新纪录，以预订99号房间，并提交。<br>事务1：再次请求有双人床的未预定的房间列表，99号房间，不再位于列表中。</p>
+<h2 id="不可重复读"><a href="#不可重复读" class="headerlink" title="不可重复读"></a>不可重复读</h2><p>在同一个事务中，再次读取数据时【就是你的select操作】，所读取的数据，和第1次读取的数据，不一样了。就是不可重复读。<br>举个例子：<br> 事务1：查询有双人床房间。99号房间，有双人床。<br> 事务2：将99号房间，改成单人床房间。<br> 事务1：再次执行查询，请求所有双人床房间列表，99号房间不再列表中了。也就是说，事务1，可以看到其他事务所做的修改。  </p>
+<p>在不可重复读，里面，可以看到其他事务所做的修改，而导致2次的查询结果不再一样了。这里的修改，是提交过的。也可以是没有提交的，这种情况同时也是脏读。如果，数据库系统的隔离级别。允许，不可重复读。那么你启动一个事务，并做一个select查询操作。<br>查询到的数据，就有可能，和你第2次，3次…n次，查询到的数据不一样。一般情况下，你只会做一次，select<br>查询，并以这一次的查询数据，作为后续计算的基础。因为允许出现，不可重复读。那么任何<br>时候，查询到的数据，都有可能被其他事务更新，查询的结果将是不确定的。</p>
+<p>注：如果允许，不可重复读，你的查询结果，将是不确定的。一个不确定的结果，你能容忍吗？</p>
+<h2 id="幻读与不可重复读有什么区别"><a href="#幻读与不可重复读有什么区别" class="headerlink" title="幻读与不可重复读有什么区别"></a>幻读与不可重复读有什么区别</h2><h3 id="不可重复读-1"><a href="#不可重复读-1" class="headerlink" title="不可重复读"></a>不可重复读</h3><p>不可重复读的重点是修改:<br>同样的条件, 你读取过的数据, 再次读取出来发现值不一样了<br>例子：<br>在事务1中，Mary 读取了自己的工资为1000,操作并没有完成<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">con1 = getConnection();  </div><div class="line">select salary from employee empId =<span class="string">"Mary"</span>;</div></pre></td></tr></table></figure></p>
+<p>在事务2中，这时财务人员修改了Mary的工资为2000,并提交了事务. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">con2 = getConnection();  </div><div class="line">update employee set salary = <span class="number">2000</span>;  </div><div class="line">con2.commit();</div></pre></td></tr></table></figure>
+<p>在事务1中，Mary 再次读取自己的工资时，工资变为了2000<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//con1  </div><div class="line">select salary from employee empId =&quot;Mary&quot;;</div></pre></td></tr></table></figure></p>
+<p>在一个事务中前后两次读取的结果并不致，导致了不可重复读。  </p>
+<h3 id="幻读-1"><a href="#幻读-1" class="headerlink" title="幻读"></a>幻读</h3><p>幻读的重点在于新增或者删除<br>同样的条件, 第1次和第2次读出来的记录数不一样<br>例子：<br>目前工资为1000的员工有10人。<br>事务1,读取所有工资为1000的员工。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">con1 = getConnection();  </div><div class="line">Select * from employee where salary =<span class="number">1000</span>;</div></pre></td></tr></table></figure></p>
+<p>共读取10条记录<br>这时另一个事务向employee表插入了一条员工记录，工资也为1000<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">con2 = getConnection();  </div><div class="line"><span class="function">Insert into <span class="title">employee</span><span class="params">(empId,salary)</span> <span class="title">values</span><span class="params">(<span class="string">"Lili"</span>,<span class="number">1000</span>)</span></span>;  </div><div class="line">con2.commit();</div></pre></td></tr></table></figure></p>
+<p>事务1再次读取所有工资为1000的员工<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//con1  </div><div class="line">select * from employee where salary =1000;</div></pre></td></tr></table></figure></p>
+<p>共读取到了11条记录，这就产生了幻像读。   </p>
+<p>spring的事务和 数据库的事务有什么关系呢？？？<br>基于元数据的 Spring 声明性事务 :</p>
+<p>Isolation 属性一共支持五种事务设置，具体介绍如下：</p>
+<p>l          DEFAULT 使用数据库设置的隔离级别 ( 默认 ) ，由 DBA 默认的设置来决定隔离级别 .</p>
+<p>l          READ_UNCOMMITTED 会出现脏读、不可重复读、幻读 ( 隔离级别最低，并发性能高 )</p>
+<p>l          READ_COMMITTED  会出现不可重复读、幻读问题（锁定正在读取的行）</p>
+<p>l          REPEATABLE_READ 会出幻读（锁定所读取的所有行）</p>
+<p>l          SERIALIZABLE 保证所有的情况不会发生（锁表）</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/201707061052/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-201707061045" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -797,140 +880,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="w-201608012252" class="article article-type-w  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/01/201608012252/">谷歌 HTML/CSS 规范</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/01/201608012252/" class="archive-article-date">
-  	<time datetime="2016-08-01T14:52:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-01</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章定义了HTML和CSS的格式和代码规范，旨在提高代码质量和协作效率。</p>
-<h2 id="通用的样式规范"><a href="#通用的样式规范" class="headerlink" title="通用的样式规范"></a>通用的样式规范</h2><h3 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h3><p>省略图片，样式，脚本以及其他媒体文件URL的协议部分（http：https：），除非文件在两种协议下都不可以用。这种方案称为protocol-relative URL，好处是无论你是使用HTTPS还是HTTP访问页面，浏览器都会以相同的协议请求页面中资源，同时可以节省一部分字节<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;!-- Not recommended --&gt;</div><div class="line">&lt;script src="https://www.google.com/js/gweb/analytics/autotrack.js"&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;!-- Recommended --&gt;</div><div class="line">&lt;script src="//www.google.com/js/gweb/analytics/autotrack.js"&gt;&lt;/script&gt;</div></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line">.example &#123;</div><div class="line">  <span class="attr">background</span>: url(<span class="string">"https://www.google.com/images/example"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line">.example &#123;</div><div class="line">  <span class="attr">background</span>: url(<span class="string">"//www.google.com/images/example"</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="通用的格式规范"><a href="#通用的格式规范" class="headerlink" title="通用的格式规范"></a>通用的格式规范</h2><h3 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h3><p>一次缩进2个空格，不要使用 tab 或者混合 tab 和空格的缩进。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;ul&gt;</div><div class="line">  &lt;li&gt;Fantastic</div><div class="line">  &lt;li&gt;Great</div><div class="line">&lt;/ul&gt;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.example</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="大小写"><a href="#大小写" class="headerlink" title="大小写"></a>大小写</h3><p>以下都应该用小写：HTML 元素名称，属性，属性值（除非 text/CDATA），CSS 选择器，属性，属性值。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">A</span> <span class="attr">HREF</span>=<span class="string">"/"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">A</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"google.png"</span> <span class="attr">alt</span>=<span class="string">"Google"</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">color</span>: <span class="selector-id">#E5E5E5</span>;</div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line"><span class="selector-tag">color</span>: <span class="selector-id">#e5e5e5</span>;</div></pre></td></tr></table></figure>
-<h3 id="结尾空格"><a href="#结尾空格" class="headerlink" title="结尾空格"></a>结尾空格</h3><p>结尾空格不仅多余，而且在比较代码时会更麻烦。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>What?_</div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Yes please.</div></pre></td></tr></table></figure>
-<h2 id="通用元规范"><a href="#通用元规范" class="headerlink" title="通用元规范"></a>通用元规范</h2><h3 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h3><p>在 HTML 中通过 <meta charset="utf-8"> 指定编码方式，CSS 中不需要指定，因为默认是 UTF-8。</p>
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>使用注释来解释代码：包含的模块，功能以及优点。</p>
-<h3 id="任务项"><a href="#任务项" class="headerlink" title="任务项"></a>任务项</h3><p>用 TODO 来标记待办事项，而不是用一些其他的标记，像 @@。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- <span class="doctag">TODO:</span> remove optional tags --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Apples<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span>Oranges<span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<h2 id="HTML风格规范"><a href="#HTML风格规范" class="headerlink" title="HTML风格规范"></a>HTML风格规范</h2><h3 id="文档类型"><a href="#文档类型" class="headerlink" title="文档类型"></a>文档类型</h3><p>HTML 文档应使用 HTML5 的文档类型：&lt;!DOCTYPE html&gt;。孤立标签无需封闭自身，<br> 不要写成 <br>。</p>
-<h3 id="HTML正确性"><a href="#HTML正确性" class="headerlink" title="HTML正确性"></a>HTML正确性</h3><p>尽可能使用正确的HTML<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">article</span>&gt;</span>This is only a test.</div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">title</span>&gt;</span>Test<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">article</span>&gt;</span>This is only a test.<span class="tag">&lt;/<span class="name">article</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="语义化"><a href="#语义化" class="headerlink" title="语义化"></a>语义化</h3><p>根据使用场景选择正确的 HTML 元素（有时被错误的称为“标签”）。例如，使用 h1 元素创建标题，p 元素创建段落，a 元素创建链接等等。正确的使用 HTML 元素对于可访问性、可重用性以及编码效率都很重要。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onclick</span>=<span class="string">"goToRecommendations();"</span>&gt;</span>All recommendations<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"recommendations/"</span>&gt;</span>All recommendations<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="多媒体元素降级"><a href="#多媒体元素降级" class="headerlink" title="多媒体元素降级"></a>多媒体元素降级</h3><p>对于像图片、视频、canvas 动画等多媒体元素，确保提供其他可访问的内容。图片可以使用替代文本（alt），视频和音频可以使用文字版本。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"spreadsheet.png"</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"spreadsheet.png"</span> <span class="attr">alt</span>=<span class="string">"Spreadsheet screenshot."</span>&gt;</span></div></pre></td></tr></table></figure>
-<h3 id="关注分离"><a href="#关注分离" class="headerlink" title="关注分离"></a>关注分离</h3><p>标记、样式和脚本分离，确保相互耦合最小化。</p>
-<h3 id="实体引用"><a href="#实体引用" class="headerlink" title="实体引用"></a>实体引用</h3><p>如果团队中文件和编辑器使用同样的编码方式，就没必要使用实体引用，如 &mdash;， &rdquo;，&#x263a;，除了一些在 HTML 中有特殊含义的字符（如 &lt; 和 &amp;）以及不可见的字符（如空格）。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line">The currency symbol for the Euro is &amp;ldquo;&amp;eur;&amp;rdquo;.</div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line">The currency symbol for the Euro is “?”.</div></pre></td></tr></table></figure>
-<h3 id="type属性"><a href="#type属性" class="headerlink" title="type属性"></a>type属性</h3><p>在引用样式表和脚本时，不要指定 type 属性，除非不是 CSS 或 JavaScript。因为 HTML5 中已经默认指定样式变的 type 是 text/css，脚本的type 是 text/javascript。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"//www.google.com/css/maia.css"</span></span></div><div class="line"> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"//www.google.com/css/maia.css"</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//www.google.com/js/gweb/analytics/autotrack.js"</span></span></div><div class="line">  <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;<span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"//www.google.com/js/gweb/analytics/autotrack.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="HTML格式规范"><a href="#HTML格式规范" class="headerlink" title="HTML格式规范"></a>HTML格式规范</h2><h3 id="HTML-引号"><a href="#HTML-引号" class="headerlink" title="HTML 引号"></a>HTML 引号</h3><p>属性值用双引号。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Not recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">'maia-button maia-button-secondary'</span>&gt;</span>Sign in<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- Recommended --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"maia-button maia-button-secondary"</span>&gt;</span>Sign in<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
-<h2 id="CSS风格规范"><a href="#CSS风格规范" class="headerlink" title="CSS风格规范"></a>CSS风格规范</h2><h3 id="ID-和-Class-命名"><a href="#ID-和-Class-命名" class="headerlink" title="ID 和 Class 命名"></a>ID 和 Class 命名</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended: meaningless */</span><span class="selector-id">#yee-1901</span> &#123;&#125;<span class="comment">/* Not recommended: presentational */</span></div><div class="line"><span class="selector-class">.button-green</span> &#123;&#125;</div><div class="line"><span class="selector-class">.clear</span> &#123;&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended: specific */</span><span class="selector-id">#gallery</span> &#123;&#125;<span class="selector-id">#login</span> &#123;&#125;<span class="selector-class">.video</span> &#123;&#125;</div><div class="line"><span class="comment">/* Recommended: generic */</span></div><div class="line"><span class="selector-class">.aux</span> &#123;&#125;</div><div class="line"><span class="selector-class">.alt</span> &#123;&#125;</div></pre></td></tr></table></figure>
-<h3 id="ID-和-Class-命名风格"><a href="#ID-和-Class-命名风格" class="headerlink" title="ID 和 Class 命名风格"></a>ID 和 Class 命名风格</h3><p>id 和 class 应该尽量简短，同时要容易理解。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span><span class="selector-id">#navigation</span> &#123;&#125;<span class="selector-class">.atr</span> &#123;&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span><span class="selector-id">#nav</span> &#123;&#125;<span class="selector-class">.author</span> &#123;&#125;</div></pre></td></tr></table></figure>
-<h3 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h3><p>除非需要，否则不要在 id 或 class 前加元素名。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">ul</span><span class="selector-id">#example</span> &#123;&#125;<span class="selector-tag">div</span><span class="selector-class">.error</span> &#123;&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span><span class="selector-id">#example</span> &#123;&#125;<span class="selector-class">.error</span> &#123;&#125;</div></pre></td></tr></table></figure>
-<h3 id="属性简写"><a href="#属性简写" class="headerlink" title="属性简写"></a>属性简写</h3><p>尽量使用 CSS 中可以简写的属性 (如 font)，可以提高编码效率以及代码可读性。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">border-top-style</span>: <span class="selector-tag">none</span>;</div><div class="line"><span class="selector-tag">font-family</span>: <span class="selector-tag">palatino</span>, <span class="selector-tag">georgia</span>, <span class="selector-tag">serif</span>;</div><div class="line"><span class="selector-tag">font-size</span>: 100%;</div><div class="line"><span class="selector-tag">line-height</span>: 1<span class="selector-class">.6</span>;</div><div class="line"><span class="selector-tag">padding-bottom</span>: 2<span class="selector-tag">em</span>;</div><div class="line"><span class="selector-tag">padding-left</span>: 1<span class="selector-tag">em</span>;</div><div class="line"><span class="selector-tag">padding-right</span>: 1<span class="selector-tag">em</span>;</div><div class="line"><span class="selector-tag">padding-top</span>: 0;</div></pre></td></tr></table></figure></p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">/* Recommended */</div><div class="line">border-top: 0;</div><div class="line">font: 100%/1.6 palatino, georgia, serif;</div><div class="line">padding: 0 1em 2em;</div></pre></td></tr></table></figure>
-<h3 id="0和单位"><a href="#0和单位" class="headerlink" title="0和单位"></a>0和单位</h3><p>值为 0 时不用添加单位。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">margin</span>: 0;</div><div class="line"><span class="selector-tag">padding</span>: 0;</div></pre></td></tr></table></figure></p>
-<h3 id="开头的0"><a href="#开头的0" class="headerlink" title="开头的0"></a>开头的0</h3><p>值在 -1 和 1 之间时，不需要加 0。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">font-size</span>: <span class="selector-class">.8em</span>;</div></pre></td></tr></table></figure></p>
-<h3 id="16进制表示法"><a href="#16进制表示法" class="headerlink" title="16进制表示法"></a>16进制表示法</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">color</span>: <span class="selector-id">#eebbcc</span>;</div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line"><span class="selector-tag">color</span>: <span class="selector-id">#ebc</span>;</div></pre></td></tr></table></figure>
-<h3 id="前缀"><a href="#前缀" class="headerlink" title="前缀"></a>前缀</h3><p>使用带前缀的命名空间可以防止命名冲突，同时提高代码可维护性。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.adw-help</span> &#123;&#125; <span class="comment">/* AdWords */</span><span class="selector-id">#maia-note</span> &#123;&#125; <span class="comment">/* Maia */</span></div></pre></td></tr></table></figure></p>
-<h3 id="ID-和-Class-命名分隔符"><a href="#ID-和-Class-命名分隔符" class="headerlink" title="ID 和 Class 命名分隔符"></a>ID 和 Class 命名分隔符</h3><p>选择器中使用连字符可以提高可读性。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended: does not separate the words “demo” and “image” */</span></div><div class="line"><span class="selector-class">.demoimage</span> &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">/* Not recommended: uses underscore instead of hyphen */</span></div><div class="line"><span class="selector-class">.error_status</span> &#123;&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span><span class="selector-id">#video-id</span> &#123;&#125;<span class="selector-class">.ads-sample</span> &#123;&#125;</div></pre></td></tr></table></figure>
-<h2 id="CSS格式规范"><a href="#CSS格式规范" class="headerlink" title="CSS格式规范"></a>CSS格式规范</h2><h3 id="书写顺序"><a href="#书写顺序" class="headerlink" title="书写顺序"></a>书写顺序</h3><p>按照属性首字母顺序书写 CSS 易于阅读和维护，排序时忽略带有浏览器前缀的属性。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">background</span>: <span class="selector-tag">fuchsia</span>;</div><div class="line"><span class="selector-tag">border</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span>;</div><div class="line"><span class="selector-tag">-moz-border-radius</span>: 4<span class="selector-tag">px</span>;</div><div class="line"><span class="selector-tag">-webkit-border-radius</span>: 4<span class="selector-tag">px</span>;</div><div class="line"><span class="selector-tag">border-radius</span>: 4<span class="selector-tag">px</span>;</div><div class="line"><span class="selector-tag">color</span>: <span class="selector-tag">black</span>;</div><div class="line"><span class="selector-tag">text-align</span>: <span class="selector-tag">center</span>;</div><div class="line"><span class="selector-tag">text-indent</span>: 2<span class="selector-tag">em</span>;</div></pre></td></tr></table></figure></p>
-<h3 id="块级内容缩进"><a href="#块级内容缩进" class="headerlink" title="块级内容缩进"></a>块级内容缩进</h3><p>为了反映层级关系和提高可读性，块级内容都应缩进。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">media</span> screen, projection &#123;</div><div class="line"></div><div class="line">  <span class="selector-tag">html</span> &#123;</div><div class="line">    <span class="attribute">background</span>: <span class="number">#fff</span>;</div><div class="line">    <span class="attribute">color</span>: <span class="number">#444</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="声明结束"><a href="#声明结束" class="headerlink" title="声明结束"></a>声明结束</h3><p>每行 CSS 都应以分号结尾。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-class">.test</span> &#123;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100px</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line"><span class="selector-class">.test</span> &#123;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="属性名结尾"><a href="#属性名结尾" class="headerlink" title="属性名结尾"></a>属性名结尾</h3><p>属性名和值之间都应有一个空格。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">h3</span> &#123;</div><div class="line">  <span class="attribute">font-weight</span>:bold;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line"><span class="selector-tag">h3</span> &#123;</div><div class="line">  <span class="attribute">font-weight</span>: bold;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="声明样式块的分隔"><a href="#声明样式块的分隔" class="headerlink" title="声明样式块的分隔"></a>声明样式块的分隔</h3><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended: missing space */</span><span class="selector-id">#video</span>&#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">1em</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* Not recommended: unnecessary line break */</span><span class="selector-id">#video</span>&#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">1em</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span><span class="selector-id">#video</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">1em</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="选择器分隔"><a href="#选择器分隔" class="headerlink" title="选择器分隔"></a>选择器分隔</h3><p>每个选择器都另起一行。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-pseudo">:focus</span>, <span class="selector-tag">a</span><span class="selector-pseudo">:active</span> &#123;</div><div class="line">  <span class="attribute">position</span>: relative; <span class="attribute">top</span>: <span class="number">1px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span></div><div class="line"><span class="selector-tag">h1</span>,</div><div class="line"><span class="selector-tag">h2</span>,</div><div class="line"><span class="selector-tag">h3</span> &#123;</div><div class="line">  <span class="attribute">font-weight</span>: normal;</div><div class="line">  <span class="attribute">line-height</span>: <span class="number">1.2</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="规则分隔"><a href="#规则分隔" class="headerlink" title="规则分隔"></a>规则分隔</h3><p>规则之间都用空行隔开。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#fff</span>;&#125;</div><div class="line"></div><div class="line"><span class="selector-tag">body</span> &#123;</div><div class="line">  <span class="attribute">margin</span>: auto;</div><div class="line">  <span class="attribute">width</span>: <span class="number">50%</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h3 id="CSS引号"><a href="#CSS引号" class="headerlink" title="CSS引号"></a>CSS引号</h3><p>属性选择器和属性值用单引号，URI 的值不需要引号。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Not recommended */</span>@<span class="keyword">import</span> url(<span class="string">"//www.google.com/css/maia.css"</span>);<span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-family</span>: <span class="string">"open sans"</span>, arial, sans-serif;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Recommended */</span>@<span class="keyword">import</span> url(//www.google.com/css/maia.css);<span class="selector-tag">html</span> &#123;</div><div class="line">  <span class="attribute">font-family</span>: <span class="string">'open sans'</span>, arial, sans-serif;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="CSS元规则"><a href="#CSS元规则" class="headerlink" title="CSS元规则"></a>CSS元规则</h2><h3 id="分段注释"><a href="#分段注释" class="headerlink" title="分段注释"></a>分段注释</h3><p>用注释把 CSS 分成各个部分。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* Header */</span><span class="selector-id">#adw-header</span> &#123;&#125;<span class="comment">/* Footer */</span><span class="selector-id">#adw-footer</span> &#123;&#125;<span class="comment">/* Gallery */</span></div><div class="line"></div><div class="line"><span class="selector-class">.adw-gallery</span> &#123;&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>坚持遵循代码规范。</p>
-<p>写代码前先看看周围同事的代码，然后决定代码风格。</p>
-<p>代码规范的意义在于提供一个参照物。这里提供了一份全局的规范，但是你也得参照公司内部的规范，否则阅读你代码的人会很痛苦。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">HTML</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">CSS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/01/201608012252/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
@@ -1100,11 +1049,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1112,7 +1061,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1120,7 +1069,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1132,11 +1085,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1145,10 +1098,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">

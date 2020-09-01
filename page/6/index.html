@@ -159,6 +159,69 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-如何在Hexo中对文章md文件分类" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/14/如何在Hexo中对文章md文件分类/">如何在Hexo下的_post文件夹下中对文章markdown文件按年月日存放</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/14/如何在Hexo中对文章md文件分类/" class="archive-article-date">
+  	<time datetime="2019-01-14T14:40:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在用hexo写博客的时候，发现每次新建一篇文章就会在_post文件下面下面生成一个makedown文件，导致后面文件越来越多，不方便查找。</p>
+<p>在hexo框架下_config.yml文件内配置每次新建文章按照年月日存放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">new_post_name: :year/:month/:day/:title.md</div></pre></td></tr></table></figure></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/14/如何在Hexo中对文章md文件分类/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="w-SpringBoot-集成Kaptcha实现一个图片验证码" class="article article-type-w  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -985,119 +1048,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-深入理解java的-i-，i-语句" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/16/深入理解java的-i-，i-语句/">深入理解java的++i ，i++语句</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/16/深入理解java的-i-，i-语句/" class="archive-article-date">
-  	<time datetime="2018-10-16T02:18:06.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-16</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在几乎所有的命令式编程语言中，必然都会有<code>i++</code> 和 <code>++i</code> 这种语法。在编程启蒙教材《C语言程序设计》一书中，也专门解释了这两条语句的区别。有些语言中 <code>i++</code> 和 <code>++i</code> 既可以作为左值又可以作为右值，笔者专门测试了一下，在<code>Java</code>语言中，这两条语句都只能作为右值，而不能作为左值。同时，它们都可以作为独立的一条指令执行。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">int i = 0;</div><div class="line">int j1 = i++; // 正确</div><div class="line">int j2 = ++i; // 正确</div><div class="line">i++; // 正确</div><div class="line">++i; // 正确</div><div class="line">i++ = 5; // 编译不通过</div><div class="line">++i = 5; // 编译不通过</div></pre></td></tr></table></figure></p>
-<p>关于<code>i++</code>和<code>++i</code>的区别，稍微有经验的程序员都或多或少都是了解的，为了文章的完整性，本文也通过实例来简单地解释一下。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    int i = 1;</div><div class="line">    int j1 = i++;</div><div class="line">    System.out.println(&quot;j1=&quot; + j1); // 输出 j1=1</div><div class="line">    System.out.println(&quot;i=&quot; + i); // 输出 i=2</div><div class="line">&#125;</div><div class="line">&#123;</div><div class="line">    int i = 1;</div><div class="line">    int j2 = ++i;</div><div class="line">    System.out.println(&quot;j2=&quot; + j2); // 输出 j2=2</div><div class="line">    System.out.println(&quot;i=&quot; + i); // 输出 i=2</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上面的例子中可以看到，无论是i++  和++i 指令，对于i变量本身来说是没有任何区别，指令执行的结果都是<code>i</code>变量的值加1。而对于j1和j2来说，这就是区别所在。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">int i = 1;</div><div class="line">int j1 = i++; // 先将i的原始值（1）赋值给变量j1（1），然后i变量的值加1</div><div class="line">int j1 = ++i; // 先将i变量的值加1，然后将i的当前值（2）赋值给变量j1（2）</div></pre></td></tr></table></figure>
-<p>上面的内容是编程基础，是程序员必须要掌握的知识点。本文将在此基础上更加深入地研究其实现原理和陷阱，也有一定的深度。在读本文之前，您应该了解：</p>
-<ul>
-<li>多线程相关知识</li>
-<li>Java编译相关知识</li>
-<li>JMM（Java内存模型）</li>
-</ul>
-<p>本文接下来的主要内容包括：</p>
-<ul>
-<li>Java中i++ 和 ++i的实现原理</li>
-<li>在使用i++ 和 ++i时可能会遇到的一些“坑”</li>
-</ul>
-<h2 id="i-和-i的实现原理"><a href="#i-和-i的实现原理" class="headerlink" title="i++ 和 ++i的实现原理"></a>i++ 和 ++i的实现原理</h2><p>接下来让我们深入到编译后的字节码层面上来了解i++和++i的实现原理，为了方便对比，笔者将这两个指令分别放在2个不同的方法中执行，源代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class Test &#123;</div><div class="line">    public void testIPlus() &#123;</div><div class="line">        int i = 0;</div><div class="line">        int j = i++;</div><div class="line">    &#125;</div><div class="line">    public void testPlusI() &#123;</div><div class="line">        int i = 0;</div><div class="line">        int j = ++i;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>将上面的源代码编译之后，使用<code>javap</code>命令查看编译生成的代码（忽略次要代码）如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">...</div><div class="line">&#123;</div><div class="line">  ... </div><div class="line">  public void testIPlus();</div><div class="line">    descriptor: ()V</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=1, locals=3, args_size=1</div><div class="line">         0: iconst_0               // 生成整数0</div><div class="line">         1: istore_1               // 将整数0赋值给1号存储单元（即变量i）</div><div class="line">         2: iload_1                // 将1号存储单元的值加载到数据栈（此时 i=0，栈顶值为0）</div><div class="line">         3: iinc          1, 1     // 1号存储单元的值+1（此时 i=1）</div><div class="line">         6: istore_2               // 将数据栈顶的值（0）取出来赋值给2号存储单元（即变量j，此时i=1，j=0）</div><div class="line">         7: return                 // 返回时：i=1，j=0</div><div class="line">      LineNumberTable:</div><div class="line">        line 4: 0</div><div class="line">        line 5: 2</div><div class="line">        line 6: 7</div><div class="line">  public void testPlusI();</div><div class="line">    descriptor: ()V</div><div class="line">    flags: ACC_PUBLIC</div><div class="line">    Code:</div><div class="line">      stack=1, locals=3, args_size=1</div><div class="line">         0: iconst_0                // 生成整数0</div><div class="line">         1: istore_1                // 将整数0赋值给1号存储单元（即变量i）</div><div class="line">         2: iinc          1, 1      // 1号存储单元的值+1（此时 i=1）</div><div class="line">         5: iload_1                 // 将1号存储单元的值加载到数据栈（此时 i=1，栈顶值为1）</div><div class="line">         6: istore_2                // 将数据栈顶的值（1）取出来赋值给2号存储单元（即变量j，此时i=1，j=1）</div><div class="line">         7: return                  // 返回时：i=1，j=1</div><div class="line">      LineNumberTable:</div><div class="line">        line 9: 0</div><div class="line">        line 10: 2</div><div class="line">        line 11: 7</div><div class="line">&#125;</div><div class="line">...</div></pre></td></tr></table></figure></p>
-<h2 id="i-和-i在使用时的一些坑"><a href="#i-和-i在使用时的一些坑" class="headerlink" title="i++ 和 ++i在使用时的一些坑"></a>i++ 和 ++i在使用时的一些坑</h2><p>i++ 和 ++i在一些特殊场景下可能会产生意想不到的结果，本节介绍两种会导致结果混乱的使用场景，并剖析其原因。</p>
-<h3 id="i-i-的导致的结果“异常”"><a href="#i-i-的导致的结果“异常”" class="headerlink" title="i = i++的导致的结果“异常”"></a>i = i++的导致的结果“异常”</h3><p>首先来看一下下面代码执行后的结果。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">int i = 0;</div><div class="line">i = i++;</div><div class="line">System.out.println(&quot;i=&quot; + i); // 输出 i=0</div></pre></td></tr></table></figure>
-<p>正常来讲，执行的结果应该是：<code>i=1，实际结果却是：i=0，这多少会让人有些诧异。为什么会出现这种情况呢？我们来从编码后的代码中找答案。上面的代码编译后的核心代码如下：</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">0: iconst_0                          // 生成整数0</div><div class="line">1: istore_1                          // 将整数0赋值给1号存储单元（即变量i，i=0）</div><div class="line">2: iload_1                           // 将1号存储单元的值加载到数据栈（此时 i=0，栈顶值为0）</div><div class="line">3: iinc          1, 1                // 号存储单元的值+1（此时 i=1）</div><div class="line">6: istore_1                          // 将数据栈顶的值（0）取出来赋值给1号存储单元（即变量i，此时i=0）</div><div class="line">7: getstatic     #16                 // 下面是打印到控制台指令</div><div class="line">10: new           #22               </div><div class="line">13: dup</div><div class="line">14: ldc           #24                 </div><div class="line">16: invokespecial #26                 </div><div class="line">19: iload_1</div><div class="line">20: invokevirtual #29                </div><div class="line">23: invokevirtual #33                 </div><div class="line">26: invokevirtual #37                 </div><div class="line">29: return</div></pre></td></tr></table></figure>
-<p>从编码指令可以看出，<code>i</code>被栈顶值所覆盖，导致最终i的值仍然是i的初始值。无论重复多少次i = i++操作，最终i的值都是其初始值。</p>
-<p><code>i++</code>会产生这样的结果，那么<code>++i</code>又会是怎样呢？同样的代码顺序，将<code>i++</code>替换成<code>++i</code>如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">int i = 0;</div><div class="line">i = ++i; // IDE抛出【The assignment to variable i has no effect】警告</div><div class="line">System.out.println(&quot;i=&quot; + i); // 输出i=1</div></pre></td></tr></table></figure>
-<p>可以看到，使用<code>++i</code>时出现了“正确”的结果，同时Eclipse IDE中抛出【The assignment to variable i has no effect】警告，警告的意思是将值赋给变量i毫无作用，并不会改变i的值。也就是说：<code>i = ++i</code>等价于<code>++i</code>。</p>
-<h3 id="多线程并发引发的混乱"><a href="#多线程并发引发的混乱" class="headerlink" title="多线程并发引发的混乱"></a>多线程并发引发的混乱</h3><p>先来看看之前博客中的一个<a href="http://hinylover.space/2016/09/17/relearn-java-thread/#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5" target="_blank" rel="external">例子</a>，例子中展示了在多线程环境下由++i操作引起的数据混乱。引发混乱的原因是：<code>++i</code>操作不是原子操作。</p>
-<p>虽然在<code>Java</code>中<code>++i</code>是一条语句，字节码层面上也是对应<code>iinc</code>这条JVM指令，<code>但是从最底层的CPU层面上来说，++i操作大致可以分解为以下3个指令：</code></p>
-<ul>
-<li>取数</li>
-<li>累加</li>
-<li>存储</li>
-</ul>
-<p>其中的一条指令可以保证是原子操作，但是3条指令合在一起却不是，这就导致了++i语句不是原子操作。</p>
-<p>如果变量<code>i</code>用<code>volatile</code>修饰是否可以保证<code>++i</code>是原子操作呢，实际上这也是不行的。至于原因，以后会专门写文章介绍<code>volatile</code>等关键词的意义。如果要保证累加操作的原子性，可以采取下面的方法：</p>
-<ul>
-<li>将<code>++i</code>置于同步块中，可以是<code>synchronized</code>或者J.U.C中的排他锁（如<a href="http://hinylover.space/2016/09/17/relearn-java-thread/#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5" target="_blank" rel="external">ReentrantLock</a>等）。</li>
-<li>使用原子性（Atomic）类替换<code>++i</code>，具体使用哪个类由变量类型决定。如果<code>i</code>是整形，则使用<code>AtomicInteger</code>类，其中的<code>AtomicInteger#addAndGet()</code>就对应着<code>++i</code>语句，不过它是原子性操作。</li>
-</ul>
-<p>本文转载自(<a href="http://hinylover.space/2017/07/30/java-i-self-increament/" target="_blank" rel="external">http://hinylover.space/2017/07/30/java-i-self-increament/</a>)</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/16/深入理解java的-i-，i-语句/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -1267,11 +1217,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1279,7 +1229,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1287,7 +1237,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1299,11 +1253,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1312,10 +1266,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">RocketMQ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
