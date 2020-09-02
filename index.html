@@ -159,6 +159,125 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-性能监控与故障处理工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/02/性能监控与故障处理工具/">性能监控与故障处理工具</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/02/性能监控与故障处理工具/" class="archive-article-date">
+  	<time datetime="2020-09-02T07:47:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-02</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="JVM监控工具的作用"><a href="#JVM监控工具的作用" class="headerlink" title="JVM监控工具的作用"></a>JVM监控工具的作用</h2><ol>
+<li>对jvm运行期间的内部情况进行监控，比如：对jvm参数，cpu，内存，堆等信息的查看</li>
+<li>辅助进行性能调优</li>
+<li>辅助解决应用运行时的一些问题，比如：OutOfMemoryError，内存泄漏，线程死锁，锁争用，Java进程消耗CPU过高等等<h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h3></li>
+<li>jps（JVM Process Status Tool）：主要用来输出JVM中运行的进程状态信息，语法格式如下：jps[options][hostid]</li>
+<li>hostid字符串的语法与URI的语法基本一致：[protocol:][[//]hostname][:port][/servername],如果不指定hostid，默认为当前主机或服务器</li>
+</ol>
+<h3 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h3><ol>
+<li>打印给定进程或核心文件或远程调试服务器的配置信息。语法格式：jinfo[option] pid #指定进程号（pid）的进程</li>
+<li>jinfo[option]<executable <core=""> #指定核心文件</executable></li>
+<li>jinfo[option][server-id@]<remote-hostname-or-ip>#指定远程调式服务器</remote-hostname-or-ip></li>
+</ol>
+<h3 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h3><ol>
+<li>jstack主要用来查看某个Java进程内的线程堆栈信息。语法格式如下：jstack [option] pid</li>
+<li>jstack [option] executable core</li>
+<li>jstack [option] [server -id@]remote-hostname-or-ip</li>
+</ol>
+<h3 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h3><ol>
+<li>jmap用来查看堆内存使用情况，语法格式如下：jmap[option] pid</li>
+<li>jmap [option] executable core</li>
+<li>jmap [option] [server -id@]remote-hostname-or-ip</li>
+</ol>
+<h3 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h3><ol>
+<li>JVM统计监测工具，查看各个区内存的GC的情况</li>
+<li>语法格式如下：jstat[generalOption | outputOptions vmid [interval[s|ms][count]]]</li>
+</ol>
+<h3 id="jstated"><a href="#jstated" class="headerlink" title="jstated"></a>jstated</h3><ol>
+<li>虚拟机的jstat守护进程，主要用于监控JVM的创建与终止，并提供一个接口，以允许远程监视工具附加到本地系统上允许的JVM</li>
+<li>语法格式：jstated [options]</li>
+</ol>
+<h3 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h3><ol>
+<li>JVM诊断命令工具，将诊断命令请求发送到正在允许的Java虚拟机，比如可以用来导出堆，查看java进程,导出线程信息，执行GC等</li>
+</ol>
+<h2 id="图形化工具"><a href="#图形化工具" class="headerlink" title="图形化工具"></a>图形化工具</h2><h3 id="jconsole"><a href="#jconsole" class="headerlink" title="jconsole"></a>jconsole</h3><ol>
+<li>一个用于监视Java虚拟机的符合JMX的图形工具。它可以监视本地和远程JVM，还可以监视和管理应用程序</li>
+</ol>
+<h3 id="jmc"><a href="#jmc" class="headerlink" title="jmc"></a>jmc</h3><ol>
+<li>jmc(JDK Mission Control) Java任务控制（JMC）客户端包括用于监视和管理Java应用程序的工具，而不会引入通常与这些类型的工具相关联的性能开销</li>
+</ol>
+<h3 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h3><ol>
+<li>一个图形工具，它提供有关在Java虚拟机中运行的基于Java技术的应用程序的详细信息</li>
+<li>Java VisualVM提供内存的CPU分析，堆转储分析，内存泄漏检测，访问MBean和垃圾回收。</li>
+</ol>
+<h2 id="两种远程的连接方式"><a href="#两种远程的连接方式" class="headerlink" title="两种远程的连接方式"></a>两种远程的连接方式</h2><ol>
+<li>JMX连接可以查看:系统信息，CPU使用情况，线程多少，手动执行垃圾回收等比较偏于系统级层面的信息</li>
+<li>jstatd连接方式可以提供：JVM内存分布详细信息，垃圾回收分布图，线程详细信息，甚至可以看到某个对象使用内存的大小</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/02/性能监控与故障处理工具/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-JVM对高效并发的支持" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1043,75 +1162,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-如何用js的得到当前页面的url的信息方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/09/如何用js的得到当前页面的url的信息方法/">如何用js的得到当前页面的url的信息方法</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/09/如何用js的得到当前页面的url的信息方法/" class="archive-article-date">
-  	<time datetime="2020-07-09T00:48:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-09</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="设置或获取对象指定的文件名或路径"><a href="#设置或获取对象指定的文件名或路径" class="headerlink" title="设置或获取对象指定的文件名或路径"></a>设置或获取对象指定的文件名或路径</h1><p><code>window.location.pathname</code></p>
-<h1 id="设置或获取整个-URL-为字符串"><a href="#设置或获取整个-URL-为字符串" class="headerlink" title="设置或获取整个 URL 为字符串"></a>设置或获取整个 URL 为字符串</h1><p><code>window.location.href</code></p>
-<h1 id="设置或获取与-URL-关联的端口"><a href="#设置或获取与-URL-关联的端口" class="headerlink" title="设置或获取与 URL 关联的端口"></a>设置或获取与 URL 关联的端口</h1><p><code>window.location.port</code></p>
-<h1 id="设置或获取-URL-的协议部分"><a href="#设置或获取-URL-的协议部分" class="headerlink" title="设置或获取 URL 的协议部分"></a>设置或获取 URL 的协议部分</h1><p><code>window.location.protocol</code></p>
-<h1 id="设置或获取-href-属性中在井号“-”后面的分段"><a href="#设置或获取-href-属性中在井号“-”后面的分段" class="headerlink" title="设置或获取 href 属性中在井号“#”后面的分段"></a>设置或获取 href 属性中在井号“#”后面的分段</h1><p><code>window.location.hash</code></p>
-<h1 id="设置或获取-location-或-URL-的-hostname-和-port"><a href="#设置或获取-location-或-URL-的-hostname-和-port" class="headerlink" title="设置或获取 location 或 URL 的 hostname 和 port"></a>设置或获取 location 或 URL 的 hostname 和 port</h1><p>window.location.host`</p>
-<h1 id="设置或获取-href-属性中跟在问号后面的部分"><a href="#设置或获取-href-属性中跟在问号后面的部分" class="headerlink" title="设置或获取 href 属性中跟在问号后面的部分"></a>设置或获取 href 属性中跟在问号后面的部分</h1><p><code>window.location.search</code></p>
-<h1 id="获取当前网页的域名"><a href="#获取当前网页的域名" class="headerlink" title="获取当前网页的域名"></a>获取当前网页的域名</h1><p><code>document.domain</code></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/09/如何用js的得到当前页面的url的信息方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1209,19 +1259,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1241,6 +1279,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
@@ -1249,15 +1291,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1281,11 +1331,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1293,7 +1343,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1301,7 +1351,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">

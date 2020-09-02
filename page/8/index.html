@@ -159,6 +159,115 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-scp命令详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/18/scp命令详解/">scp命令详解</a>
+    </h1>
+  
+
+        
+        <a href="/2018/07/18/scp命令详解/" class="archive-article-date">
+  	<time datetime="2018-07-18T01:57:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-07-18</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有两台服务器ip分别为：<br>A 104.161.65.18<br>B 56.226.25.73<br>第一种情况：在A服务器上操作，将B服务器上的/home/wxh/目录下所有的文件复制到本地的/root目录下。命令为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp -r www@56.226.25.73:/home/wxh /root</div></pre></td></tr></table></figure></p>
+<p>第二种情况：在A服务器上将/home/wxh目录下的所有文件传输到B服务器上/home/wxh目录下，命令为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">scp -r /home/wxh  www@56.226.25.73:/home/wxh</div></pre></td></tr></table></figure></p>
+<p>注意：不需要事先在B服务器上去建一个wxh目录。传输的过程中，如果发现没有wxh目录，会自动生成一个wxh目录。如果建了一个wxh目录，以上A服务器上的文件会传到B服务的/home/wxh/wxh下面，会多一个wxh目录。  </p>
+<p>命令详解：</p>
+<p>scp是secure copy的简写，用于在Linux下进行远程拷贝文件的命令，和它类似的命令有cp，不过cp只是在本机进行拷贝不能跨服务器，而且scp传输是加密的。可能会稍微影响一下速度。当你服务器硬盘变为只读 read only system时，用scp可以帮你把文件移出来。另外，scp还非常不占资源，不会提高多少系统负荷，在这一点上，rsync就远远不及它了。虽然 rsync比scp会快一点，但当小文件众多的情况下，rsync会导致硬盘I/O非常高，而scp基本不影响系统正常使用。</p>
+<p>1．命令格式：</p>
+<p>scp [参数] [原路径] [目标路径]</p>
+<p>2．命令功能：</p>
+<p>scp是 secure copy的缩写, scp是linux系统下基于ssh登陆进行安全的远程文件拷贝命令。linux的scp命令可以在linux服务器之间复制文件和目录。</p>
+<p>3．命令参数：</p>
+<p>-1  强制scp命令使用协议ssh1  </p>
+<p>-2  强制scp命令使用协议ssh2  </p>
+<p>-4  强制scp命令只使用IPv4寻址  </p>
+<p>-6  强制scp命令只使用IPv6寻址  </p>
+<p>-B  使用批处理模式（传输过程中不询问传输口令或短语）  </p>
+<p>-C  允许压缩。（将-C标志传递给ssh，从而打开压缩功能）  </p>
+<p>-p 保留原文件的修改时间，访问时间和访问权限。  </p>
+<p>-q  不显示传输进度条。  </p>
+<p>-r  递归复制整个目录。  </p>
+<p>-v 详细方式显示输出。scp和ssh(1)会显示出整个过程的调试信息。这些信息用于调试连接，验证和配置问题。   </p>
+<p>-c cipher  以cipher将数据传输进行加密，这个选项将直接传递给ssh。   </p>
+<p>-F ssh_config  指定一个替代的ssh配置文件，此参数直接传递给ssh。  </p>
+<p>-i identity_file  从指定文件中读取传输时使用的密钥文件，此参数直接传递给ssh。    </p>
+<p>-l limit  限定用户所能使用的带宽，以Kbit/s为单位。     </p>
+<p>-o ssh_option  如果习惯于使用ssh_config(5)中的参数传递方式，   </p>
+<p>-P port  注意是大写的P, port是指定数据传输用到的端口号   </p>
+<p>-S program  指定加密传输时所使用的程序。此程序必须能够理解ssh(1)的选项。</p>
+<p>4．使用实例：</p>
+<p>scp命令的实际应用概述：  </p>
+<p>从本地服务器复制到远程服务器： </p>
+<p>(1) 复制文件：  </p>
+<p>命令格式：  </p>
+<p>scp local_file remote_username@remote_ip:remote_folder  </p>
+<p>或者  </p>
+<p>scp local_file remote_username@remote_ip:remote_file  </p>
+<p>或者  </p>
+<p>scp local_file remote_ip:remote_folder  </p>
+<p>或者  </p>
+<p>scp local_file remote_ip:remote_file  </p>
+<p>第1,2个指定了用户名，命令执行后需要输入用户密码，第1个仅指定了远程的目录，文件名字不变，第2个指定了文件名  </p>
+<p>第3,4个没有指定用户名，命令执行后需要输入用户名和密码，第3个仅指定了远程的目录，文件名字不变，第4个指定了文件名   </p>
+<p>(2) 复制目录：  </p>
+<p>命令格式：  </p>
+<p>scp -r local_folder remote_username@remote_ip:remote_folder  </p>
+<p>或者  </p>
+<p>scp -r local_folder remote_ip:remote_folder  </p>
+<p>第1个指定了用户名，命令执行后需要输入用户密码；  </p>
+<p>第2个没有指定用户名，命令执行后需要输入用户名和密码；</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/07/18/scp命令详解/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-在Linux下搭建Git服务器" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -804,79 +913,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-UUID是如何保证唯一性的" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/05/03/UUID是如何保证唯一性的/">UUID是如何保证唯一性的</a>
-    </h1>
-  
-
-        
-        <a href="/2018/05/03/UUID是如何保证唯一性的/" class="archive-article-date">
-  	<time datetime="2018-05-03T03:20:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-05-03</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="https://www.zhihu.com/question/34876910" target="_blank" rel="external">https://www.zhihu.com/question/34876910</a><br><a href="https://segmentfault.com/a/1190000000484508" target="_blank" rel="external">https://segmentfault.com/a/1190000000484508</a><br><a href="http://www.ietf.org/rfc/rfc4122.txt" target="_blank" rel="external">http://www.ietf.org/rfc/rfc4122.txt</a><br>生日悖论</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/java/" class="article-tag-list-link color5">java</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/05/03/UUID是如何保证唯一性的/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/7/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/9/">Next &raquo;</a>
@@ -974,19 +1010,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1006,6 +1030,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
@@ -1014,15 +1042,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1046,11 +1082,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1058,7 +1094,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1066,7 +1102,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">

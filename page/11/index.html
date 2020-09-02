@@ -159,6 +159,89 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-201608022203" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/02/201608022203/">Yahoo前端优化十四条军规</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/02/201608022203/" class="archive-article-date">
+  	<time datetime="2016-08-02T14:03:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-02</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>相信互联网已经越来越成为人们生活中不可或缺的一部分。Ajax，flex等等富客户端的应用使得人们越加“幸福”地体验着许多原先只能在C/S实 现的功能。<br>比如Google机会已经把最基本的office应用都搬到了互联网上。当然便利的同时毫无疑问的也使页面的速度越来越慢。自己是做前端开发的，在性能方面，根据Yahoo的调查，后台只占5%，而前端高达95%之多，其中有88%的东西是可以优化的。<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201608021008.png" alt="image"><br>以上是一张web2.0页面的生命周期图。工程师很形象地讲它分成了“怀孕，出生，毕业，结婚”四个阶段。如果在我们点击网页链接的时候能够意识到 这个过程而不是简单的请求-响应的话，我们便可以挖掘出很多细节上可以提升性能的东西。<br>相信很多人都听过优化网站性能的14条规则。更多的信息可见developer.yahoo.com<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201808021014.png" alt="image"></p>
+<h3 id="第一条、尽可能的减少-HTTP-的请求数-（Make-Fewer-HTTP-Requests-）"><a href="#第一条、尽可能的减少-HTTP-的请求数-（Make-Fewer-HTTP-Requests-）" class="headerlink" title="第一条、尽可能的减少 HTTP 的请求数 （Make Fewer HTTP Requests ）"></a>第一条、尽可能的减少 HTTP 的请求数 （Make Fewer HTTP Requests ）</h3><p>http请求是要开销的，想办法减少请求数自然可以提高网页速度。常用的方法，合并css，js（将一个页面中的css和js文件分别合并）以及 Image maps和css sprites等。当然或许将css，js文件拆分多个是因为css结构，共用等方面的考虑。阿里巴巴中文站当时的做法是开发时依然分开开发，然后在后台 对js，css进行合并，这样对于浏览器来说依然是一个请求，但是开发时仍然能还原成多个，方便管理和重复引用。yahoo甚至建议将首页的css和js 直接写在页面文件里面，而不是外部引用。因为首页的访问量太大了，这么做也可以减少两个请求数。而事实上国内的很多门户都是这么做的。<br>而css sprites是指只用将页面上的背景图合并成一张，然后通过css的background-position属性定义不过的值来取他的背景。淘宝和阿里巴巴中文站目前都是这样做的。有兴趣的可以看下淘宝和阿里巴巴的背景图。<br><a href="http://www.csssprites.com/" target="_blank" rel="external">http://www.csssprites.com/</a>这是个工具网站，它可以自动将你上传的图片合并并给出对应的background-position坐标。并将结果以png和gif的格式输出。</p>
+<h3 id="第二条、使用CDN（内容分发网络）-Use-a-Content-Delivery-Network"><a href="#第二条、使用CDN（内容分发网络）-Use-a-Content-Delivery-Network" class="headerlink" title="第二条、使用CDN（内容分发网络）: Use a Content Delivery Network"></a>第二条、使用CDN（内容分发网络）: Use a Content Delivery Network</h3><p>说实话，对于CDN这一块自己并不是很了解，简单地讲，通过在现有的Internet中增加一层新的网络架构，将网站的内容发布到最接近用户的 cache服务器内，通过DNS负载均衡的技术，判断用户来源就近访问cache服务器取得所需的内容，杭州的用户访问近杭州服务器上的内容，北京的访问 近北京服务器上的内容。这样可以有效减少数据在网络上传输的时间，提高速度。更详细地内容大家可以参考百度百科上对于CDN的解释。Yahoo!把静态内容分布到CDN减少了用户影响时间20%或更多。<br>CDN技术示意图：<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201608021058.png" alt="image"><br>CDN组网示意图：<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201608021100.png" alt="image"></p>
+<h3 id="第三条、-添加Expire-Cache-Control-头：Add-an-Expires-Header"><a href="#第三条、-添加Expire-Cache-Control-头：Add-an-Expires-Header" class="headerlink" title="第三条、 添加Expire/Cache-Control 头：Add an Expires Header"></a>第三条、 添加Expire/Cache-Control 头：Add an Expires Header</h3><p>现在越来越多的图片，脚本，css，flash被嵌入到页面中，当我们访问他们的时候势必会做许多次的http请求。其实我们可以通过设置Expires header 来缓存这些文件。Expire其实就是通过header报文来指定特定类型的文件在览器中的缓存时间。大多数的图片，flash在发布后都是不需要经常修改的，做了缓存以后这样浏览器以后就不需要再从服务器下载这些文件而是而直接从缓存中读取，这样再次访问页面的速度会大大加快。一个典型的HTTP 1.1协议返回的头信息：<br><figure class="highlight http"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">HTTP/1.1 <span class="number">200</span> OK</div><div class="line"><span class="attribute">Date</span>: Fri, 30 Oct 1998 13:19:41 GMT</div><div class="line"><span class="attribute">Server</span>: Apache/1.3.3 (Unix)</div><div class="line"><span class="attribute">Cache-Control</span>: max-age=3600, must-revalidate</div><div class="line"><span class="attribute">Expires</span>: Fri, 30 Oct 1998 14:19:41 GMT</div><div class="line"><span class="attribute">Last-Modified</span>: Mon, 29 Jun 1998 02:28:12 GMT</div><div class="line"><span class="attribute">ETag</span>: “3e86-410-3596fbbc”</div><div class="line"><span class="attribute">Content-Length</span>: 1040</div><div class="line"><span class="attribute">Content-Type</span>: text/html</div></pre></td></tr></table></figure></p>
+<p>其中通过服务器端脚本设置Cache-Control和Expires可以完成。<br>如，在php中设置30天后过期：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pHeader(<span class="string">"Cache-Control: must-revalidate"</span>); $offset = <span class="number">60</span> * <span class="number">60</span> * <span class="number">24</span> * <span class="number">30</span>; $ExpStr = <span class="string">"Expires: "</span> . gmdate(<span class="string">"D, d M Y H:i:s"</span>, time() + $offset) . <span class="string">" GMT"</span>; Header($ExpStr)</div></pre></td></tr></table></figure></p>
+<p>也可以通过配置服务器本身完成，这些偶就不是很清楚了，呵呵。想了解跟多的朋友可以参考<a href="http://www.web-caching.com/" target="_blank" rel="external">http://www.web-caching.com/</a><br>据我了解，目前阿里巴巴中文站的Expires过期时间是30天。不过期间也有过问题，特别是对于脚本过期时间的设置还是应该仔细考虑下，不然相应的脚本功能更新后客户端可能要过很长一段时间才能“感知”到这样的变化。所以，哪些应该缓存，哪些不该缓存还是应该仔细斟酌一番。</p>
+<h3 id="第四条、启用Gzip压缩：Gzip-Components"><a href="#第四条、启用Gzip压缩：Gzip-Components" class="headerlink" title="第四条、启用Gzip压缩：Gzip Components"></a>第四条、启用Gzip压缩：Gzip Components</h3><p>Gzip的思想就是把文件先在服务器端进行压缩，然后再传输。这样可以显著减少文件传输的大小。传输完毕后浏览器会 重新对压缩过的内容进行解压缩，并执行。目前的浏览器都能“良好”地支持 gzip。不仅浏览器可以识别，而且各大“爬虫”也同样可以识别，各位seoer可以放下心了。而且gzip的压缩比例非常大，一般压缩率为85%，就是 说服务器端100K的页面可以压缩到25K左右再发送到客户端。具体的Gzip压缩原理大家可以参考csdn上的《gzip压缩算法》 这篇文章。雅虎特别强调， 所有的文本内容都应该被gzip压缩: html (php), js, css, xml, txt… </p>
+<h3 id="第五条、将css放在页面最上面-（-Put-Stylesheets-at-the-Top）"><a href="#第五条、将css放在页面最上面-（-Put-Stylesheets-at-the-Top）" class="headerlink" title="第五条、将css放在页面最上面 （ Put Stylesheets at the Top）"></a>第五条、将css放在页面最上面 （ Put Stylesheets at the Top）</h3><p>将css放在页面最上面，这是为什么？因为 ie，firefox等浏览器在css全部传输完全之前不会去渲染任何的东西。理由诚如小马哥说得那样很简单。css，全称Cascading Style Sheets (层叠样式表单)。层叠即意味这后面的css可以覆盖前面的css，级别高的css可以覆盖级别低的css。在[css之！important] 这篇文章的最下面曾简单地提到过这层级关系，这里我们只需要知道css可以被覆盖的。既然前面的可以被覆盖，浏览器在他完全加载完毕之后再去渲染无疑也是合情合理的很多浏览器下，如IE，把样式表放在页面的底部的问题在于它禁止了网页内容的顺序显示。浏览器阻止显示以免重画页面元素，那用户只能看到空白页了。Firefox不会阻止显示，但这意味着当样式表下载后，有些页面元素可能需要重画，这导致闪烁问题。所以我们应该尽快让css加载完毕</p>
+<h3 id="第六条、将script放在页面最下面-（Put-Scripts-at-the-Bottom-）"><a href="#第六条、将script放在页面最下面-（Put-Scripts-at-the-Bottom-）" class="headerlink" title="第六条、将script放在页面最下面 （Put Scripts at the Bottom ）"></a>第六条、将script放在页面最下面 （Put Scripts at the Bottom ）</h3><p>将脚本放在页面最下面的目的有那么两点：<br>1、 因为防止script脚本的执行阻塞页面的下载。在页面loading的过程中，当浏览器读到js执行语句的时候一定会把它全部解释完毕后在会接下来读下 面的内容。不信你可以写一个js死循环看看页面下面的东西还会不会出来。（setTimeout 和 setInterval的执行有点类似于多线程，在相应的响应时间之前也会继续下面的内容渲染。）浏览器这么做的逻辑是因为js随时可能执 行 location.href或是其他可能完全中断此页面过程的函数，即如此，当然得等他执行完毕之后再加载咯。所以放在页面最后，可以有效减少页面可 视元素的加载时间。<br>2、脚本引起的第二个问题是它阻塞并行下载数量。HTTP/1.1规范建议浏览器每个主机的并行下载数不超过2个（IE只能为2个，其他浏览器如ff等都是默认设置为2个，不过新出的ie8可以达6个）。因此如果您把图像文件分布到多台机器的话，您可以达到超过2个的并行下载。但是当脚本文件下载时，浏览器不会启动其他的并行下载。<br>当然对各个网站来说，把脚本都放到页面底部加载的可行性还是值得商榷的。就比如阿里巴巴中文站的页面。很多地方有内联的js，页面的显示严重依赖于此，我承认这和无侵入脚本的理念相差甚远，但是很多“历史遗留问题”却不是那么容易解决的。</p>
+<h3 id="第七条、避免在CSS中使用Expressions-（Avoid-CSS-Expressions-）"><a href="#第七条、避免在CSS中使用Expressions-（Avoid-CSS-Expressions-）" class="headerlink" title="第七条、避免在CSS中使用Expressions （Avoid CSS Expressions ）"></a>第七条、避免在CSS中使用Expressions （Avoid CSS Expressions ）</h3><p>表达式的问题就在于它的计算频率要比我们想象的多。不仅仅是在页面显示和缩放时，就是在页面滚动、乃至移动鼠标时都会要重新计算一次。给CSS表达式增加一个计数器可以跟踪表达式的计算频率。在页面中随便移动鼠标都可以轻松达到10000次以上的计算量。另外 CSS Expressions 的兼容性很差，所以 CSS Expressions 能不用就不用。</p>
+<h3 id="第八条、把javascript和css都放到外部文件中-（Make-JavaScript-and-CSS-External-）"><a href="#第八条、把javascript和css都放到外部文件中-（Make-JavaScript-and-CSS-External-）" class="headerlink" title="第八条、把javascript和css都放到外部文件中 （Make JavaScript and CSS External ）"></a>第八条、把javascript和css都放到外部文件中 （Make JavaScript and CSS External ）</h3><p>这点我想还是很容易理解的。不仅从性能优化上会这么做，用代码易于维护的角度看也应该这么做。把css和js写在页面内容可以减少2次请求，但也增 大了页面的大小。如果已经对css和js做了缓存，那也就没有2次多余的http请求了。当然，我在前面中也说过，有些特殊的页面开发人员还是会选择内联 的css和js文件。</p>
+<h3 id="第九条、减少DNS查询-Reduce-DNS-Lookups"><a href="#第九条、减少DNS查询-Reduce-DNS-Lookups" class="headerlink" title="第九条、减少DNS查询 (Reduce DNS Lookups)"></a>第九条、减少DNS查询 (Reduce DNS Lookups)</h3><p>在 Internet上域名与IP地址之间是一一对应的，域名（kuqin.com）很好记，但计算机不认识，计算机之间的“相认”还要转成ip地址。在网络 上每台计算机都对应有一个独立的ip地址。在域名和ip地址之间的转换工作称为域名解析，也称DNS查询。一次DNS的解析过程会消耗20-120毫秒的 时间,在dns查询结束之前，浏览器不会下载该域名下的任何东西。所以减少dns查询的时间可以加快页面的加载速度。yahoo的建议一个页面所包含的域 名数尽量控制在2-4个。这就需要对页面整体有一个很好的规划。</p>
+<h3 id="第十条、压缩-JavaScript-和-CSS-Minify-JavaScript"><a href="#第十条、压缩-JavaScript-和-CSS-Minify-JavaScript" class="headerlink" title="第十条、压缩 JavaScript 和 CSS (Minify JavaScript )"></a>第十条、压缩 JavaScript 和 CSS (Minify JavaScript )</h3><p>压缩js和css的左右很显然，减少页面字节数。容量小页面加载速度自然也就快。而且压缩除了减少体积以外还可以起到一定的保护左右。这点我们做得不错。常用的压缩工具有JsMin、YUI compressor等。另外像<a href="http://dean.edwards.name/packer/" target="_blank" rel="external">http://dean.edwards.name/packer/</a>还给我们提供了一个非常方便的在线压缩工具。你可以在jQuery的网页看到压缩过的js文件和没有压缩过的js文件的容量差别：<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201608021348.png" alt="image"><br>当然，压缩带来的一个弊端就是代码的可读性没了。相信很多做前端的朋友都遇到过这个问题：看Google的效果很酷，可是去看他的源代码却是一大堆 挤在一起的字符，连函数名都是替换过的，汗死！自己的代码也这样岂不是对维护非常不方便。所有阿里巴巴中文站目前采用的做法是在js和css发布的时候在 服务器端进行压缩。这样在我们很方便地维护自己的代码。</p>
+<h3 id="第十一条、避免重定向-Avoid-Redirects"><a href="#第十一条、避免重定向-Avoid-Redirects" class="headerlink" title="第十一条、避免重定向 (Avoid Redirects )"></a>第十一条、避免重定向 (Avoid Redirects )</h3><p>不久前在ieblog上看到过《Internet Explorer and Connection Limits》这篇文章，比如 当你输入<a href="http://www.kuqin.com/" target="_blank" rel="external">http://www.kuqin.com/</a> 的时候服务器会自动产生一个301服务器转向 <a href="http://www.kuqin.com/" target="_blank" rel="external">http://www.kuqin.com/</a> ，你看浏览器的地址栏就能看出来。这种重定向自然也是需要消耗时间的。当然这只是一个例子，发生重定向的原因还有很多，但是不变的是每增加一次重定向就会增加一次web请求，所以因该尽量减少。  </p>
+<h3 id="第十二条、移除重复的脚本-Remove-Duplicate-Scripts"><a href="#第十二条、移除重复的脚本-Remove-Duplicate-Scripts" class="headerlink" title="第十二条、移除重复的脚本 (Remove Duplicate Scripts )"></a>第十二条、移除重复的脚本 (Remove Duplicate Scripts )</h3><p>这点我想不说也知道，不仅是从性能上考虑，代码规范上看也是这样。但是不得不承认，很多时候我们会因为图一时之快而加上一些或许是重复的代码。或许一个统一的css框架和js框架可以比较好的解决我们的问题。小猪的观点很对，不仅是要做到不重复，更是要做到可重用。</p>
+<h3 id="第十三条、配置实体标签（ETags）-Configure-ETags"><a href="#第十三条、配置实体标签（ETags）-Configure-ETags" class="headerlink" title="第十三条、配置实体标签（ETags） (Configure ETags )"></a>第十三条、配置实体标签（ETags） (Configure ETags )</h3><p>这点我也不懂，呵呵。在inforQ上找到一篇解释得比较详细的说明《使用ETags减少Web应用带宽和负载》，有兴趣的同学可以去看看。</p>
+<h3 id="第十四条、使-AJAX-缓存-Make-Ajax-Cacheable"><a href="#第十四条、使-AJAX-缓存-Make-Ajax-Cacheable" class="headerlink" title="第十四条、使 AJAX 缓存 (Make Ajax Cacheable )"></a>第十四条、使 AJAX 缓存 (Make Ajax Cacheable )</h3><p>ajax还要去缓存？做ajax请求的时候往往还要增加一个时间戳去避免他缓存。It’s important to remember that “asynchronous” does not imply “instantaneous”.（记住“异步”不是“瞬间”这一点很重要）。记住，即使AJAX是动态产生的而且只对一个用户起作用，他们依然可以被缓存。</p>
+<h3 id="雅虎团队提供的35条性能优化的最佳实践（最早是14条就是以上的14条-个人严格按照规范也够用，对性能极度严苛的可以按照35条来）"><a href="#雅虎团队提供的35条性能优化的最佳实践（最早是14条就是以上的14条-个人严格按照规范也够用，对性能极度严苛的可以按照35条来）" class="headerlink" title="雅虎团队提供的35条性能优化的最佳实践（最早是14条就是以上的14条,个人严格按照规范也够用，对性能极度严苛的可以按照35条来）"></a>雅虎团队提供的35条性能优化的最佳实践（最早是14条就是以上的14条,个人严格按照规范也够用，对性能极度严苛的可以按照35条来）</h3><p><a href="https://developer.yahoo.com/performance/rules.html" target="_blank" rel="external">官方文档-雅虎团队提供的35条性能优化的最佳实践</a><br><a href="http://www.cnblogs.com/chenxizhang/archive/2013/05/20/3088196.html" target="_blank" rel="external">中文作者博客总结-雅虎团队提供的35条性能优化的最佳实践</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">转载</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/02/201608022203/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="w-201608012252" class="article article-type-w  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -340,11 +423,11 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sqlserver</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sqlserver</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">数据库</a>
         		</li>
       		
 		</ul>
@@ -696,19 +779,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -728,6 +799,10 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
@@ -736,15 +811,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -768,11 +851,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -780,7 +863,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -788,7 +871,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">

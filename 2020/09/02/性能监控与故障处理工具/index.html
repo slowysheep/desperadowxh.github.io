@@ -6,17 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://www.villagehead.cn">
-  <title>Tag: 随笔 | 村长的博客</title>
+  <title>性能监控与故障处理工具 | 村长的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="村长的博客，村长博客 ,村长,码农村村长 码农村，王旭晖的博客，王旭晖博客，王旭晖，java ，机器学习，中间件，js，数据库">
-<meta property="og:type" content="website">
-<meta property="og:title" content="村长的博客">
-<meta property="og:url" content="http://www.villagehead.cn/tags/随笔/index.html">
+  <meta name="description" content="JVM监控工具的作用 对jvm运行期间的内部情况进行监控，比如：对jvm参数，cpu，内存，堆等信息的查看 辅助进行性能调优 辅助解决应用运行时的一些问题，比如：OutOfMemoryError，内存泄漏，线程死锁，锁争用，Java进程消耗CPU过高等等命令行工具jps jps（JVM Process Status Tool）：主要用来输出JVM中运行的进程状态信息，语法格式如下：jps[opti">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="性能监控与故障处理工具">
+<meta property="og:url" content="http://www.villagehead.cn/2020/09/02/性能监控与故障处理工具/index.html">
 <meta property="og:site_name" content="村长的博客">
-<meta property="og:description" content="村长的博客，村长博客 ,村长,码农村村长 码农村，王旭晖的博客，王旭晖博客，王旭晖，java ，机器学习，中间件，js，数据库">
+<meta property="og:description" content="JVM监控工具的作用 对jvm运行期间的内部情况进行监控，比如：对jvm参数，cpu，内存，堆等信息的查看 辅助进行性能调优 辅助解决应用运行时的一些问题，比如：OutOfMemoryError，内存泄漏，线程死锁，锁争用，Java进程消耗CPU过高等等命令行工具jps jps（JVM Process Status Tool）：主要用来输出JVM中运行的进程状态信息，语法格式如下：jps[opti">
+<meta property="og:updated_time" content="2020-09-02T07:47:30.749Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="村长的博客">
-<meta name="twitter:description" content="村长的博客，村长博客 ,村长,码农村村长 码农村，王旭晖的博客，王旭晖博客，王旭晖，java ，机器学习，中间件，js，数据库">
+<meta name="twitter:title" content="性能监控与故障处理工具">
+<meta name="twitter:description" content="JVM监控工具的作用 对jvm运行期间的内部情况进行监控，比如：对jvm参数，cpu，内存，堆等信息的查看 辅助进行性能调优 辅助解决应用运行时的一些问题，比如：OutOfMemoryError，内存泄漏，线程死锁，锁争用，Java进程消耗CPU过高等等命令行工具jps jps（JVM Process Status Tool）：主要用来输出JVM中运行的进程状态信息，语法格式如下：jps[opti">
   
     <link rel="alternative" href="/atom.xml" title="村长的博客" type="application/atom+xml">
   
@@ -157,119 +159,243 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-性能监控与故障处理工具" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/06/11/做爱做到一半/" class="archive-article-date">
-  	<time datetime="2019-06-11T06:25:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-11</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/06/11/做爱做到一半/">做爱做到一半</a>
+    <h1 class="article-title" itemprop="name">
+      性能监控与故障处理工具
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/09/02/性能监控与故障处理工具/" class="archive-article-date">
+  	<time datetime="2020-09-02T07:47:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-02</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+
+    <p class="show-toc-btn" id="show-toc-btn" onclick="showToc();" style="display:none">
+          <span class="btn-bg"></span>
+          <span class="btn-text">文章导航</span>
+          </p>
+  <div id="toc-article" class="toc-article">
+      <span id="toc-close" class="toc-close" title="隐藏导航" onclick="showBtn();">×</span>
+    <strong class="toc-title">文章目录</strong>
+           <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JVM监控工具的作用"><span class="toc-number">1.</span> <span class="toc-text">JVM监控工具的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#命令行工具"><span class="toc-number">2.</span> <span class="toc-text">命令行工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jps"><span class="toc-number">2.1.</span> <span class="toc-text">jps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jinfo"><span class="toc-number">2.2.</span> <span class="toc-text">jinfo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstack"><span class="toc-number">2.3.</span> <span class="toc-text">jstack</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmap"><span class="toc-number">2.4.</span> <span class="toc-text">jmap</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstat"><span class="toc-number">2.5.</span> <span class="toc-text">jstat</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jstated"><span class="toc-number">2.6.</span> <span class="toc-text">jstated</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jcmd"><span class="toc-number">2.7.</span> <span class="toc-text">jcmd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#图形化工具"><span class="toc-number">3.</span> <span class="toc-text">图形化工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#jconsole"><span class="toc-number">3.1.</span> <span class="toc-text">jconsole</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jmc"><span class="toc-number">3.2.</span> <span class="toc-text">jmc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#VisualVM"><span class="toc-number">3.3.</span> <span class="toc-text">VisualVM</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#两种远程的连接方式"><span class="toc-number">4.</span> <span class="toc-text">两种远程的连接方式</span></a></li></ol>
+         </div>
+   <script type="text/javascript">
+  function showToc(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:block");
+    show_toc_btn.setAttribute("style","display:none");
+    };
+  function showBtn(){
+    var toc_article = document.getElementById("toc-article");
+    var show_toc_btn = document.getElementById("show-toc-btn");
+    toc_article.setAttribute("style","display:none");
+    show_toc_btn.setAttribute("style","display:block");
+    };
+   </script>
+         
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="JVM监控工具的作用"><a href="#JVM监控工具的作用" class="headerlink" title="JVM监控工具的作用"></a>JVM监控工具的作用</h2><ol>
+<li>对jvm运行期间的内部情况进行监控，比如：对jvm参数，cpu，内存，堆等信息的查看</li>
+<li>辅助进行性能调优</li>
+<li>辅助解决应用运行时的一些问题，比如：OutOfMemoryError，内存泄漏，线程死锁，锁争用，Java进程消耗CPU过高等等<h2 id="命令行工具"><a href="#命令行工具" class="headerlink" title="命令行工具"></a>命令行工具</h2><h3 id="jps"><a href="#jps" class="headerlink" title="jps"></a>jps</h3></li>
+<li>jps（JVM Process Status Tool）：主要用来输出JVM中运行的进程状态信息，语法格式如下：jps[options][hostid]</li>
+<li>hostid字符串的语法与URI的语法基本一致：[protocol:][[//]hostname][:port][/servername],如果不指定hostid，默认为当前主机或服务器</li>
+</ol>
+<h3 id="jinfo"><a href="#jinfo" class="headerlink" title="jinfo"></a>jinfo</h3><ol>
+<li>打印给定进程或核心文件或远程调试服务器的配置信息。语法格式：jinfo[option] pid #指定进程号（pid）的进程</li>
+<li>jinfo[option]<executable <core=""> #指定核心文件</executable></li>
+<li>jinfo[option][server-id@]<remote-hostname-or-ip>#指定远程调式服务器</remote-hostname-or-ip></li>
+</ol>
+<h3 id="jstack"><a href="#jstack" class="headerlink" title="jstack"></a>jstack</h3><ol>
+<li>jstack主要用来查看某个Java进程内的线程堆栈信息。语法格式如下：jstack [option] pid</li>
+<li>jstack [option] executable core</li>
+<li>jstack [option] [server -id@]remote-hostname-or-ip</li>
+</ol>
+<h3 id="jmap"><a href="#jmap" class="headerlink" title="jmap"></a>jmap</h3><ol>
+<li>jmap用来查看堆内存使用情况，语法格式如下：jmap[option] pid</li>
+<li>jmap [option] executable core</li>
+<li>jmap [option] [server -id@]remote-hostname-or-ip</li>
+</ol>
+<h3 id="jstat"><a href="#jstat" class="headerlink" title="jstat"></a>jstat</h3><ol>
+<li>JVM统计监测工具，查看各个区内存的GC的情况</li>
+<li>语法格式如下：jstat[generalOption | outputOptions vmid [interval[s|ms][count]]]</li>
+</ol>
+<h3 id="jstated"><a href="#jstated" class="headerlink" title="jstated"></a>jstated</h3><ol>
+<li>虚拟机的jstat守护进程，主要用于监控JVM的创建与终止，并提供一个接口，以允许远程监视工具附加到本地系统上允许的JVM</li>
+<li>语法格式：jstated [options]</li>
+</ol>
+<h3 id="jcmd"><a href="#jcmd" class="headerlink" title="jcmd"></a>jcmd</h3><ol>
+<li>JVM诊断命令工具，将诊断命令请求发送到正在允许的Java虚拟机，比如可以用来导出堆，查看java进程,导出线程信息，执行GC等</li>
+</ol>
+<h2 id="图形化工具"><a href="#图形化工具" class="headerlink" title="图形化工具"></a>图形化工具</h2><h3 id="jconsole"><a href="#jconsole" class="headerlink" title="jconsole"></a>jconsole</h3><ol>
+<li>一个用于监视Java虚拟机的符合JMX的图形工具。它可以监视本地和远程JVM，还可以监视和管理应用程序</li>
+</ol>
+<h3 id="jmc"><a href="#jmc" class="headerlink" title="jmc"></a>jmc</h3><ol>
+<li>jmc(JDK Mission Control) Java任务控制（JMC）客户端包括用于监视和管理Java应用程序的工具，而不会引入通常与这些类型的工具相关联的性能开销</li>
+</ol>
+<h3 id="VisualVM"><a href="#VisualVM" class="headerlink" title="VisualVM"></a>VisualVM</h3><ol>
+<li>一个图形工具，它提供有关在Java虚拟机中运行的基于Java技术的应用程序的详细信息</li>
+<li>Java VisualVM提供内存的CPU分析，堆转储分析，内存泄漏检测，访问MBean和垃圾回收。</li>
+</ol>
+<h2 id="两种远程的连接方式"><a href="#两种远程的连接方式" class="headerlink" title="两种远程的连接方式"></a>两种远程的连接方式</h2><ol>
+<li>JMX连接可以查看:系统信息，CPU使用情况，线程多少，手动执行垃圾回收等比较偏于系统级层面的信息</li>
+<li>jstatd连接方式可以提供：JVM内存分布详细信息，垃圾回收分布图，线程详细信息，甚至可以看到某个对象使用内存的大小</li>
+</ol>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/随笔/" class="article-tag-list-link color3">随笔</a>
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=http://www.villagehead.cn/2020/09/02/性能监控与故障处理工具/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/06/11/201606111600/" class="archive-article-date">
-  	<time datetime="2016-06-11T08:00:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-11</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/06/11/201606111600/">说给自己听</a>
-    </h1>
+  
+    <a href="/2020/09/01/JVM对高效并发的支持/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JVM对高效并发的支持</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+  
+  <div id="SOHUCS" sid="性能监控与故障处理工具" style="padding: 0px 30px 0px 46px;"></div> 
+<script type="text/javascript"> 
+(function(){ 
+var appid = "cyt6c86LT"; 
+var conf = "245632ec90fe8d4d5b6620223fc08ea2"; 
+var width = window.innerWidth || document.documentElement.clientWidth; 
+if (width < 960) { 
+window.document.write('<script id="changyan_mobile_js" charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/mobile/wap-js/changyan_mobile.js?client_id=' + appid + '&conf=' + conf + '"><\/script>'); } else { var loadJs=function(d,a){var c=document.getElementsByTagName("head")[0]||document.head||document.documentElement;var b=document.createElement("script");b.setAttribute("type","text/javascript");b.setAttribute("charset","UTF-8");b.setAttribute("src",d);if(typeof a==="function"){if(window.attachEvent){b.onreadystatechange=function(){var e=b.readyState;if(e==="loaded"||e==="complete"){b.onreadystatechange=null;a()}}}else{b.onload=a}}c.appendChild(b)};loadJs("//changyan.sohu.com/upload/changyan.js",function(){window.changyan.api.config({appid:appid,conf:conf})}); } })(); </script>
+  
+  
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">随笔</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
+  
 
 
           </div>
@@ -292,9 +418,9 @@ ga('send', 'pageview');
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		root: "/",
