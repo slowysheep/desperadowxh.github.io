@@ -159,6 +159,144 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JVM调优" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/03/JVM调优/">JVM调优</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/03/JVM调优/" class="archive-article-date">
+  	<time datetime="2020-09-03T02:47:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-03</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="JVM调优：调什么，如何调，调的目标是什么"><a href="#JVM调优：调什么，如何调，调的目标是什么" class="headerlink" title="JVM调优：调什么，如何调，调的目标是什么"></a>JVM调优：调什么，如何调，调的目标是什么</h2><h3 id="调什么"><a href="#调什么" class="headerlink" title="调什么"></a>调什么</h3><h4 id="内存方面"><a href="#内存方面" class="headerlink" title="内存方面"></a>内存方面</h4><ol>
+<li>JVM需要的内存总大小</li>
+<li>各块内存分配，新生代，老年代，存活区</li>
+<li>选择合适的垃圾回收算法，控制GC停顿次数和时间</li>
+<li>解决内存泄漏的问题，辅助代码优化</li>
+<li>内存热点：检查那些对象在系统中数量最大，辅助代码优化</li>
+</ol>
+<h4 id="线程方面"><a href="#线程方面" class="headerlink" title="线程方面"></a>线程方面</h4><ol>
+<li>死锁检查，辅助代码优化</li>
+<li>Dump线程详细信息：查看线程内部运行情况，查找竞争线程，辅助代码优化</li>
+<li>CPU热点：检查系统那些方法占用了大量CPU时间，辅助代码优化</li>
+</ol>
+<h3 id="如何调优"><a href="#如何调优" class="headerlink" title="如何调优"></a>如何调优</h3><ol>
+<li>监控JVM的状态，主要是内存，线程，代码，I/O几部分</li>
+<li>分析结果，判断是否需要优化</li>
+<li>调整：垃圾回收算法和内存分配；修改并优化代码</li>
+<li>不断的重复监控，分析和调整，直至找到优化的平衡点</li>
+</ol>
+<h3 id="调优的目标"><a href="#调优的目标" class="headerlink" title="调优的目标"></a>调优的目标</h3><ol>
+<li>GC的时间足够的小</li>
+<li>GC的次数足够的少</li>
+<li>将转移到老年代的对象数量降低到最小</li>
+<li>减少Full GC的执行时间</li>
+<li>发生Full GC的间隔足够的长</li>
+</ol>
+<h2 id="JVM调优策略，调优冷思考，调优经验"><a href="#JVM调优策略，调优冷思考，调优经验" class="headerlink" title="JVM调优策略，调优冷思考，调优经验"></a>JVM调优策略，调优冷思考，调优经验</h2><h3 id="常见的调优策略"><a href="#常见的调优策略" class="headerlink" title="常见的调优策略"></a>常见的调优策略</h3><ol>
+<li>减少创建对象的数量</li>
+<li>减少使用全局变量和大对象</li>
+<li>调整新生代，老年代的大小到最合适</li>
+<li>选择合适的GC收集器，并设置合理的参数</li>
+</ol>
+<h3 id="JVM调优冷思考"><a href="#JVM调优冷思考" class="headerlink" title="JVM调优冷思考"></a>JVM调优冷思考</h3><ol>
+<li>多数的Java应用不需要在服务器上进行GC优化</li>
+<li>多数导致GC问题的Java应用，都不是因为参数设置错误，而是代码问题</li>
+<li>在应用上线之前，先考虑将机器的JVM参数设置到最优（最适合）</li>
+<li>JVM优化是到最后不得已才采用的手段</li>
+<li>在实际使用中，分析JVM情况优化代码比优化JVM本身要多得多</li>
+<li>如下情况通常不用优化：<ul>
+<li>Minor GC执行时间不到50ms</li>
+<li>Minor GC执行不频繁，约10秒一次</li>
+<li>Full GC执行时间不到1s</li>
+<li>Full GC执行频率不算频繁，不低于10分钟1次</li>
+</ul>
+</li>
+</ol>
+<h3 id="JVM调优经验"><a href="#JVM调优经验" class="headerlink" title="JVM调优经验"></a>JVM调优经验</h3><ol>
+<li>要注意32位和64位的区别，通常32位的仅支持2-3g左右的内存</li>
+<li>要注意client模式和Server模式的选择</li>
+<li>要想GC时间小必须要一个更小的堆；而要保证GC次数足够少，又必须保证一个更大的堆，这两个是又冲突的，只能取其平衡</li>
+<li>针对JVM堆的设置，一般可以通过-Xms -Xmx限定其最小，最大值，为了防止垃圾收集器在最小，最大之间收缩堆而产生额外的时间，通常把最大，最小设置为相同的值</li>
+<li>新生代和老年代将根据默认的比例（1：2）分配堆内存，可以通过调整二者之间的比率NewRadio来调整，也可以通过-XX:newSize -XX:MaxNewSize来设置其绝对大小，同样，为了防止新生的堆收缩，通常会把-XX:newSize -XX:MaxNewSize设置为同样大小</li>
+<li>合理规划新生代和老年代的大小</li>
+<li>如果应用存在大量的临时对象，应该选择更大的新生代；如果存在相对较多的持久对象，老年代应该适当增大。在抉择时应该本着Full GC尽量少的原则，让老年代尽量缓存常用对象，JVM的默认比例1：2也是这个道理</li>
+<li>通过观察应用一段时间，看其在峰值时老年代会占多少内存，在不影响Full GC的前提下，根据实际情况加大新生代，但应该给老年代至少预留1/3的增长空间</li>
+<li>线程堆栈的设置：每个线程默认会开启1M的堆栈，用于存放栈帧，调用参数，局部变量等，对大多数应用而言这个默认值太大了，一般256K就足用。在内存不变的情况下，减少每个线程的堆栈，可以产生更多的线程</li>
+</ol>
+<h2 id="分析和处理内存溢出"><a href="#分析和处理内存溢出" class="headerlink" title="分析和处理内存溢出"></a>分析和处理内存溢出</h2><ol>
+<li>内存泄漏导致系统崩溃前的一些现象，比如：<ul>
+<li>每次垃圾回收的时间越来越长，FullGC时间也延长到好几秒</li>
+<li>FullGC的次数越来越多，最频繁时隔不到1分钟就进行一次FullGC</li>
+<li>老年代的内存越来越大，并且每次FullGC后老年代没有内存被释放</li>
+<li>老年代堆空间被占满的情况。这种情况的解决方式：一般就是根据垃圾回收前后情况对比，同时根据对象引用情况分析，辅助去查找泄漏点</li>
+<li>堆栈溢出的情况，通常抛出java.lang.StackOverflowError例外。一般就是递归调用没退出，或者循环调用造成</li>
+</ul>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/JVM/" class="article-tag-list-link color4">JVM</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/03/JVM调优/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-性能监控与故障处理工具" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1091,77 +1229,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/">javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/" class="archive-article-date">
-  	<time datetime="2020-07-09T02:14:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-09</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="看一张图了解浏览器窗口的基本信息"><a href="#看一张图了解浏览器窗口的基本信息" class="headerlink" title="看一张图了解浏览器窗口的基本信息"></a>看一张图了解浏览器窗口的基本信息</h1><p><img src="//www.villagehead.cn/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/1.png" alt="1"><br>这张图比较形象的展示了一些基本的信息</p>
-<h1 id="显示器的屏幕信息"><a href="#显示器的屏幕信息" class="headerlink" title="显示器的屏幕信息"></a>显示器的屏幕信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">screeen.height:屏幕分辨率的高（定值）</div><div class="line"></div><div class="line">screen.width:屏幕分辨率的宽（定值）</div><div class="line"></div><div class="line">screen.availHeight:屏幕可用高度（屏幕分辨率的高度-上下侧任务栏的高度）</div><div class="line"></div><div class="line">screen.availWidth:屏幕可用宽度（屏幕分辨率的宽度-左右侧任务栏的宽度）</div></pre></td></tr></table></figure>
-<p>如下图：<br><img src="//www.villagehead.cn/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/2.png" alt="2"></p>
-<h1 id="浏览器窗口信息"><a href="#浏览器窗口信息" class="headerlink" title="浏览器窗口信息"></a>浏览器窗口信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">window.outerHeight:浏览器高度</div><div class="line"></div><div class="line">window.innerHeight:浏览器可用高度</div><div class="line"></div><div class="line">工具栏高度=window.outerHeight-window.innerHeight;</div><div class="line"></div><div class="line">另外还有window.outerWidth、window.innerWidth</div></pre></td></tr></table></figure>
-<p>如下图<br><img src="//www.villagehead.cn/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/3.png" alt="3"></p>
-<h1 id="页面信息"><a href="#页面信息" class="headerlink" title="页面信息"></a>页面信息</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">document.body.offsetHeight: body的总高度</div><div class="line"></div><div class="line">document.body.offsetWidth: body的总宽度</div><div class="line"></div><div class="line">document.body.clientHeight: body向用户展示的高度</div><div class="line"></div><div class="line">document.body.clientWidth: body向用户展示的宽度</div><div class="line"></div><div class="line">document.documentElement.scrollHeight：在不使用滚动条的情况下适合视口中的所有内容所需的最小宽度。</div><div class="line">测量方式与 clientHeight相同：它包含元素的内边距，但不包括边框，外边距或垂直滚动条。</div><div class="line">documwnt.body.scrollHeight=document.body.clientHeight</div></pre></td></tr></table></figure>
-<p>offsetWidth和clientWidth会随着浏览器窗口的大小变化而发生改变，而offsetHeight和clientHeight就不会发生变化，可以理解为一个定值</p>
-<p>如下图<br><img src="//www.villagehead.cn/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/4.png" alt="4"></p>
-<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://blog.csdn.net/qq_15626693/article/details/54618276?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase" target="_blank" rel="external">https://blog.csdn.net/qq_15626693/article/details/54618276?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&amp;depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase</a></p>
-<p><a href="https://blog.csdn.net/qq_34543252/article/details/90400751" target="_blank" rel="external">https://blog.csdn.net/qq_34543252/article/details/90400751</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">js</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/09/javascript获取和判断浏览器窗口、屏幕、网页的高度、宽度/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1255,11 +1322,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">前端</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1267,7 +1330,23 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">java</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1279,23 +1358,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HTML</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">CSS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1343,11 +1410,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">PMP</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1356,10 +1427,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
               </li>
              
               <li class="article-tag-list-item">
