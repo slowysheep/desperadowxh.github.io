@@ -159,6 +159,75 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-201707311557" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/31/201707311557/">如何写在windows服务器下运行的windows服务应用程序</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/31/201707311557/" class="archive-article-date">
+  	<time datetime="2017-07-31T07:57:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-31</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="什么是windows服务应用程序"><a href="#什么是windows服务应用程序" class="headerlink" title="什么是windows服务应用程序"></a>什么是windows服务应用程序</h3><p>Microsoft Windows服务（即，以前的NT服务）使您能够创建在它们自己的 Windows 会话中可长时间运行的可执行应用程序。这些服务可以在计算机启动时自动启动，可以暂停和重新启动而且不实现任何用户界面。这些功能使服务非常适合在服务器上使用，每当需要使用不会影响在同一台计算机上工作的其他用户的功能时也适用。还可以在不同于登陆用户的特定用户账号或默认计算机账号的安全上下文中运行服务。</p>
+<h3 id="创建服务"><a href="#创建服务" class="headerlink" title="创建服务"></a>创建服务</h3><p>1.打开vs编辑器新建项目，在Visual C#下面选择windows服务。如下图<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/20170731/201707311623.png" alt="image"><br>自定义服务名称之后点击确定之后就新建好了一个服务工程。如下图<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/20170731/201707311714.png" alt="image"><br>点击单击此处可以切换到代码视图，进入代码界面可以看见如下代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public partial class Service1 : ServiceBase</div><div class="line">&#123;</div><div class="line">    public Service1()</div><div class="line">    &#123;</div><div class="line">        InitializeComponent();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected override void OnStart(string[] args)</div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected override void OnStop()</div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到OnStart和OnStop两个基本函数，OnStart是在服务启动时运行，OnStop在服务关闭时运行，这是一个服务程序的基本架构。<br><strong>注意：</strong>OnStart函数里面的程序代码运行时间是有限制的，如果运行过长，安装服务会失败。千万不要出现类似while(true){}这种代码出现在OnStart里面！！！用定时器执行，当然用定时器执行时时间也不能定时过长  </p>
+<h3 id="创建安装服务程序"><a href="#创建安装服务程序" class="headerlink" title="创建安装服务程序"></a>创建安装服务程序</h3><p>在service组件的图形界面鼠标右键点击添加安装程序，vs会自动为我们添加ProjectInstaller.cs以及2个安装的组件。如下图<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/20170731/201707311757.png" alt="image"><br>在serviceInstaller1里面设置相应的属性<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/20170731/201707311412.png" alt="image"><br>可以修改相应的ServiceName，以及StartType<br>StartType启动属性：<br>Manual      服务安装后，必须手动启动。<br>Automatic    每次计算机重新启动时，服务都会自动启动。<br>Disabled     服务无法启动。<br>在serviceProcessInstaller1里面设置相应的属性<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/20170731/201708011512.png" alt="image"><br>设置Account相关属性<br>LocalService    充当本地计算机上非特权用户的帐户，该帐户将匿名凭据提供给所有远程服务器。<br>LocalSystem    服务控制管理员使用的帐户，它具有本地计算机上的许多权限并作为网络上的计算机。<br>NetworkService    提供广泛的本地特权的帐户，该帐户将计算机的凭据提供给所有远程服务器。<br>User    由网络上特定的用户定义的帐户。如果为 ServiceProcessInstaller.Account 成员指定 User，则会使系统在安装服务时提示输入有效的用户名和密码，除非您为 ServiceProcessInstaller 实例的 Username 和 Password 这两个属性设置值。   </p>
+<h3 id="安装服务"><a href="#安装服务" class="headerlink" title="安装服务"></a>安装服务</h3><p>服务安装不像传统的执行exe文件就可以实现安装，要写一个bat安装脚本才能实现安装。类似如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\WINDOWS\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe 安装的文件路径xxxxxx</div></pre></td></tr></table></figure></p>
+<h3 id="删除服务"><a href="#删除服务" class="headerlink" title="删除服务"></a>删除服务</h3><p>删除服务跟安装服务一样也要写个bat脚本 类似如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sc delete DealWithVIdeoService</div></pre></td></tr></table></figure></p>
+<p><strong>注意这两个bat脚本执行以管理员身份执行</strong></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">c#</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/31/201707311557/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-201707281424" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -799,86 +868,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="w-201609241300" class="article article-type-w  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/24/201609241300/">提高sqlserver分页查询性能的方法</a>
-    </h1>
-  
-
-        
-        <a href="/2016/09/24/201609241300/" class="archive-article-date">
-  	<time datetime="2016-09-24T05:00:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-24</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在公司业务中的一个用户表达到将近800万条数据，系统后台管理系统有个用户模块做分页处理便于运营查看。但是如果你点到很后面或者最后的页数，你会发现系统执行的很慢，让人难以接受。<br>打开这个功能的使用的存储过程，做了简单的处理核心代码如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">declare @d datetime</div><div class="line">set @d=getdate()</div><div class="line">declare @begin int = 7000000</div><div class="line">declare @num int = 20</div><div class="line">;</div><div class="line">with t as</div><div class="line">(</div><div class="line">	select *,ROW_NUMBER() over(order by idx desc) num from member </div><div class="line">)</div><div class="line">select * from t where t.num between @begin and @begin+@num-1</div><div class="line"></div><div class="line">select [语句执行花费时间(ms)]=datediff(ms,@d,getdate())</div></pre></td></tr></table></figure>
-<p>可以发现这种写法，当开始行数达到700万行的时候执行时间为<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201609242202.png" alt="image"><br>执行一次分页是4秒多，显现这是很慢的。 </p>
-<p>我们换一种写法，用sqlserver Set Rowcount方法，代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">declare @d datetime</div><div class="line">set @d=getdate()</div><div class="line">declare @begin int = 7000000</div><div class="line">declare @num int = 20</div><div class="line">declare @id int </div><div class="line">declare @moveRecords int</div><div class="line">declare @currentPage int </div><div class="line"></div><div class="line">set @currentPage = (@begin+@num-1)/@num</div><div class="line"></div><div class="line">set @moveRecords = @currentPage*@num+1</div><div class="line">Set Rowcount @MoveRecords </div><div class="line">select @id = idx from member order by idx desc</div><div class="line">--select @id</div><div class="line">set rowcount @num</div><div class="line">Select  * From member Where idx&gt;=@id Order By idx desc</div><div class="line">Set Rowcount 0 </div><div class="line"></div><div class="line">select [语句执行花费时间(ms)]=datediff(ms,@d,getdate())</div></pre></td></tr></table></figure></p>
-<p>执行时间大概是1.6秒左右，这个分页的方式性能比上一种提高了将近三倍<br><img src="http://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2016/201609242206.png" alt="image"></p>
-<p>为什么第二种方法执行性能比第一种好呢？因为用Set Rowcount 在返回指定的行数之后就停止处理查询了。而用with t as（）的方法需要先查询整个结果集，在去处理分页，所以时间上会消耗比较多。  </p>
-<p>SET ROWCOUNT 的用法<br>使 Microsoft® SQL Server™ 在返回指定的行数之后停止处理查询。<br>语法<br>SET ROWCOUNT { number | @number_var }<br>参数<br>number | @number_var<br>是在停止给定查询之前要处理的行数（整数）。<br>注释<br>建议将当前使用 SET ROWCOUNT 的 DELETE、INSERT 和 UPDATE 语句重新编写为使用 TOP 语法。有关更多信息，请参见 DELETE、INSERT 或 UPDATE。<br>对于在远程表和本地及远程分区视图上执行的 INSERT、UPDATE 和 DELETE 语句，忽略 SET ROWCOUNT 选项设置。<br>若要关闭该选项（以便返回所有的行），请将 SET ROWCOUNT 指定为 0。</p>
-<p>说明  设置 SET ROWCOUNT 选项将使大多数 Transact-SQL 语句在已受指定数目的行影响后停止处理。这包括触发器和 INSERT、UPDATE 及 DELETE 等数据修改语句。ROWCOUNT 选项对动态游标无效，但限制键集的行集和不感知游标。使用该选项时应谨慎，它主要与 SELECT 语句一起使用。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sqlserver</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/DB/" class="article-tag-list-link color3">DB</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/09/24/201609241300/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/9/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/">Next &raquo;</a>
@@ -972,14 +961,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -992,11 +973,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1008,15 +997,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1048,11 +1037,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1060,7 +1049,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1068,15 +1057,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1084,11 +1065,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">

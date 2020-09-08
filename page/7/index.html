@@ -159,6 +159,111 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Linux下Java后端生成图片中文字体不显示" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/16/Linux下Java后端生成图片中文字体不显示/">Linux下Java后端生成图片中文字体不显示</a>
+    </h1>
+  
+
+        
+        <a href="/2018/11/16/Linux下Java后端生成图片中文字体不显示/" class="archive-article-date">
+  	<time datetime="2018-11-16T07:00:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-16</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="业务需求"><a href="#业务需求" class="headerlink" title="业务需求"></a>业务需求</h2><p>公司推广产品，需要在前端点击按钮，生成一张图片。中文文案，以及微信接口生成的场景二维码，合成在同一张图片上，供用户分享图片。其他用户点击这张图片能够识别二维码，跳转到我们的微信公众号，关注并在我们平台上注册账号，此时分享者可以相应得到积分，积分可以抵扣平台购买产品的金钱额度。</p>
+<h2 id="产生的问题"><a href="#产生的问题" class="headerlink" title="产生的问题"></a>产生的问题</h2><p>在本地测试通过接口返回图片的字节流，能够在浏览器上正常显示。但发布到测试服务器，发现图片上的中文文案没有显示出来。说明后端并没有正常的绘制中文字符。</p>
+<h2 id="Linux测试服务器环境"><a href="#Linux测试服务器环境" class="headerlink" title="Linux测试服务器环境"></a>Linux测试服务器环境</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">CentOS Linux release 7.4.1708 (Core) </div><div class="line">Linux version 3.10.0-862.11.6.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-28) (GCC) )</div></pre></td></tr></table></figure>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>猜测Linux服务器天然优先支持英文字体，中文字体并没有支持。所以通过java后端打印出服务器能够支持的中文字体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">2018-11-16 14:18:50,690 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Bitstream Charter</div><div class="line">2018-11-16 14:18:50,690 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Century Schoolbook L</div><div class="line">2018-11-16 14:18:50,690 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Courier 10 Pitch</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Cursor</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Dialog</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] DialogInput</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Dingbats</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Liberation Mono</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Monospaced</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Nimbus Mono L</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Nimbus Roman No9 L</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Nimbus Sans L</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] SansSerif</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Serif</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Standard Symbols L</div><div class="line">2018-11-16 14:18:50,691 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] URW Bookman L</div><div class="line">2018-11-16 14:18:50,692 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] URW Chancery L</div><div class="line">2018-11-16 14:18:50,692 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] URW Gothic L</div><div class="line">2018-11-16 14:18:50,692 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] URW Palladio L</div><div class="line">2018-11-16 14:18:50,692 INFO d.h.w.r.ImgResource [http-nio-8080-exec-4] Utopia</div></pre></td></tr></table></figure></p>
+<p>发现并没有支持中文的字体</p>
+<p>后端判断服务器能够支持字体java代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();</div><div class="line">String[] fontFamilies = ge.getAvailableFontFamilyNames();</div><div class="line">for (String s : fontFamilies) &#123;</div><div class="line">    LOGGER.info(s);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>既然服务器没有上没有可以支持中文的字体，那就安装下可以支持中文的字体。</p>
+<p>首先输入以下命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install fontconfig</div></pre></td></tr></table></figure></p>
+<p>安装成功后，切换到/usr/share，可以看到fonts和fontconfig目录，说明安装成功</p>
+<p><img src="https://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2018/fonts.png" alt="fonts"></p>
+<p>接下来可以添加中文字体了</p>
+<p>在CentOS中，字体库的存放位置正是上图中看到的fonts目录，所以我们首先要做的就是找到中文字体文件放到该目录下，而中文字体文件在我们的windows系统中就可以找到，打开c盘下的Windows/Fonts目录： </p>
+<p><img src="https://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2018/windows-fonts.png" alt="fonts"></p>
+<p>我们只需要在如上选择一两个需要的字体拷贝出来传到服务器的fonts目录下。</p>
+<p>我选择了新宋体如下；</p>
+<p><img src="https://villagehead.oss-cn-beijing.aliyuncs.com/villagehead_pic/2018/simsun.png" alt="fonts"></p>
+<p>在这之前我们还需要新建目录，首先在/usr/share/fonts目录下新建一个目录chinese<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkdir chinese</div></pre></td></tr></table></figure></p>
+<p>然后将上面的字体上传至/usr/share/fonts/chinese目录下即可，使用rz命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rz</div></pre></td></tr></table></figure></p>
+<p>紧接着需要修改chinese目录的权限：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod -R 755 /usr/share/fonts/chinese</div></pre></td></tr></table></figure></p>
+<p>接下来需要安装ttmkfdir来搜索目录中所有的字体信息，并汇总生成fonts.scale文件，输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install ttmkfdir</div></pre></td></tr></table></figure>
+<p>然后执行ttmkfdir命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ttmkfdir -e /usr/share/X11/fonts/encodings/encodings.dir</div></pre></td></tr></table></figure>
+<p>最后修改字体配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vi /etc/fonts/fonts.conf</div></pre></td></tr></table></figure>
+<p>在Font directory list下添加<code>&lt;dir&gt;/usr/share/fonts/chinese&lt;/dir&gt;</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;dir&gt;/usr/share/fonts&lt;/dir&gt;</div><div class="line">&lt;dir&gt;/usr/share/X11/fonts/Type1&lt;/dir&gt; &lt;dir&gt;/usr/share/X11/fonts/TTF&lt;/dir&gt; &lt;dir&gt;/usr/local/share/fonts&lt;/dir&gt;</div><div class="line">&lt;dir&gt;/usr/share/fonts/chinese&lt;/dir&gt;</div><div class="line">&lt;dir prefix=&quot;xdg&quot;&gt;fonts&lt;/dir&gt;</div><div class="line">&lt;!-- the following element will be removed in the future --&gt;</div><div class="line">&lt;dir&gt;~/.fonts&lt;/dir&gt;</div></pre></td></tr></table></figure>
+<p>然后退出保存<code>:wq</code>,并执行<code>fc-cache</code> 刷新内存中的字体缓存，这样就不用<code>reboot</code>重启服务器。</p>
+<p>测试发现执行<code>fc-cache</code>并没有得到预期的结果，最后还是<code>reboot</code>了服务器。不知道其他的服务器会不会跟我一样，视情况而定</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Linux/" class="article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/11/16/Linux下Java后端生成图片中文字体不显示/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-intellij-idea-快捷键" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -968,70 +1073,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Windows中杀死占用某个端口的进程" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/08/03/Windows中杀死占用某个端口的进程/">Windows中杀死占用某个端口的进程</a>
-    </h1>
-  
-
-        
-        <a href="/2018/08/03/Windows中杀死占用某个端口的进程/" class="archive-article-date">
-  	<time datetime="2018-08-03T00:29:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-08-03</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>windows下idea调试经常会被占用8080端口，很麻烦，记录下windows下快速杀死端口命令的方法</p>
-<h3 id="第一步，打开cmd命令窗口，输入命令，根据端口号查找对应的进程号"><a href="#第一步，打开cmd命令窗口，输入命令，根据端口号查找对应的进程号" class="headerlink" title="第一步，打开cmd命令窗口，输入命令，根据端口号查找对应的进程号"></a>第一步，打开cmd命令窗口，输入命令，根据端口号查找对应的进程号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netstat -ano | findstr 8080 //列出进程极其占用的端口，且包含 8080</div></pre></td></tr></table></figure>
-<h3 id="第二步，-据进程号寻找进程名称"><a href="#第二步，-据进程号寻找进程名称" class="headerlink" title="第二步， 据进程号寻找进程名称"></a>第二步， 据进程号寻找进程名称</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tasklist | findstr 9268</div></pre></td></tr></table></figure>
-<h3 id="第三步，杀死进程号"><a href="#第三步，杀死进程号" class="headerlink" title="第三步，杀死进程号"></a>第三步，杀死进程号</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">taskkill -PID &lt;进程号&gt; -F //强制关闭某个进程</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">常用操作</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/08/03/Windows中杀死占用某个端口的进程/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
@@ -1125,14 +1166,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1145,11 +1178,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1161,15 +1202,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1201,11 +1242,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1213,7 +1254,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1221,15 +1262,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1237,11 +1270,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">

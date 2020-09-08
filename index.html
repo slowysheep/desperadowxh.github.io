@@ -159,6 +159,80 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-解决linux下sudo更改文件权限报错" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/08/解决linux下sudo更改文件权限报错/">解决linux下sudo更改文件权限报错</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/08/解决linux下sudo更改文件权限报错/" class="archive-article-date">
+  	<time datetime="2020-09-08T02:44:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-08</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>sudo更改文件权限报错，报 xxx is not in the sudoers file. This incident will be reportd。说明这个用户没有修改这个文件的权限。</p>
+<h2 id="解决办法如下："><a href="#解决办法如下：" class="headerlink" title="解决办法如下："></a>解决办法如下：</h2><ol>
+<li>切换到root用户下，在控制台直接在命令行输入：su，然后输入密码（即你的登录密码）</li>
+<li>/etc/sudoers文件默认是只读的，对root来说也是，因此需先添加sudoers文件的写权限,命令是:即执行操作：chmod u+w /etc/sudoers</li>
+<li>编辑sudoers文件。即执行：vi /etc/sudoers 找到这行 root ALL=(ALL) ALL,在他下面添加xxx ALL=(ALL) ALL (这里的xxx是你的用户名)。这里再说下你可以在sudoers添加下面四行中任意一条。<ul>
+<li>youuser ALL=(ALL) ALL （允许用户youuser执行sudo命令(需要输入密码).）</li>
+<li>%youuser ALL=(ALL) ALL （允许用户组youuser里面的用户执行sudo命令(需要输入密码).）</li>
+<li>youuser ALL=(ALL) NOPASSWD: ALL （允许用户youuser执行sudo命令,并且在执行的时候不输入密码.）</li>
+<li>%youuser ALL=(ALL) NOPASSWD: ALL （允许用户组youuser里面的用户执行sudo命令,并且在执行的时候不输入密码.）</li>
+</ul>
+</li>
+<li>撤销sudoers文件写权限，命令：chmod u-w /etc/sudoers</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/08/解决linux下sudo更改文件权限报错/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-JVM调优" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1163,72 +1237,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Centos7-防火墙开放端口，查看状态，查看开放端口" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/09/Centos7-防火墙开放端口，查看状态，查看开放端口/">Centos7 防火墙开放端口，查看状态，查看开放端口</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/09/Centos7-防火墙开放端口，查看状态，查看开放端口/" class="archive-article-date">
-  	<time datetime="2020-07-09T06:43:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-09</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="查看防火墙状态"><a href="#查看防火墙状态" class="headerlink" title="查看防火墙状态"></a>查看防火墙状态</h1><p><code>systemctl status firewalld</code></p>
-<h1 id="查看已开放端口"><a href="#查看已开放端口" class="headerlink" title="查看已开放端口"></a>查看已开放端口</h1><p><code>firewall-cmd --list-all</code></p>
-<h1 id="防火墙开放端口"><a href="#防火墙开放端口" class="headerlink" title="防火墙开放端口"></a>防火墙开放端口</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">// 开放防火墙端口</div><div class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent</div><div class="line"></div><div class="line">// 重载防火墙</div><div class="line">firewall-cmd --reload</div><div class="line"></div><div class="line">命令含义：</div><div class="line">–zone #作用域</div><div class="line">–add-port=80/tcp #添加端口，格式为：端口/通讯协议</div><div class="line">–permanent #永久生效，没有此参数重启后失效</div><div class="line">firewall-cmd --reload 并不中断用户连接，即不丢失状态信息</div></pre></td></tr></table></figure>
-<h1 id="firewalld的基本使用"><a href="#firewalld的基本使用" class="headerlink" title="firewalld的基本使用"></a>firewalld的基本使用</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">启动： systemctl start firewalld</div><div class="line">关闭： systemctl stop firewalld</div><div class="line">查看状态： systemctl status firewalld</div><div class="line">开机禁用 ： systemctl disable firewalld</div><div class="line">开机启用 ： systemctl enable firewalld</div></pre></td></tr></table></figure>
-<h1 id="systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体"><a href="#systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体" class="headerlink" title="systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体"></a>systemctl是CentOS7的服务管理工具中主要的工具，它融合之前service和chkconfig的功能于一体</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">启动一个服务：systemctl start firewalld.service</div><div class="line">关闭一个服务：systemctl stop firewalld.service</div><div class="line">重启一个服务：systemctl restart firewalld.service</div><div class="line">显示一个服务的状态：systemctl status firewalld.service</div><div class="line">在开机时启用一个服务：systemctl enable firewalld.service</div><div class="line">在开机时禁用一个服务：systemctl disable firewalld.service</div><div class="line">查看服务是否开机启动：systemctl is-enabled firewalld.service</div><div class="line">查看已启动的服务列表：systemctl list-unit-files|grep enabled</div><div class="line">查看启动失败的服务列表：systemctl --failed</div></pre></td></tr></table></figure>
-<h1 id="配置firewalld-cmd"><a href="#配置firewalld-cmd" class="headerlink" title="配置firewalld-cmd"></a>配置firewalld-cmd</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">查看版本： firewall-cmd --version</div><div class="line">查看帮助： firewall-cmd --help</div><div class="line">显示状态： firewall-cmd --state</div><div class="line">查看所有打开的端口： firewall-cmd --zone=public --list-ports</div><div class="line">更新防火墙规则： firewall-cmd --reload</div><div class="line">查看区域信息: firewall-cmd --get-active-zones</div><div class="line">查看指定接口所属区域： firewall-cmd --get-zone-of-interface=eth0</div><div class="line">拒绝所有包：firewall-cmd --panic-on</div><div class="line">取消拒绝状态： firewall-cmd --panic-off</div><div class="line">查看是否拒绝： firewall-cmd --query-panic</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Linux</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/09/Centos7-防火墙开放端口，查看状态，查看开放端口/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1322,14 +1330,6 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1342,11 +1342,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1358,15 +1366,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">json</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">机器学习</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1398,11 +1406,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">基础</a>
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1410,7 +1418,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
+                <a href="javascript:void(0)" class="js-tag color1">react</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1418,15 +1426,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">react</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
+                <a href="javascript:void(0)" class="js-tag color1">mysql</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1434,11 +1434,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Spring</a>
               </li>
              
               <li class="article-tag-list-item">
