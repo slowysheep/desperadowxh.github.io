@@ -159,6 +159,83 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-docker下的-var-lib-docker-overlay文件很大，造成服务器磁盘报警" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/11/19/docker下的-var-lib-docker-overlay文件很大，造成服务器磁盘报警/">docker下的/var/lib/docker/overlay文件很大，造成服务器磁盘报警</a>
+    </h1>
+  
+
+        
+        <a href="/2019/11/19/docker下的-var-lib-docker-overlay文件很大，造成服务器磁盘报警/" class="archive-article-date">
+  	<time datetime="2019-11-19T07:19:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-19</time>
+</a>
+        
+      </header>
+    
+    <!-- 目录内容 -->
+   
+<!-- 目录内容结束 -->
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><p>公司一台测试服务器，经常磁盘报警。平时都是清理掉nginx的下的日志，就ok了。这次直接磁盘占满，怎么处理磁盘还是报警。</p>
+<h2 id="处理过程"><a href="#处理过程" class="headerlink" title="处理过程"></a>处理过程</h2><h3 id="使用df-h命令，发现docker下的overlay磁盘占用很大"><a href="#使用df-h命令，发现docker下的overlay磁盘占用很大" class="headerlink" title="使用df -h命令，发现docker下的overlay磁盘占用很大"></a>使用<code>df -h</code>命令，发现docker下的overlay磁盘占用很大</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">文件系统        容量  已用  可用 已用% 挂载点</div><div class="line">/dev/vda1        40G   35G  3.2G   92% /</div><div class="line">devtmpfs        3.9G     0  3.9G    0% /dev</div><div class="line">tmpfs           3.9G     0  3.9G    0% /dev/shm</div><div class="line">tmpfs           3.9G  137M  3.7G    4% /run</div><div class="line">tmpfs           3.9G     0  3.9G    0% /sys/fs/cgroup</div><div class="line">tmpfs           783M     0  783M    0% /run/user/1000</div><div class="line">overlay          40G   35G  3.2G   92% /var/lib/docker/overlay/110e4d61d36d50cee7c5990fb42a84f4c7ae6003ea30032e10f497f4bf535bbb/merged</div><div class="line">shm              64M     0   64M    0% /var/lib/docker/containers/2f532a830e88ca7d8483e34e3d940e25b371f09560dca4106900323da6943433/shm</div><div class="line">tmpfs           783M     0  783M    0% /run/user/0</div><div class="line">overlay          40G   35G  3.2G   92% /var/lib/docker/overlay/f17d62b3550c9ec4138aab76bb1e2da0abf289bb378ef78e5a843dd8b3924902/merged</div><div class="line">shm              64M     0   64M    0% /var/lib/docker/containers/6d3e12fbf3137c6c11797957c2ee593ee068c3486397672965f6e8c5af31390f/shm</div></pre></td></tr></table></figure>
+<h3 id="使用docker-ps-a查看是否存在已经死掉的容器没有被删除，发现果然存在"><a href="#使用docker-ps-a查看是否存在已经死掉的容器没有被删除，发现果然存在" class="headerlink" title="使用docker ps -a查看是否存在已经死掉的容器没有被删除，发现果然存在"></a>使用<code>docker ps -a</code>查看是否存在已经死掉的容器没有被删除，发现果然存在</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS                     PORTS                                            NAMES</div><div class="line">6d3e12fbf313        halcms                &quot;/bin/sh -c &apos;echo ...&quot;   24 hours ago        Up 24 hours                0.0.0.0:8083-&gt;8080/tcp                           docker_halcms-app_1</div><div class="line">2f532a830e88        elasticsearch:2.3.5   &quot;/docker-entrypoin...&quot;   2 years ago         Up 4 weeks                 0.0.0.0:9200-&gt;9200/tcp, 0.0.0.0:9300-&gt;9300/tcp   halcms-elasticsearch</div><div class="line">8e73d3c2b62d        6fd9e186667b          &quot;/bin/sh -c &apos;sh -c...&quot;   2 years ago         Exited (127) 2 years ago                                                    adoring_curran</div><div class="line">cfc19946e8b6        817e3ed9255c          &quot;/bin/sh -c &apos;sh -c...&quot;   2 years ago         Exited (127) 2 years ago                                                    elated_banach</div></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2019/11/19/docker下的-var-lib-docker-overlay文件很大，造成服务器磁盘报警/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/docker/" class="article-tag-list-link color2">docker</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/11/19/docker下的-var-lib-docker-overlay文件很大，造成服务器磁盘报警/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+  
     <article id="post-理解磁盘类型SAS-SATA-SCSI-and-ATA" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -899,87 +976,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-PMBOK（第六版）-沟通方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/12/PMBOK（第六版）-沟通方法/">PMBOK（第六版）- 沟通方法</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/12/PMBOK（第六版）-沟通方法/" class="archive-article-date">
-  	<time datetime="2019-06-12T14:37:38.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-12</time>
-</a>
-        
-      </header>
-    
-    <!-- 目录内容 -->
-   
-<!-- 目录内容结束 -->
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>项目相关方之间用于分享信息的沟通方法有几种。这些方法可以大致分为：</p>
-<ul>
-<li><p>互动沟通。在两方或多方之间进行的实时多向信息交换。它使用诸如会议、电话、即时信息、社交媒体和视频会议等沟通工件。</p>
-</li>
-<li><p>推式沟通。向需要接收信息的特定接收方发送或发布信息。这种方法可以确保信息的发送，但不能确保信息送达目标受众或被目标受众理解。在推式沟通中，可以采用的沟通工件包括信件、备忘录、报告、电子邮件、传真、语音邮件、博客、新闻稿。</p>
-</li>
-<li><p>拉式沟通。适用于大量复杂信息或大量信息受众的情况。它要求接收方在遵守有关安全规定的前提之下自行访问相关内容。这种方法包括门户网站、企业内网、电子在线课程、经验教训数据库或知识库</p>
-</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">PMP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/PMP/" class="article-tag-list-link color4">PMP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/12/PMBOK（第六版）-沟通方法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -994,7 +990,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2020 村长
+    		&copy; 2021 村长
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1073,6 +1069,14 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1085,15 +1089,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">数据库</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sqlserver</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1101,19 +1097,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">我的收藏</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">c#</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">json</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1121,7 +1105,11 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
+                <a href="javascript:void(0)" class="js-tag color5">json</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机基础</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1129,15 +1117,19 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">转载</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">常用操作</a>
+                <a href="javascript:void(0)" class="js-tag color2">Docker</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
+                <a href="javascript:void(0)" class="js-tag color5">常用操作</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1149,11 +1141,15 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">基础</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">字符编码</a>
+                <a href="javascript:void(0)" class="js-tag color3">笔记</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1165,27 +1161,7 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">mysql</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">docker</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">php</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">redis</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1201,11 +1177,31 @@ return o(t,i(n),arguments.length<3?void 0:u(arguments[2]))}})},function(t,n,r){v
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">php</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">js</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">redis</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">JVM</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">PMP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">docker</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">nginx</a>
               </li>
             
             <div class="clearfix"></div>
